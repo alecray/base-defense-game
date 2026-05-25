@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" path="res://scenes/gold_mine_ui.tscn" id="12_goldmineui"]
 [ext_resource type="PackedScene" path="res://scenes/dev_menu.tscn" id="7_devmenu"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="13_daycycle"]
+[ext_resource type="PackedScene" path="res://scenes/lab_ui.tscn" id="14_labui"]
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -31,6 +32,8 @@ script = ExtResource("1_tilgrd")
 [node name="BarracksUI" parent="." instance=ExtResource("11_barrui")]
 
 [node name="GoldMineUI" parent="." instance=ExtResource("12_goldmineui")]
+
+[node name="LabUI" parent="." instance=ExtResource("14_labui")]
 
 [node name="DevMenu" parent="." instance=ExtResource("7_devmenu")]
 

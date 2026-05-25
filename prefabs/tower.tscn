@@ -50,3 +50,6 @@ metadata/_aseprite_wizard_config_ = {
 "source_uid": 4285284147046897979
 }
 metadata/_aseprite_wizard_source_file_hash_ = "1e3a419b058bdc6d97c36ed31f5c9514"
+
+[node name="WorkPoint" type="Marker2D" parent="." unique_id=592249914]
+position = Vector2(-9, 49)

@@ -107,11 +107,12 @@ func _refresh() -> void:
 	var free: int = GameState.get_free_workers()
 	_assigned_label.text = "Workers: %d / %d" % [assigned, CONSTANTS.TOWER_MAX_WORKERS]
 	_free_label.text = "Free Workers: %d" % free
-	match assigned:
-		0: _rate_label.text = "Status: Inactive (no workers)"
-		1: _rate_label.text = "Fire Rate: Slow (every 2.0s)"
-		2: _rate_label.text = "Fire Rate: Medium (every 1.25s)"
-		3: _rate_label.text = "Fire Rate: Fast (every 0.75s)"
+	if assigned == 0:
+		_rate_label.text = "Status: Inactive (no worker)"
+	elif GameState.power > 0:
+		_rate_label.text = "Active  (fires every %.1fs)" % CONSTANTS.TOWER_INTERVAL
+	else:
+		_rate_label.text = "No Power — offline"
 	_assign_btn.disabled = assigned >= CONSTANTS.TOWER_MAX_WORKERS or free <= 0
 	_unassign_btn.disabled = assigned <= 0
 	if bool(_tower.call("is_fortified")):

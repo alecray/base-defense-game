@@ -35,6 +35,12 @@ func save_game() -> void:
 	data["worker_count"] = GameState.worker_count
 	data["building_counts"] = GameState.building_counts.duplicate()
 	data["tiles"] = tile_grid.call("get_save_data")
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	data["day"] = cycle.call("get_day") if cycle != null else 1
+	data["power"] = GameState.power
+	data["lab_research_id"] = GameState.lab_research_id
+	data["lab_research_progress"] = GameState.lab_research_progress
+	data["lab_upgrade_levels"] = GameState.lab_upgrade_levels.duplicate()
 	data["workers"] = _get_worker_save_data()
 	data["farms"] = tile_grid.call("get_farm_save_data")
 	data["towers"] = tile_grid.call("get_tower_save_data")
@@ -75,6 +81,15 @@ func load_game() -> void:
 
 	var data: Dictionary = json.data as Dictionary
 
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	if cycle != null:
+		cycle.call("set_day", int(data.get("day", 1)))
+
+	GameState.power = int(data.get("power", 0))
+	GameState.lab_research_id = str(data.get("lab_research_id", ""))
+	GameState.lab_research_progress = float(data.get("lab_research_progress", 0.0))
+	GameState.lab_upgrade_levels = (data.get("lab_upgrade_levels", {}) as Dictionary).duplicate()
+
 	GameState.coins = int(data["coins"])
 	GameState.food = int(data["food"])
 	GameState.worker_count = int(data["worker_count"])
@@ -82,6 +97,7 @@ func load_game() -> void:
 	GameState.building_counts = (data["building_counts"] as Dictionary).duplicate()
 	GameState.coins_changed.emit(GameState.coins)
 	GameState.food_changed.emit(GameState.food)
+	GameState.power_changed.emit(GameState.power)
 	GameState.workers_changed.emit(GameState.worker_count, GameState.get_worker_cap(), GameState.get_free_workers())
 	if GameState.get_building_count("Core") > 0:
 		GameState.building_placed.emit("Core")

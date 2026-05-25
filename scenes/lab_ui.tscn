@@ -1,0 +1,6 @@
+[gd_scene format=4 uid="uid://dlab000000002"]
+
+[ext_resource type="Script" path="res://scripts/lab_ui.gd" id="1_labui"]
+
+[node name="LabUI" type="CanvasLayer"]
+script = ExtResource("1_labui")

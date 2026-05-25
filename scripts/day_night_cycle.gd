@@ -1,7 +1,10 @@
 extends Node
 
+signal day_changed(day: int)
+
 var _cycle_timer: float = 0.0
 var _overlay: ColorRect = null
+var _day_count: int = 1
 
 func _ready() -> void:
 	add_to_group("day_night_cycle")
@@ -23,6 +26,8 @@ func _process(delta: float) -> void:
 	var cycle_duration: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
 	if _cycle_timer >= cycle_duration:
 		_cycle_timer -= cycle_duration
+		_day_count += 1
+		day_changed.emit(_day_count)
 	_update_overlay(cycle_duration)
 
 func _update_overlay(cycle_duration: float) -> void:
@@ -43,7 +48,16 @@ func _update_overlay(cycle_duration: float) -> void:
 func is_night() -> bool:
 	return _cycle_timer >= CONSTANTS.DAY_DURATION
 
+func get_day() -> int:
+	return _day_count
+
+func set_day(d: int) -> void:
+	_day_count = d
+	day_changed.emit(_day_count)
+
 func reset() -> void:
 	_cycle_timer = 0.0
+	_day_count = 1
+	day_changed.emit(_day_count)
 	if _overlay != null:
 		_overlay.color.a = 0.0

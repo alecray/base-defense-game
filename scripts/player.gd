@@ -41,7 +41,7 @@ func _try_show_prompt_for(area: Area2D) -> bool:
 	var unlocked: bool = area.get_meta("tile_unlocked")
 	var has_building: bool = area.get_meta("tile_has_building")
 	var building_name: String = area.get_meta("tile_building") if area.has_meta("tile_building") else ""
-	if unlocked and has_building and building_name != "Core" and building_name != "Farm" and building_name != "Tower" and building_name != "Barracks" and building_name != "GoldMine":
+	if unlocked and has_building and building_name != "Core" and building_name != "Farm" and building_name != "Tower" and building_name != "Barracks" and building_name != "GoldMine" and building_name != "Lab":
 		return false
 	if not unlocked:
 		if GameState.get_building_count("Core") == 0:
@@ -50,7 +50,7 @@ func _try_show_prompt_for(area: Area2D) -> bool:
 		var grid_node: Node = get_tree().get_first_node_in_group("tile_grid")
 		var cost: int = int(grid_node.call("get_tile_cost", gp)) if grid_node != null else 0
 		_purchase_prompt.text = "Press [E] to purchase (%d coins)" % cost
-	elif building_name == "Core" or building_name == "Farm" or building_name == "Tower" or building_name == "Barracks" or building_name == "GoldMine":
+	elif building_name == "Core" or building_name == "Farm" or building_name == "Tower" or building_name == "Barracks" or building_name == "GoldMine" or building_name == "Lab":
 		var display_name: String = "Gold Mine" if building_name == "GoldMine" else building_name
 		_purchase_prompt.text = "[E] to manage %s" % display_name
 	else:
@@ -74,13 +74,20 @@ func _handle_e_for(area: Area2D) -> bool:
 	var unlocked: bool = area.get_meta("tile_unlocked")
 	var has_building: bool = area.get_meta("tile_has_building")
 	var building_name: String = area.get_meta("tile_building") if area.has_meta("tile_building") else ""
-	if unlocked and has_building and building_name != "Core" and building_name != "Farm" and building_name != "Tower" and building_name != "Barracks" and building_name != "GoldMine":
+	if unlocked and has_building and building_name != "Core" and building_name != "Farm" and building_name != "Tower" and building_name != "Barracks" and building_name != "GoldMine" and building_name != "Lab":
 		return false
 	var gp: Vector2i = area.get_meta("tile_gp")
 	if not unlocked:
 		if GameState.get_building_count("Core") == 0:
 			return false
 		var grid_node: Node = get_tree().get_first_node_in_group("tile_grid")
+		if grid_node != null and not grid_node.call("has_unlocked_neighbor", gp):
+			_show_error("Need an adjacent tile!")
+			return true
+		var cost: int = int(grid_node.call("get_tile_cost", gp)) if grid_node != null else 0
+		if GameState.coins < cost:
+			_show_error("Not enough coins!")
+			return true
 		if grid_node != null:
 			grid_node.call("purchase_tile", gp)
 		return true
@@ -114,8 +121,26 @@ func _handle_e_for(area: Area2D) -> bool:
 		if gold_mine_ui != null and building_node != null:
 			gold_mine_ui.call("open_for_mine", building_node)
 		return true
+	elif building_name == "Lab":
+		var lab_ui: Node = get_tree().get_first_node_in_group("lab_ui")
+		var building_node: Node = area.get_meta("tile_building_node") if area.has_meta("tile_building_node") else null
+		if lab_ui != null and building_node != null:
+			lab_ui.call("open_for_lab", gp, building_node)
+		return true
 	else:
 		var shop: Node = get_tree().get_first_node_in_group("shop_ui")
 		if shop != null:
 			shop.call("open_for_tile", gp)
 		return true
+
+func _show_error(text: String) -> void:
+	var label: Label = Label.new()
+	label.text = text
+	label.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
+	label.add_theme_font_size_override("font_size", 14)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.position = Vector2(-80.0, -90.0)
+	add_child(label)
+	var tween: Tween = create_tween()
+	tween.tween_property(label, "modulate:a", 0.0, 1.5).set_delay(0.5)
+	tween.tween_callback(label.queue_free)

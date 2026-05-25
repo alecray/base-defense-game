@@ -28,8 +28,13 @@ enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 
 3d/physics_engine="Jolt Physics"
 
+[gui]
+
+theme/custom="res://assets/theme.tres"
+
 [rendering]
 
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=0

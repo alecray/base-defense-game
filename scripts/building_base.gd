@@ -3,8 +3,6 @@ extends AnimatedSprite2D
 const HEALTH_BAR_SCENE: PackedScene = preload("res://prefabs/health_bar.tscn")
 const FORTIFY_SCENE: PackedScene = preload("res://prefabs/fortification.tscn")
 
-@export var work_offset: Vector2 = Vector2.ZERO
-
 var max_hp: int = 100
 var _hp: int = 0
 var _health_bar: Node2D = null

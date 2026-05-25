@@ -1,8 +1,7 @@
 extends Node2D
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
-
-@export var work_offset: Vector2 = Vector2.ZERO
+@onready var _work_point: Marker2D = $WorkPoint
 
 var _tile_gp: Vector2i = Vector2i(-1, -1)
 var _assigned_workers: Array = []
@@ -74,7 +73,7 @@ func assign_worker() -> bool:
 	if free_worker == null:
 		return false
 	_assigned_workers.append(free_worker)
-	free_worker.call("assign_to", global_position + work_offset)
+	free_worker.call("assign_to", _work_point.global_position)
 	GameState.record_worker_assigned(1)
 	return true
 

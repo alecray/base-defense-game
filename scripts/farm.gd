@@ -1,5 +1,7 @@
 extends "res://scripts/building_base.gd"
 
+@onready var _work_point: Marker2D = $WorkPoint
+
 var _assigned_workers: Array = []
 var _food_timer: float = 0.0
 
@@ -37,7 +39,7 @@ func assign_worker() -> bool:
 	if free_worker == null:
 		return false
 	_assigned_workers.append(free_worker)
-	free_worker.call("assign_to", global_position + work_offset)
+	free_worker.call("assign_to", _work_point.global_position)
 	GameState.record_worker_assigned(1)
 	return true
 
