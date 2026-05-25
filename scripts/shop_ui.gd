@@ -58,8 +58,8 @@ func _build_ui() -> void:
 	grid.add_theme_constant_override("v_separation", 8)
 	vbox.add_child(grid)
 
-	for building_name: String in GameState.BUILDING_COSTS.keys():
-		var cost: int = GameState.BUILDING_COSTS[building_name]
+	for building_name: String in CONSTANTS.BUILDING_COSTS.keys():
+		var cost: int = CONSTANTS.BUILDING_COSTS[building_name]
 		var btn: Button = Button.new()
 		btn.text = "%s\n%d coins" % [building_name, cost]
 		btn.custom_minimum_size = Vector2(72.0, 72.0)
@@ -89,7 +89,7 @@ func _on_overlay_input(event: InputEvent) -> void:
 func _on_building_selected(building_name: String) -> void:
 	if _target_tile == Vector2i(-1, -1):
 		return
-	var cost: int = GameState.BUILDING_COSTS.get(building_name, 0)
+	var cost: int = CONSTANTS.BUILDING_COSTS.get(building_name, 0)
 	if GameState.coins < cost:
 		_show_error("Not enough coins!")
 		return

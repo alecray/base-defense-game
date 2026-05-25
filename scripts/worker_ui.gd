@@ -74,14 +74,14 @@ func open_for_core(gp: Vector2i, core_node: Node) -> void:
 	visible = true
 
 func _refresh() -> void:
-	_buy_btn.text = "Buy Worker\n%d coins" % GameState.WORKER_COST
-	_buy_btn.disabled = GameState.coins < GameState.WORKER_COST
+	_buy_btn.text = "Buy Worker\n%d coins" % CONSTANTS.WORKER_COST
+	_buy_btn.disabled = GameState.coins < CONSTANTS.WORKER_COST
 	if _core_node != null and bool(_core_node.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / 200)" % int(_core_node.call("get_shield_hp"))
+		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_core_node.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
 		_fortify_btn.disabled = true
 	else:
-		_fortify_btn.text = "Fortify  (%d coins)" % GameState.FORTIFY_COST
-		_fortify_btn.disabled = _core_node == null or GameState.coins < GameState.FORTIFY_COST
+		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
+		_fortify_btn.disabled = _core_node == null or GameState.coins < CONSTANTS.FORTIFY_COST
 
 func _close() -> void:
 	visible = false
@@ -98,7 +98,7 @@ func _on_buy_worker() -> void:
 	if GameState.worker_count >= GameState.get_worker_cap():
 		_show_error("Needs more Barracks!")
 		return
-	if not GameState.spend_coins(GameState.WORKER_COST):
+	if not GameState.spend_coins(CONSTANTS.WORKER_COST):
 		_show_error("Not enough coins!")
 		return
 	worker_purchased.emit(_target_tile)

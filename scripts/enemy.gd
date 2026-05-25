@@ -1,18 +1,10 @@
 extends Node2D
 
-const SPEED: float = 45.0
-const MAX_HP: int = 100
-const COIN_REWARD: int = 10
-const RETARGET_INTERVAL: float = 2.0
-const ATTACK_RANGE: float = 72.0
-const ATTACK_INTERVAL: float = 1.2
-const ATTACK_DAMAGE: int = 10
-
 const HEALTH_BAR_SCENE: PackedScene = preload("res://prefabs/health_bar.tscn")
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-var _hp: int = MAX_HP
+var _hp: int = CONSTANTS.ENEMY_MAX_HP
 var _target_node: Node2D = null
 var _retarget_timer: float = 0.0
 var _attack_timer: float = 0.0
@@ -24,9 +16,9 @@ func _ready() -> void:
 	add_to_group("enemies")
 	_health_bar = HEALTH_BAR_SCENE.instantiate() as Node2D
 	_health_bar.position = Vector2(0.0, -42.0)
-	_health_bar.call("setup", MAX_HP, 28.0)
+	_health_bar.call("setup", CONSTANTS.ENEMY_MAX_HP, 28.0)
 	add_child(_health_bar)
-	_retarget_timer = RETARGET_INTERVAL
+	_retarget_timer = CONSTANTS.ENEMY_RETARGET_INTERVAL
 	_play_anim("Walk")
 
 func _process(delta: float) -> void:
@@ -37,7 +29,7 @@ func _process(delta: float) -> void:
 	var target_gone: bool = _target_node != null and not is_instance_valid(_target_node)
 	if target_gone:
 		_target_node = null
-	if _retarget_timer >= RETARGET_INTERVAL or target_gone:
+	if _retarget_timer >= CONSTANTS.ENEMY_RETARGET_INTERVAL or target_gone:
 		_retarget_timer = 0.0
 		_find_target()
 
@@ -47,20 +39,20 @@ func _process(delta: float) -> void:
 	var to_target: Vector2 = _target_node.global_position - global_position
 	var dist: float = to_target.length()
 
-	if dist <= ATTACK_RANGE:
+	if dist <= CONSTANTS.ENEMY_ATTACK_RANGE:
 		if not _attacking:
 			_attacking = true
 			_attack_timer = 0.0
 			_play_anim("Attack")
 		_attack_timer += delta
-		if _attack_timer >= ATTACK_INTERVAL:
+		if _attack_timer >= CONSTANTS.ENEMY_ATTACK_INTERVAL:
 			_attack_timer = 0.0
-			_target_node.call("take_damage", ATTACK_DAMAGE)
+			_target_node.call("take_damage", CONSTANTS.ENEMY_ATTACK_DAMAGE)
 	else:
 		if _attacking:
 			_attacking = false
 			_play_anim("Walk")
-		global_position += to_target.normalized() * SPEED * delta
+		global_position += to_target.normalized() * CONSTANTS.ENEMY_SPEED * delta
 		_sprite.flip_h = to_target.x < 0
 
 func _find_target() -> void:
@@ -100,7 +92,7 @@ func take_damage(amount: int) -> void:
 		_die()
 
 func _die() -> void:
-	GameState.add_coins(COIN_REWARD)
+	GameState.add_coins(CONSTANTS.ENEMY_COIN_REWARD)
 	remove_from_group("enemies")
 	_show_coin_popup()
 	var tween: Tween = create_tween()
@@ -109,7 +101,7 @@ func _die() -> void:
 
 func _show_coin_popup() -> void:
 	var label: Label = Label.new()
-	label.text = "+%d" % COIN_REWARD
+	label.text = "+%d" % CONSTANTS.ENEMY_COIN_REWARD
 	label.add_theme_font_size_override("font_size", 14)
 	label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
 	label.position = Vector2(-20.0, -40.0)

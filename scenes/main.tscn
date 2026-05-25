@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" path="res://scenes/barracks_ui.tscn" id="11_barrui"]
 [ext_resource type="PackedScene" path="res://scenes/gold_mine_ui.tscn" id="12_goldmineui"]
 [ext_resource type="PackedScene" path="res://scenes/dev_menu.tscn" id="7_devmenu"]
+[ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="13_daycycle"]
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -40,3 +41,6 @@ script = ExtResource("8_savemgr")
 
 [node name="EnemySpawner" type="Node" parent="."]
 script = ExtResource("9_spawner")
+
+[node name="DayNightCycle" type="Node" parent="."]
+script = ExtResource("13_daycycle")

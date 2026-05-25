@@ -51,7 +51,8 @@ func _try_show_prompt_for(area: Area2D) -> bool:
 		var cost: int = int(grid_node.call("get_tile_cost", gp)) if grid_node != null else 0
 		_purchase_prompt.text = "Press [E] to purchase (%d coins)" % cost
 	elif building_name == "Core" or building_name == "Farm" or building_name == "Tower" or building_name == "Barracks" or building_name == "GoldMine":
-		_purchase_prompt.text = "Press [E] to manage"
+		var display_name: String = "Gold Mine" if building_name == "GoldMine" else building_name
+		_purchase_prompt.text = "[E] to manage %s" % display_name
 	else:
 		_purchase_prompt.text = "Press [E] to build"
 	_purchase_prompt.visible = true

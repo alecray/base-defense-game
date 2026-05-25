@@ -105,21 +105,21 @@ func _refresh() -> void:
 		return
 	var assigned: int = int(_tower.call("get_assigned_workers"))
 	var free: int = GameState.get_free_workers()
-	_assigned_label.text = "Workers: %d / 3" % assigned
+	_assigned_label.text = "Workers: %d / %d" % [assigned, CONSTANTS.TOWER_MAX_WORKERS]
 	_free_label.text = "Free Workers: %d" % free
 	match assigned:
 		0: _rate_label.text = "Status: Inactive (no workers)"
 		1: _rate_label.text = "Fire Rate: Slow (every 2.0s)"
 		2: _rate_label.text = "Fire Rate: Medium (every 1.25s)"
 		3: _rate_label.text = "Fire Rate: Fast (every 0.75s)"
-	_assign_btn.disabled = assigned >= 3 or free <= 0
+	_assign_btn.disabled = assigned >= CONSTANTS.TOWER_MAX_WORKERS or free <= 0
 	_unassign_btn.disabled = assigned <= 0
 	if bool(_tower.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / 200)" % int(_tower.call("get_shield_hp"))
+		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_tower.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
 		_fortify_btn.disabled = true
 	else:
-		_fortify_btn.text = "Fortify  (%d coins)" % GameState.FORTIFY_COST
-		_fortify_btn.disabled = GameState.coins < GameState.FORTIFY_COST
+		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
+		_fortify_btn.disabled = GameState.coins < CONSTANTS.FORTIFY_COST
 
 func _close() -> void:
 	visible = false

@@ -17,9 +17,6 @@ class TileEntry:
 @export var grid_cols: int = 15
 @export var grid_rows: int = 15
 
-const TILE_SIZE: int = 128
-const TILE_GAP: int = 2
-
 const COLOR_UNLOCKED: Color = Color("a9b2a2")
 const COLOR_PURCHASABLE: Color = Color("6e7469")
 
@@ -29,8 +26,6 @@ const FARM_SCENE: PackedScene = preload("res://prefabs/farm.tscn")
 const TOWER_SCENE: PackedScene = preload("res://prefabs/tower.tscn")
 const WORKER_SCENE: PackedScene = preload("res://prefabs/worker.tscn")
 const GOLD_MINE_SCENE: PackedScene = preload("res://prefabs/gold_mine.tscn")
-
-const EXTRA_MINE_COUNT: int = 5
 
 var _tiles: Dictionary = {}
 
@@ -68,7 +63,7 @@ func _place_gold_mines(center: Vector2i) -> void:
 		if gp != center and gp != first_gp and not _tiles[gp].unlocked:
 			candidates.append(gp)
 	candidates.shuffle()
-	for i: int in range(mini(EXTRA_MINE_COUNT, candidates.size())):
+	for i: int in range(mini(CONSTANTS.EXTRA_MINE_COUNT, candidates.size())):
 		_place_gold_mine_at(candidates[i])
 
 func _place_gold_mine_at(gp: Vector2i) -> void:
@@ -81,7 +76,7 @@ func _place_gold_mine_at(gp: Vector2i) -> void:
 	tile.area.set_meta("tile_has_building", true)
 	tile.area.set_meta("tile_building", "GoldMine")
 	var instance: Node2D = GOLD_MINE_SCENE.instantiate() as Node2D
-	instance.position = tile.area.position + Vector2(TILE_SIZE * 0.5, TILE_SIZE * 0.5)
+	instance.position = tile.area.position + Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE * 0.5)
 	add_child(instance)
 	instance.set("_tile_gp", gp)
 	tile.area.set_meta("tile_building_node", instance)
@@ -108,10 +103,10 @@ func reset_gold_mines() -> void:
 	_place_gold_mines(Vector2i(grid_cols / 2, grid_rows / 2))
 
 func _create_tile(gp: Vector2i, unlocked: bool) -> void:
-	var half: Vector2 = Vector2(grid_cols * TILE_SIZE * 0.5, grid_rows * TILE_SIZE * 0.5)
+	var half: Vector2 = Vector2(grid_cols * CONSTANTS.TILE_SIZE * 0.5, grid_rows * CONSTANTS.TILE_SIZE * 0.5)
 
 	var area: Area2D = Area2D.new()
-	area.position = Vector2(gp.x * TILE_SIZE, gp.y * TILE_SIZE) - half
+	area.position = Vector2(gp.x * CONSTANTS.TILE_SIZE, gp.y * CONSTANTS.TILE_SIZE) - half
 	area.collision_layer = 2
 	area.collision_mask = 0
 	area.z_index = -1
@@ -120,22 +115,22 @@ func _create_tile(gp: Vector2i, unlocked: bool) -> void:
 	area.set_meta("tile_has_building", false)
 
 	var rect_shape: RectangleShape2D = RectangleShape2D.new()
-	rect_shape.size = Vector2(TILE_SIZE - TILE_GAP, TILE_SIZE - TILE_GAP)
+	rect_shape.size = Vector2(CONSTANTS.TILE_SIZE - CONSTANTS.TILE_GAP, CONSTANTS.TILE_SIZE - CONSTANTS.TILE_GAP)
 
 	var shape: CollisionShape2D = CollisionShape2D.new()
 	shape.shape = rect_shape
-	shape.position = Vector2(TILE_SIZE * 0.5, TILE_SIZE * 0.5)
+	shape.position = Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE * 0.5)
 	area.add_child(shape)
 
 	var color_rect: ColorRect = ColorRect.new()
-	color_rect.size = Vector2(TILE_SIZE - TILE_GAP, TILE_SIZE - TILE_GAP)
-	color_rect.position = Vector2(TILE_GAP * 0.5, TILE_GAP * 0.5)
+	color_rect.size = Vector2(CONSTANTS.TILE_SIZE - CONSTANTS.TILE_GAP, CONSTANTS.TILE_SIZE - CONSTANTS.TILE_GAP)
+	color_rect.position = Vector2(CONSTANTS.TILE_GAP * 0.5, CONSTANTS.TILE_GAP * 0.5)
 	color_rect.color = COLOR_UNLOCKED if unlocked else COLOR_PURCHASABLE
 	area.add_child(color_rect)
 
 	var cost_label: Label = Label.new()
-	cost_label.size = Vector2(TILE_SIZE - TILE_GAP, TILE_SIZE - TILE_GAP)
-	cost_label.position = Vector2(TILE_GAP * 0.5, TILE_GAP * 0.5)
+	cost_label.size = Vector2(CONSTANTS.TILE_SIZE - CONSTANTS.TILE_GAP, CONSTANTS.TILE_SIZE - CONSTANTS.TILE_GAP)
+	cost_label.position = Vector2(CONSTANTS.TILE_GAP * 0.5, CONSTANTS.TILE_GAP * 0.5)
 	cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	cost_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	cost_label.add_theme_font_size_override("font_size", 12)
@@ -161,7 +156,7 @@ func get_tile_cost(gp: Vector2i) -> int:
 	var dist: int = maxi(absi(gp.x - center.x), absi(gp.y - center.y))
 	if dist <= 0:
 		return 0
-	return int(round(10.0 * pow(1.5, float(dist - 1))))
+	return int(round(CONSTANTS.TILE_COST_BASE * pow(CONSTANTS.TILE_COST_SCALE, float(dist - 1))))
 
 func purchase_tile(gp: Vector2i) -> void:
 	if not _tiles.has(gp):
@@ -170,6 +165,8 @@ func purchase_tile(gp: Vector2i) -> void:
 	if tile.unlocked:
 		return
 	if GameState.get_building_count("Core") == 0:
+		return
+	if not has_unlocked_neighbor(gp):
 		return
 	var cost: int = get_tile_cost(gp)
 	if not GameState.spend_coins(cost):
@@ -199,7 +196,7 @@ func place_building(building_name: String, gp: Vector2i) -> void:
 	if not GameState.has_prerequisite(building_name) or GameState.is_at_building_limit(building_name):
 		return
 
-	var cost: int = GameState.BUILDING_COSTS.get(building_name, 0)
+	var cost: int = CONSTANTS.BUILDING_COSTS.get(building_name, 0)
 	if not GameState.spend_coins(cost):
 		return
 
@@ -210,7 +207,7 @@ func place_building(building_name: String, gp: Vector2i) -> void:
 	_update_tile_visual(gp)
 
 	var instance: Node2D = scene.instantiate() as Node2D
-	instance.position = tile.area.position + Vector2(TILE_SIZE * 0.5, TILE_SIZE * 0.5)
+	instance.position = tile.area.position + Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE * 0.5)
 	add_child(instance)
 	instance.set("_tile_gp", gp)
 	instance.set("_building_name", building_name)
@@ -245,7 +242,7 @@ func _on_worker_purchased(gp: Vector2i) -> void:
 		return
 	var tile: TileEntry = _tiles[gp]
 	var instance: Node2D = WORKER_SCENE.instantiate() as Node2D
-	instance.position = tile.area.position + Vector2(TILE_SIZE * 0.5, TILE_SIZE * 0.5)
+	instance.position = tile.area.position + Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE * 0.5)
 	add_child(instance)
 	GameState.record_worker_hired()
 
@@ -331,7 +328,7 @@ func place_building_from_save(building_name: String, gp: Vector2i, shield_hp: in
 	tile.area.set_meta("tile_building", building_name)
 	_update_tile_visual(gp)
 	var instance: Node2D = scene.instantiate() as Node2D
-	instance.position = tile.area.position + Vector2(TILE_SIZE * 0.5, TILE_SIZE * 0.5)
+	instance.position = tile.area.position + Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE * 0.5)
 	add_child(instance)
 	instance.set("_tile_gp", gp)
 	instance.set("_building_name", building_name)

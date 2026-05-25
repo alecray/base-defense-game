@@ -1,26 +1,14 @@
 extends Node
 
-const BUILDING_COSTS: Dictionary = {
-	"Core": 100,
-	"Barracks": 50,
-	"Farm": 75,
-	"Tower": 60
-}
-
-const WORKER_COST: int = 20
-const FORTIFY_COST: int = 75
-
 const BUILDING_MAX_COUNTS: Dictionary = {
 	"Core": 1
 }
 
-const FOOD_DRAIN_INTERVAL: float = 5.0
-
-var coins: int = 150
+var coins: int = CONSTANTS.STARTING_COINS
 var building_counts: Dictionary = {}
 var worker_count: int = 0
 var assigned_workers: int = 0
-var food: int = 100
+var food: int = CONSTANTS.STARTING_FOOD
 
 signal coins_changed(new_amount: int)
 signal building_placed(building_name: String)
@@ -35,8 +23,8 @@ func _process(delta: float) -> void:
 	if worker_count <= 0:
 		return
 	_food_timer += delta
-	if _food_timer >= FOOD_DRAIN_INTERVAL:
-		_food_timer -= FOOD_DRAIN_INTERVAL
+	if _food_timer >= CONSTANTS.FOOD_DRAIN_INTERVAL:
+		_food_timer -= CONSTANTS.FOOD_DRAIN_INTERVAL
 		food = maxi(0, food - worker_count)
 		food_changed.emit(food)
 
@@ -63,7 +51,7 @@ func record_worker_assigned(delta: int) -> void:
 	workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())
 
 func get_worker_cap() -> int:
-	return get_building_count("Barracks") * 5
+	return get_building_count("Barracks") * CONSTANTS.BARRACKS_WORKER_BONUS
 
 func record_building_placed(building_name: String) -> void:
 	building_counts[building_name] = building_counts.get(building_name, 0) + 1
@@ -98,11 +86,11 @@ func record_building_destroyed(building_name: String) -> void:
 		workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())
 
 func reset() -> void:
-	coins = 150
+	coins = CONSTANTS.STARTING_COINS
 	building_counts = {}
 	worker_count = 0
 	assigned_workers = 0
-	food = 100
+	food = CONSTANTS.STARTING_FOOD
 	_food_timer = 0.0
 	game_reset.emit()
 	coins_changed.emit(coins)

@@ -1,13 +1,10 @@
 extends "res://scripts/building_base.gd"
 
-const FOOD_INTERVAL: float = 5.0
-const FOOD_PER_WORKER: int = 3
-
 var _assigned_workers: Array = []
 var _food_timer: float = 0.0
 
 func _ready() -> void:
-	max_hp = 100
+	max_hp = CONSTANTS.FARM_MAX_HP
 	super._ready()
 	play("Idle")
 
@@ -16,9 +13,9 @@ func _process(delta: float) -> void:
 	if _assigned_workers.is_empty():
 		return
 	_food_timer += delta
-	if _food_timer >= FOOD_INTERVAL:
-		_food_timer -= FOOD_INTERVAL
-		var amount: int = _assigned_workers.size() * FOOD_PER_WORKER
+	if _food_timer >= CONSTANTS.FARM_FOOD_INTERVAL:
+		_food_timer -= CONSTANTS.FARM_FOOD_INTERVAL
+		var amount: int = _assigned_workers.size() * CONSTANTS.FARM_FOOD_PER_WORKER
 		GameState.add_food(amount)
 		_show_food_popup(amount)
 

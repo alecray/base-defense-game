@@ -2,9 +2,6 @@ extends AnimatedSprite2D
 
 const HEALTH_BAR_SCENE: PackedScene = preload("res://prefabs/health_bar.tscn")
 const FORTIFY_SCENE: PackedScene = preload("res://prefabs/fortification.tscn")
-const REGEN_COOLDOWN: float = 30.0
-const REGEN_INTERVAL: float = 3.0
-const REGEN_PERCENT: float = 0.02
 
 @export var work_offset: Vector2 = Vector2.ZERO
 
@@ -36,15 +33,15 @@ func _tick_regen(delta: float) -> void:
 		_damage_cooldown -= delta
 		return
 	_regen_timer += delta
-	if _regen_timer >= REGEN_INTERVAL:
+	if _regen_timer >= CONSTANTS.REGEN_INTERVAL:
 		_regen_timer = 0.0
-		_hp = mini(_hp + maxi(1, int(float(max_hp) * REGEN_PERCENT)), max_hp)
+		_hp = mini(_hp + maxi(1, int(float(max_hp) * CONSTANTS.REGEN_PERCENT)), max_hp)
 		_health_bar.call("set_hp", _hp)
 
 func take_damage(amount: int) -> void:
 	if _dying:
 		return
-	_damage_cooldown = REGEN_COOLDOWN
+	_damage_cooldown = CONSTANTS.REGEN_COOLDOWN
 	_regen_timer = 0.0
 	var remaining: int = amount
 	if _fortification != null and is_instance_valid(_fortification):
@@ -60,7 +57,7 @@ func take_damage(amount: int) -> void:
 func fortify() -> bool:
 	if _fortification != null and is_instance_valid(_fortification):
 		return false
-	if not GameState.spend_coins(GameState.FORTIFY_COST):
+	if not GameState.spend_coins(CONSTANTS.FORTIFY_COST):
 		return false
 	_fortification = FORTIFY_SCENE.instantiate() as Node
 	_fortification.tree_exiting.connect(_on_fortification_removed)

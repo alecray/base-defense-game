@@ -1,6 +1,6 @@
 extends "res://scripts/building_base.gd"
 
 func _ready() -> void:
-	max_hp = 150
+	max_hp = CONSTANTS.BARRACKS_MAX_HP
 	super._ready()
 	play("Idle")

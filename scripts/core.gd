@@ -1,7 +1,7 @@
 extends "res://scripts/building_base.gd"
 
 func _ready() -> void:
-	max_hp = 500
+	max_hp = CONSTANTS.CORE_MAX_HP
 	super._ready()
 	add_to_group("core_building")
 	play("Idle")

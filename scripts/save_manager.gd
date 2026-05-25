@@ -157,6 +157,10 @@ func reset_game() -> void:
 	if spawner != null:
 		spawner.call("reset")
 
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	if cycle != null:
+		cycle.call("reset")
+
 	var player: Node2D = get_tree().get_first_node_in_group("player") as Node2D
 	if player != null:
 		player.position = Vector2.ZERO

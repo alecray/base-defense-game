@@ -104,11 +104,11 @@ func _refresh() -> void:
 	_assign_btn.disabled = free <= 0
 	_unassign_btn.disabled = assigned <= 0
 	if bool(_farm.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / 200)" % int(_farm.call("get_shield_hp"))
+		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_farm.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
 		_fortify_btn.disabled = true
 	else:
-		_fortify_btn.text = "Fortify  (%d coins)" % GameState.FORTIFY_COST
-		_fortify_btn.disabled = GameState.coins < GameState.FORTIFY_COST
+		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
+		_fortify_btn.disabled = GameState.coins < CONSTANTS.FORTIFY_COST
 
 func _close() -> void:
 	visible = false

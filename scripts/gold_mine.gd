@@ -1,17 +1,12 @@
 extends Node2D
 
-const MAX_WORKERS: int = 5
-const MAX_RESERVES: int = 1000
-const COINS_PER_WORKER: int = 5
-const TICK_INTERVAL: float = 5.0
-
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 @export var work_offset: Vector2 = Vector2.ZERO
 
 var _tile_gp: Vector2i = Vector2i(-1, -1)
 var _assigned_workers: Array = []
-var _reserves: int = MAX_RESERVES
+var _reserves: int = CONSTANTS.MINE_MAX_RESERVES
 var _tick_timer: float = 0.0
 
 func _ready() -> void:
@@ -24,12 +19,12 @@ func _process(delta: float) -> void:
 	if _assigned_workers.is_empty():
 		return
 	_tick_timer += delta
-	if _tick_timer >= TICK_INTERVAL:
+	if _tick_timer >= CONSTANTS.MINE_TICK_INTERVAL:
 		_tick_timer = 0.0
 		_mine_tick()
 
 func _mine_tick() -> void:
-	var earned: int = mini(_assigned_workers.size() * COINS_PER_WORKER, _reserves)
+	var earned: int = mini(_assigned_workers.size() * CONSTANTS.MINE_COINS_PER_WORKER, _reserves)
 	_reserves -= earned
 	GameState.add_coins(earned)
 	_show_coin_popup(earned)
@@ -65,7 +60,7 @@ func has_unlocked_neighbor() -> bool:
 	return bool(tile_grid.call("has_unlocked_neighbor", _tile_gp))
 
 func assign_worker() -> bool:
-	if _assigned_workers.size() >= MAX_WORKERS:
+	if _assigned_workers.size() >= CONSTANTS.MINE_MAX_WORKERS:
 		return false
 	if GameState.get_free_workers() <= 0:
 		return false
