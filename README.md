@@ -1,63 +1,90 @@
 # Base Defense Game
 
-A top-down base building and defense game built with Godot 4.6 and GDScript. Expand your territory, build structures, assign workers, and defend your Core against waves of enemies.
+A top-down base building and defense game built with Godot 4.6 and GDScript. Expand your territory, build structures, assign workers, recruit soldiers, and defend your Core against waves of enemies.
 
 ## Gameplay
 
-Place buildings on a purchasable 15x15 tile grid. Tile costs increase exponentially the further they are from your starting position. Your Core generates coins passively — use them to unlock tiles, construct buildings, hire workers, and build towers before the enemy waves overwhelm you.
+Place buildings on a purchasable 15×15 tile grid. Tile costs increase exponentially the further they are from your starting position. Earn coins from Gold Mines staffed by workers and from killing enemies. Use coins to unlock tiles, construct buildings, hire workers, buy soldiers, and build towers before the enemy waves overwhelm you.
 
-Enemies spawn from outside the map in increasing numbers and attack any building they can reach, saving the Core for last. When the Core is destroyed, the game ends.
+Enemies spawn from outside the map in increasing numbers and attack any building they can reach, saving the Core for last. When the Core is destroyed, the game ends. Enemy waves are more frequent and larger at night.
 
 ## Buildings
 
-| Building | Cost | HP  | Description |
-|----------|------|-----|-------------|
-| Core | 100 | 500 | Required first. Generates 10 coins every 5 seconds. |
-| Barracks | 50 | 150 | Increases worker cap by 5 per building. |
-| Farm | 75 | 100 | Produces 3 food per worker every 5 seconds. Requires assigned workers. |
-| Tower | 60 | 200 | Attacks enemies within 300px. Requires workers to fire. |
+| Building | Cost | HP | Description |
+|----------|------|----|-------------|
+| Core | 100 | 500 | Required first. Opens management menu for workers, fortification, and resource upgrades. |
+| Housing | 50 | 150 | Increases worker cap by 5 per building. |
+| Farm | 75 | 100 | Produces food with assigned workers (3 food per worker every 5s). |
+| Tower | 60 | 200 | Attacks enemies within 300px. Requires 1 assigned worker and available power. |
+| Barracks | 75 | 150 | Increases soldier cap by 5 per building. Allows purchasing soldiers. |
+| Lab | 150 | 200 | Research upgrades using coins. Currently: Turret Damage. |
+| Solar Farm | 80 | 100 | Generates 2 power every 4 seconds during daytime only. |
+| Gold Mine | — | — | Spawns automatically on map generation. Staff with workers to earn coins (5 per worker every 5s). Depletes over time. |
 
-All buildings regenerate HP at 2% of their max per tick (every 3 seconds) after not taking damage for 30 seconds. Health bars are hidden at full HP and appear automatically when a building takes damage.
+All buildings regenerate HP at 2% of max per tick (every 3 seconds) after 30 seconds without taking damage. Health bars appear automatically when a building takes damage and hide at full HP.
 
 ## Towers
 
-Towers require workers assigned to operate. Assign up to 3 workers via the Tower Management menu (press E while standing on the tower). More workers means a faster fire rate:
+Towers require exactly 1 assigned worker and available power to fire. Each shot deals 25 base damage (upgradable via the Lab) to the nearest enemy within 300px range every 1 second. Towers drain 1 power every 6 seconds while staffed.
 
-| Workers | Fire Rate |
-|---------|-----------|
-| 0 | Inactive — does not fire |
-| 1 | Slow (every 2.0s) |
-| 2 | Medium (every 1.25s) |
-| 3 | Fast (every 0.75s) |
-
-Each shot deals 25 damage to the nearest enemy within range.
+If power reaches 0, towers stop firing even if staffed.
 
 ## Workers
 
-Workers cost 20 coins and are hired from the Core menu (press E on the Core). Each Barracks built adds 5 to the worker cap. Workers roam near the Core when idle.
+Workers cost 20 coins and are hired from the Core menu (press E on the Core). Each Housing building adds 5 to the worker cap. Workers roam near the Core when idle.
 
-Assign workers to **Farms** to produce food, or to **Towers** to enable firing. All workers consume 1 food every 5 seconds regardless of assignment. If food runs out, workers keep functioning — but unstaffed farms means food will eventually deplete.
+Assign workers to **Farms** to produce food, **Towers** to enable firing, or **Gold Mines** to generate coins. All workers consume food at a rate of 1 food per worker every 5 seconds.
 
-## Enemies
+## Soldiers
 
-Enemies spawn from outside the map every 8 seconds at the start, ramping up to every 1.5 seconds over 5 minutes. Each enemy has 100 HP and moves at 45px/s.
+Soldiers are combat units purchased from the Barracks menu (press E on a Barracks) for 30 coins each. Each Barracks adds 5 to the soldier cap.
 
-Enemies prioritise non-Core buildings and only target the Core once all other buildings are destroyed. When close enough to a building they stop and deal 10 damage every 1.2 seconds. Killing an enemy drops 10 coins.
+Soldiers automatically hunt enemies that come within range of any player building. When no threats are nearby they patrol the perimeter of your unlocked territory. Each soldier has 80 HP and deals 20 damage per second in melee range.
+
+## Power
+
+Power is produced by Solar Farms (daytime only) and consumed by staffed Towers. The power cap starts at 50 and can be upgraded from the Core menu for 150 coins (+50 per upgrade). Surplus power is capped — build more Solar Farms and upgrade the cap before expanding your tower network.
+
+## Food
+
+Food is produced by Farms with assigned workers. All workers consume food over time. The food cap starts at 200 and can be upgraded from the Core menu for 100 coins (+100 per upgrade). If food runs out workers continue functioning but new food won't accumulate beyond zero.
+
+## Day / Night Cycle
+
+Each day and night lasts 150 seconds with a 15-second transition. During the night enemy spawn intervals are 40% shorter and enemies arrive in larger clumps. Solar Farms produce no power at night.
+
+## Lab Research
+
+Open the Lab menu (press E on the Lab) to start research. Research costs coins and takes real time to complete.
+
+| Upgrade | Cost | Time | Effect |
+|---------|------|------|--------|
+| Turret Damage | 100 | 45s | +5 damage per Tower shot per level |
+
+## Fortification
+
+Fortify the Core from the Core menu for 75 coins. This adds a 200 HP shield layer that absorbs damage before the Core's own HP. The shield does not regenerate.
 
 ## Economy
 
-- **Coins** — earned passively from the Core (+10 every 5s) and by killing enemies (+10 each). Spent on tiles, buildings, and workers.
-- **Food** — produced by Farms with assigned workers. Consumed by all workers every 5 seconds. Starting supply: 100.
+- **Coins** — earned from staffed Gold Mines and by killing enemies (+10 each). Spent on tiles, buildings, workers, soldiers, research, and upgrades.
+- **Food** — produced by Farms. Consumed by all workers (1 per worker every 5s). Starting supply: 100. Cap upgradable from Core.
+- **Power** — generated by Solar Farms during daytime. Consumed by staffed Towers. Starting cap: 50. Cap upgradable from Core.
 
 ## Controls
 
-| Key | Action |
-|-----|--------|
+| Input | Action |
+|-------|--------|
 | WASD | Move player |
+| Left click | Shoot toward cursor |
 | E | Interact — purchase tile / open build menu / manage building |
 | Z | Manual save |
 | U | Toggle developer menu |
 | Escape | Close open menu |
+
+### Player Shooting
+
+Left-click fires a bullet toward the mouse cursor with a 0.3-second cooldown. Bullets deal 15 damage, travel at 400 px/s (plus inherited player velocity), and expire after 2 seconds. Aiming accounts for camera lag when moving.
 
 ## Saving
 
@@ -72,9 +99,9 @@ The game auto-saves every 5 minutes and on manual save (Z). Save data is written
 ### Project Structure
 
 ```
-scenes/      — Main scene and UI scenes
+scenes/      — Main scene
 scripts/     — All GDScript source files
-prefabs/     — Reusable node scenes (buildings, worker, enemy, bullet)
+prefabs/     — Reusable node scenes (buildings, units, bullets, UI)
 assets/      — Sprites and other assets
 addons/      — Godot plugins (AsepriteWizard)
 ```
@@ -83,10 +110,13 @@ addons/      — Godot plugins (AsepriteWizard)
 
 | Script | Role |
 |--------|------|
-| `game_state.gd` | Autoload singleton — economy, workers, buildings, signals |
-| `tile_grid.gd` | Grid generation, tile purchasing, building placement |
-| `building_base.gd` | Shared HP, health bar, regen, and destruction logic for all buildings |
-| `player.gd` | Movement and E-key interaction routing |
+| `game_state.gd` | Autoload singleton — economy, workers, soldiers, buildings, research, signals |
+| `constants.gd` | Autoload — all game constants and tuning values |
+| `tile_grid.gd` | Grid generation, tile purchasing, building placement, unit spawning |
+| `building_base.gd` | Shared HP, health bar, regen, fortification, and destruction logic |
+| `player.gd` | Movement, shooting, and E-key interaction routing |
+| `soldier.gd` | Soldier AI — patrol, chase, and attack states |
 | `enemy.gd` | Enemy AI — building priority targeting, movement, melee attack |
-| `tower.gd` | Tower attack loop, worker-scaled fire rate, bullet spawning |
+| `tower.gd` | Tower attack loop, power drain, bullet spawning |
+| `solar_farm.gd` | Power generation during daytime |
 | `save_manager.gd` | JSON save/load and game reset |
