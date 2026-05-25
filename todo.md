@@ -1,3 +1,18 @@
 # Todo
 
 - [ ] Balance the food drain
+- [ ] Enemy variety (fast/fragile runners, slow tanks, armored)
+- [ ] More Lab research (soldier damage/HP, worker speed, farm yield)
+- [ ] Building upgrades (spend coins to level up existing buildings)
+- [ ] Soldier rally point (set a location soldiers default to when not fighting)
+- [ ] Minimap (tile colors + enemy dots overlay)
+- [ ] Enemy camp (target on the map soldiers can destroy for a big reward)
+- [ ] Market building (convert excess food/power into coins)
+- [ ] Catapult/Mortar (AoE damage tower, no worker needed, uses power, slow fire rate)
+- [ ] Win condition (destroy all enemy camps / survive N days)
+- [ ] Walls (cheap placeable barriers that block/slow enemies, low HP)
+- [ ] Tech gates (Lab research that unlocks new buildings)
+- [ ] Worker automation (assign workers to a zone and they harvest/build automatically)
+- [ ] Threat scaling tied to economy (enemies scale with total coins earned, not just time)
+- [ ] Repair (spend coins to restore building HP manually)
+- [ ] Storehouse (increases overall resource caps, requires workers to staff)

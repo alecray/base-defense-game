@@ -10,7 +10,9 @@ var building_counts: Dictionary = {}
 var worker_count: int = 0
 var assigned_workers: int = 0
 var food: int = CONSTANTS.STARTING_FOOD
+var food_cap: int = CONSTANTS.FOOD_CAP_BASE
 var power: int = CONSTANTS.STARTING_POWER
+var power_cap: int = CONSTANTS.POWER_CAP_BASE
 var soldiers: int = 0
 
 signal coins_changed(new_amount: int)
@@ -51,12 +53,26 @@ func spend_coins(amount: int) -> bool:
 	return true
 
 func add_food(amount: int) -> void:
-	food += amount
+	food = mini(food + amount, food_cap)
 	food_changed.emit(food)
 
 func add_power(amount: int) -> void:
-	power += amount
+	power = mini(power + amount, power_cap)
 	power_changed.emit(power)
+
+func upgrade_food_cap() -> bool:
+	if not spend_coins(CONSTANTS.FOOD_CAP_UPGRADE_COST):
+		return false
+	food_cap += CONSTANTS.FOOD_CAP_UPGRADE_AMOUNT
+	food_changed.emit(food)
+	return true
+
+func upgrade_power_cap() -> bool:
+	if not spend_coins(CONSTANTS.POWER_CAP_UPGRADE_COST):
+		return false
+	power_cap += CONSTANTS.POWER_CAP_UPGRADE_AMOUNT
+	power_changed.emit(power)
+	return true
 
 func drain_power(amount: int) -> bool:
 	if power < amount:
@@ -172,6 +188,8 @@ func reset() -> void:
 	lab_research_progress = 0.0
 	lab_upgrade_levels = {}
 	power = CONSTANTS.STARTING_POWER
+	power_cap = CONSTANTS.POWER_CAP_BASE
+	food_cap = CONSTANTS.FOOD_CAP_BASE
 	soldiers = 0
 	game_reset.emit()
 	coins_changed.emit(coins)

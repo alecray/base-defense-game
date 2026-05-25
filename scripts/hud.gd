@@ -27,13 +27,13 @@ func _ready() -> void:
 
 	_food_label = Label.new()
 	_food_label.add_theme_font_size_override("font_size", 16)
-	_food_label.text = "Food: %d" % GameState.food
+	_food_label.text = "Food: %d / %d" % [GameState.food, GameState.food_cap]
 	_food_label.position = Vector2(12.0, 62.0)
 	add_child(_food_label)
 
 	_power_label = Label.new()
 	_power_label.add_theme_font_size_override("font_size", 16)
-	_power_label.text = "Power: %d" % GameState.power
+	_power_label.text = "Power: %d / %d" % [GameState.power, GameState.power_cap]
 	_power_label.position = Vector2(12.0, 84.0)
 	add_child(_power_label)
 	GameState.power_changed.connect(_on_power_changed)
@@ -80,10 +80,10 @@ func _on_workers_changed(count: int, cap: int, free: int) -> void:
 	_workers_label.text = "Workers: %d/%d (%d free)" % [count, cap, free]
 
 func _on_food_changed(new_amount: int) -> void:
-	_food_label.text = "Food: %d" % new_amount
+	_food_label.text = "Food: %d / %d" % [new_amount, GameState.food_cap]
 
 func _on_power_changed(new_amount: int) -> void:
-	_power_label.text = "Power: %d" % new_amount
+	_power_label.text = "Power: %d / %d" % [new_amount, GameState.power_cap]
 
 func _on_soldiers_changed(count: int, cap: int) -> void:
 	_soldiers_label.text = "Soldiers: %d / %d" % [count, cap]
@@ -93,7 +93,7 @@ func _on_day_changed(day: int) -> void:
 
 func _on_game_reset() -> void:
 	_day_label.text = "Day 1"
-	_power_label.text = "Power: 0"
+	_power_label.text = "Power: 0 / %d" % GameState.power_cap
 	_soldiers_label.text = "Soldiers: 0 / 0"
 	_core_prompt.visible = true
 	if _game_over_root != null:

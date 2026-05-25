@@ -6,6 +6,8 @@ var _target_tile: Vector2i = Vector2i(-1, -1)
 var _core_node: Node = null
 var _buy_btn: Button
 var _fortify_btn: Button
+var _food_cap_btn: Button
+var _power_cap_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
@@ -30,7 +32,7 @@ func _build_ui() -> void:
 
 	var panel: PanelContainer = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(280.0, 220.0)
+	panel.custom_minimum_size = Vector2(300.0, 320.0)
 	root.add_child(panel)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
@@ -67,6 +69,19 @@ func _build_ui() -> void:
 	_fortify_btn.pressed.connect(_on_fortify)
 	vbox.add_child(_fortify_btn)
 
+	var sep3: HSeparator = HSeparator.new()
+	vbox.add_child(sep3)
+
+	_food_cap_btn = Button.new()
+	_food_cap_btn.custom_minimum_size = Vector2(0.0, 40.0)
+	_food_cap_btn.pressed.connect(_on_upgrade_food_cap)
+	vbox.add_child(_food_cap_btn)
+
+	_power_cap_btn = Button.new()
+	_power_cap_btn.custom_minimum_size = Vector2(0.0, 40.0)
+	_power_cap_btn.pressed.connect(_on_upgrade_power_cap)
+	vbox.add_child(_power_cap_btn)
+
 func open_for_core(gp: Vector2i, core_node: Node) -> void:
 	_target_tile = gp
 	_core_node = core_node
@@ -82,6 +97,10 @@ func _refresh() -> void:
 	else:
 		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
 		_fortify_btn.disabled = _core_node == null or GameState.coins < CONSTANTS.FORTIFY_COST
+	_food_cap_btn.text = "Upgrade Food Cap  +%d  (%d coins)\n[Current: %d]" % [CONSTANTS.FOOD_CAP_UPGRADE_AMOUNT, CONSTANTS.FOOD_CAP_UPGRADE_COST, GameState.food_cap]
+	_food_cap_btn.disabled = GameState.coins < CONSTANTS.FOOD_CAP_UPGRADE_COST
+	_power_cap_btn.text = "Upgrade Power Cap  +%d  (%d coins)\n[Current: %d]" % [CONSTANTS.POWER_CAP_UPGRADE_AMOUNT, CONSTANTS.POWER_CAP_UPGRADE_COST, GameState.power_cap]
+	_power_cap_btn.disabled = GameState.coins < CONSTANTS.POWER_CAP_UPGRADE_COST
 
 func _close() -> void:
 	visible = false
@@ -108,6 +127,18 @@ func _on_fortify() -> void:
 	if _core_node == null:
 		return
 	if not bool(_core_node.call("fortify")):
+		_show_error("Not enough coins!")
+		return
+	_refresh()
+
+func _on_upgrade_food_cap() -> void:
+	if not GameState.upgrade_food_cap():
+		_show_error("Not enough coins!")
+		return
+	_refresh()
+
+func _on_upgrade_power_cap() -> void:
+	if not GameState.upgrade_power_cap():
 		_show_error("Not enough coins!")
 		return
 	_refresh()

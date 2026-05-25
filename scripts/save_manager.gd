@@ -38,6 +38,8 @@ func save_game() -> void:
 	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
 	data["day"] = cycle.call("get_day") if cycle != null else 1
 	data["power"] = GameState.power
+	data["power_cap"] = GameState.power_cap
+	data["food_cap"] = GameState.food_cap
 	data["soldiers"] = GameState.soldiers
 	data["lab_research_id"] = GameState.lab_research_id
 	data["lab_research_progress"] = GameState.lab_research_progress
@@ -87,6 +89,8 @@ func load_game() -> void:
 		cycle.call("set_day", int(data.get("day", 1)))
 
 	GameState.power = int(data.get("power", 0))
+	GameState.power_cap = int(data.get("power_cap", CONSTANTS.POWER_CAP_BASE))
+	GameState.food_cap = int(data.get("food_cap", CONSTANTS.FOOD_CAP_BASE))
 	GameState.soldiers = int(data.get("soldiers", 0))
 	GameState.lab_research_id = str(data.get("lab_research_id", ""))
 	GameState.lab_research_progress = float(data.get("lab_research_progress", 0.0))
