@@ -103,6 +103,17 @@ const ENEMY_ATTACK_RANGE: float = 72.0
 const ENEMY_ATTACK_INTERVAL: float = 1.2
 const ENEMY_ATTACK_DAMAGE: int = 10
 
+## Big Enemy
+const BIG_ENEMY_MAX_HP: int = 350
+const BIG_ENEMY_SPEED: float = 28.0
+const BIG_ENEMY_ATTACK_RANGE: float = 80.0
+const BIG_ENEMY_ATTACK_INTERVAL: float = 2.5
+const BIG_ENEMY_ATTACK_DAMAGE: int = 35
+const BIG_ENEMY_COIN_REWARD: int = 30
+const BIG_ENEMY_SPAWN_START_DELAY: float = 120.0
+const BIG_ENEMY_SPAWN_INTERVAL: float = 35.0
+const BIG_ENEMY_SPAWN_MIN_INTERVAL: float = 12.0
+
 ## Day/Night Cycle
 const DAY_DURATION: float = 150.0
 const NIGHT_DURATION: float = 150.0

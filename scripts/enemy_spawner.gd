@@ -1,8 +1,10 @@
 extends Node
 
 const ENEMY_SCENE: PackedScene = preload("res://prefabs/enemy.tscn")
+const BIG_ENEMY_SCENE: PackedScene = preload("res://prefabs/big_enemy.tscn")
 
 var _spawn_timer: float = 0.0
+var _big_spawn_timer: float = 0.0
 var _elapsed: float = 0.0
 
 func _ready() -> void:
@@ -12,8 +14,9 @@ func _process(delta: float) -> void:
 	_elapsed += delta
 	if _elapsed < CONSTANTS.ENEMY_SPAWN_START_DELAY:
 		return
-	_spawn_timer += delta
 	var t: float = minf((_elapsed - CONSTANTS.ENEMY_SPAWN_START_DELAY) / CONSTANTS.ENEMY_SPAWN_RAMP_DURATION, 1.0)
+
+	_spawn_timer += delta
 	var interval: float = CONSTANTS.ENEMY_SPAWN_BASE_INTERVAL + (CONSTANTS.ENEMY_SPAWN_MIN_INTERVAL - CONSTANTS.ENEMY_SPAWN_BASE_INTERVAL) * t
 	if _is_night():
 		interval *= CONSTANTS.NIGHT_SPAWN_INTERVAL_MULT
@@ -21,9 +24,17 @@ func _process(delta: float) -> void:
 		_spawn_timer = 0.0
 		_spawn_clump()
 
+	if _elapsed >= CONSTANTS.BIG_ENEMY_SPAWN_START_DELAY:
+		_big_spawn_timer += delta
+		var big_interval: float = CONSTANTS.BIG_ENEMY_SPAWN_INTERVAL + (CONSTANTS.BIG_ENEMY_SPAWN_MIN_INTERVAL - CONSTANTS.BIG_ENEMY_SPAWN_INTERVAL) * t
+		if _big_spawn_timer >= big_interval:
+			_big_spawn_timer = 0.0
+			_spawn_big_enemy()
+
 func reset() -> void:
 	_elapsed = 0.0
 	_spawn_timer = 0.0
+	_big_spawn_timer = 0.0
 
 func _is_night() -> bool:
 	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
@@ -38,3 +49,10 @@ func _spawn_clump() -> void:
 		var instance: Node2D = ENEMY_SCENE.instantiate() as Node2D
 		instance.position = pos + Vector2(randf_range(-CONSTANTS.ENEMY_SPAWN_SCATTER, CONSTANTS.ENEMY_SPAWN_SCATTER), randf_range(-CONSTANTS.ENEMY_SPAWN_SCATTER, CONSTANTS.ENEMY_SPAWN_SCATTER))
 		get_parent().add_child(instance)
+
+func _spawn_big_enemy() -> void:
+	var angle: float = randf() * TAU
+	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS
+	var instance: Node2D = BIG_ENEMY_SCENE.instantiate() as Node2D
+	instance.position = pos
+	get_parent().add_child(instance)
