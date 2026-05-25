@@ -16,3 +16,5 @@
 - [ ] Threat scaling tied to economy (enemies scale with total coins earned, not just time)
 - [ ] Repair (spend coins to restore building HP manually)
 - [ ] Storehouse (increases overall resource caps, requires workers to staff)
+- [ ] Building attack alerts (screen flash or sound when a building is under attack off-screen)
+- [ ] Structured waves (discrete enemy waves with cooldown windows instead of a pure spawn ramp)

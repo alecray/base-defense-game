@@ -2,7 +2,7 @@ extends Node
 
 ## Economy
 const STARTING_COINS: int = 200
-const STARTING_FOOD: int = 100
+const STARTING_FOOD: int = 50
 const WORKER_COST: int = 20
 const FORTIFY_COST: int = 75
 const FOOD_DRAIN_INTERVAL: float = 5.0
@@ -56,13 +56,13 @@ const TOWER_MAX_WORKERS: int = 1
 const TOWER_DAMAGE: int = 25
 const TOWER_RANGE: float = 300.0
 const TOWER_INTERVAL: float = 1.0
-const TOWER_POWER_DRAIN_INTERVAL: float = 6.0
+const TOWER_POWER_DRAIN_INTERVAL: float = 4.0
 const TOWER_POWER_DRAIN_AMOUNT: int = 1
 
 ## Solar Farm
 const SOLAR_FARM_MAX_HP: int = 100
 const SOLAR_FARM_POWER_INTERVAL: float = 4.0
-const SOLAR_FARM_POWER_AMOUNT: int = 2
+const SOLAR_FARM_POWER_AMOUNT: int = 1
 
 ## Power
 const STARTING_POWER: int = 0
