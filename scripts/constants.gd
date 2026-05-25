@@ -66,6 +66,14 @@ const SOLAR_FARM_POWER_AMOUNT: int = 2
 
 ## Power
 const STARTING_POWER: int = 0
+const POWER_CAP_BASE: int = 50
+const POWER_CAP_UPGRADE_COST: int = 150
+const POWER_CAP_UPGRADE_AMOUNT: int = 50
+
+## Food Cap
+const FOOD_CAP_BASE: int = 200
+const FOOD_CAP_UPGRADE_COST: int = 100
+const FOOD_CAP_UPGRADE_AMOUNT: int = 100
 
 ## Gold Mine
 const MINE_MAX_WORKERS: int = 5
@@ -107,6 +115,12 @@ const LAB_MAX_HP: int = 200
 const LAB_RESEARCH_TURRET_DAMAGE_COST: int = 100
 const LAB_RESEARCH_TURRET_DAMAGE_DURATION: float = 45.0
 const LAB_TURRET_DAMAGE_UPGRADE_AMOUNT: int = 5
+
+## Player
+const PLAYER_BULLET_DAMAGE: int = 15
+const PLAYER_BULLET_SPEED: float = 400.0
+const PLAYER_SHOOT_COOLDOWN: float = 0.3
+const PLAYER_BULLET_LIFETIME: float = 2.0
 
 ## Enemy Spawner
 const ENEMY_SPAWN_RADIUS: float = 1400.0

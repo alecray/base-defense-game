@@ -1,10 +1,13 @@
 extends CharacterBody2D
 
 const SPEED: float = 200.0
+const BULLET_SCENE: PackedScene = preload("res://prefabs/player_bullet.tscn")
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _tile_detector: Area2D = $TileDetector
 @onready var _purchase_prompt: Label = $PurchasePrompt
+
+var _shoot_cooldown: float = 0.0
 
 func _ready() -> void:
 	add_to_group("player")
@@ -13,7 +16,8 @@ func _ready() -> void:
 	_purchase_prompt.add_theme_font_size_override("font_size", 14)
 	_purchase_prompt.position = Vector2(-80.0, -72.0)
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	_shoot_cooldown = maxf(0.0, _shoot_cooldown - delta)
 	var direction: Vector2 = Vector2.ZERO
 	if Input.is_physical_key_pressed(KEY_D):
 		direction.x += 1.0
@@ -59,6 +63,11 @@ func _try_show_prompt_for(area: Area2D) -> bool:
 	return true
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT and _shoot_cooldown <= 0.0:
+			_shoot(get_global_mouse_position())
+		return
 	if not event is InputEventKey:
 		return
 	var key_event: InputEventKey = event as InputEventKey
@@ -67,6 +76,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	for area: Area2D in _tile_detector.get_overlapping_areas():
 		if _handle_e_for(area):
 			return
+
+func _shoot(target: Vector2) -> void:
+	_shoot_cooldown = CONSTANTS.PLAYER_SHOOT_COOLDOWN
+	var bullet: Node2D = BULLET_SCENE.instantiate() as Node2D
+	bullet.global_position = global_position
+	bullet.call("init", target - global_position)
+	get_parent().add_child(bullet)
 
 func _handle_e_for(area: Area2D) -> bool:
 	if not area.has_meta("tile_gp") or not area.has_meta("tile_unlocked"):
