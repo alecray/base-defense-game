@@ -29,6 +29,7 @@ const GOLD_MINE_SCENE: PackedScene = preload("res://prefabs/gold_mine.tscn")
 const LAB_SCENE: PackedScene = preload("res://prefabs/lab.tscn")
 const SOLAR_FARM_SCENE: PackedScene = preload("res://prefabs/solar_farm.tscn")
 const BARRACKS_SCENE: PackedScene = preload("res://prefabs/barracks.tscn")
+const SOLDIER_SCENE: PackedScene = preload("res://prefabs/soldier.tscn")
 
 var _tiles: Dictionary = {}
 
@@ -413,3 +414,31 @@ func get_farm_at(gp: Vector2i) -> Node:
 	if not tile.area.has_meta("tile_building_node"):
 		return null
 	return tile.area.get_meta("tile_building_node") as Node
+
+func spawn_soldier_at(pos: Vector2) -> void:
+	var instance: Node2D = SOLDIER_SCENE.instantiate() as Node2D
+	instance.position = pos
+	add_child(instance)
+
+func get_patrol_points() -> Array:
+	var result: Array = []
+	for gp: Vector2i in _tiles:
+		var tile: TileEntry = _tiles[gp]
+		if not tile.unlocked:
+			continue
+		var is_edge: bool = false
+		for dx: int in [-1, 0, 1]:
+			for dy: int in [-1, 0, 1]:
+				if dx == 0 and dy == 0:
+					continue
+				var neighbor: Vector2i = Vector2i(gp.x + dx, gp.y + dy)
+				if not _tiles.has(neighbor) or not _tiles[neighbor].unlocked:
+					is_edge = true
+					break
+			if is_edge:
+				break
+		if is_edge:
+			var world_pos: Vector2 = tile.area.position + Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE * 0.5)
+			var dir: Vector2 = world_pos.normalized() if world_pos.length() > 0.1 else Vector2.RIGHT
+			result.append(world_pos + dir * float(CONSTANTS.TILE_SIZE) * 0.6)
+	return result

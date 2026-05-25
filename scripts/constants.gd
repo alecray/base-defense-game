@@ -24,6 +24,15 @@ const BARRACKS_MAX_HP: int = 150
 const BARRACKS_SOLDIER_BONUS: int = 5
 const SOLDIER_COST: int = 30
 
+## Soldier
+const SOLDIER_HP: int = 80
+const SOLDIER_SPEED: float = 75.0
+const SOLDIER_ATTACK_RANGE: float = 60.0
+const SOLDIER_ATTACK_DAMAGE: int = 20
+const SOLDIER_ATTACK_INTERVAL: float = 1.0
+const SOLDIER_RETARGET_INTERVAL: float = 1.5
+const SOLDIER_THREAT_RANGE: float = 250.0
+
 ## Building HP
 const CORE_MAX_HP: int = 500
 const HOUSING_MAX_HP: int = 150

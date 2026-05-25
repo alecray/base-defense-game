@@ -160,12 +160,21 @@ func load_game() -> void:
 			for _i: int in range(assigned_count):
 				mine_node.call("assign_worker")
 
+	var soldiers_count: int = int(data.get("soldiers", 0))
+	GameState.soldiers = soldiers_count
+	GameState.soldiers_changed.emit(GameState.soldiers, GameState.get_soldier_cap())
+	for _i: int in range(soldiers_count):
+		var spawn_pos: Vector2 = Vector2(randf_range(-64.0, 64.0), randf_range(-64.0, 64.0))
+		tile_grid.call("spawn_soldier_at", spawn_pos)
+
 func reset_game() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
 
 	for enemy: Node in get_tree().get_nodes_in_group("enemies"):
 		enemy.queue_free()
+	for soldier: Node in get_tree().get_nodes_in_group("soldiers"):
+		soldier.queue_free()
 
 	var tile_grid: Node = get_tree().get_first_node_in_group("tile_grid")
 	if tile_grid != null:

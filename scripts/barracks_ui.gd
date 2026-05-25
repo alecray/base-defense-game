@@ -106,6 +106,10 @@ func _on_buy_soldier() -> void:
 		var msg: String = "Soldier cap reached!" if GameState.coins >= CONSTANTS.SOLDIER_COST else "Not enough coins!"
 		_show_error(msg)
 		return
+	if _building != null:
+		var grid: Node = get_tree().get_first_node_in_group("tile_grid")
+		if grid != null:
+			grid.call("spawn_soldier_at", (_building as Node2D).global_position)
 	_refresh()
 
 func _on_fortify() -> void:

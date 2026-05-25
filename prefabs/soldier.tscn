@@ -1,0 +1,37 @@
+[gd_scene format=4 uid="uid://dsoldier00001"]
+
+[ext_resource type="Script" path="res://scripts/soldier.gd" id="1_soldier"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_w0kqu"]
+_data = PackedByteArray("AAADAAUAAAABAAAAYAAAAEAAAACaAAAAUklGRpIAAABXRUJQVlA4TIUAAAAvX8APECdAmG2c228ekziWI9K2zU3R8PgdnEjbZo6GRi/6Cuc/AOmVb/yBUdtIkkJhKITCUhj+pPbePrTzi+g/I7dtw8hAT+3Gd/APN/YzoJWe+t4V3abvXbHxiSs6eO0KTuTlFcwWGVqLTQbjxjEfOGZAKz01u2PT3A6U7A6SO8SGHVUGAA==")
+size_override = Vector2(96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ont85"]
+atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ji5e"]
+atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_soldier"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ont85")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ji5e")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 4.0
+}]
+
+[node name="Soldier" type="Node2D"]
+script = ExtResource("1_soldier")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_soldier")
+animation = &"Idle"

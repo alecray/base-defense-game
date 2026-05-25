@@ -87,6 +87,10 @@ func buy_soldier() -> bool:
 	soldiers_changed.emit(soldiers, get_soldier_cap())
 	return true
 
+func record_soldier_killed() -> void:
+	soldiers = maxi(0, soldiers - 1)
+	soldiers_changed.emit(soldiers, get_soldier_cap())
+
 func record_building_placed(building_name: String) -> void:
 	building_counts[building_name] = building_counts.get(building_name, 0) + 1
 	building_placed.emit(building_name)
