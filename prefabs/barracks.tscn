@@ -1,0 +1,15 @@
+[gd_scene format=4 uid="uid://dbarracks0001"]
+
+[ext_resource type="Script" path="res://scripts/barracks.gd" id="1_barracks"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_barracks"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"Idle",
+"speed": 1.0
+}]
+
+[node name="Barracks" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_barracks")
+script = ExtResource("1_barracks")

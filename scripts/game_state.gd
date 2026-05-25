@@ -11,12 +11,14 @@ var worker_count: int = 0
 var assigned_workers: int = 0
 var food: int = CONSTANTS.STARTING_FOOD
 var power: int = CONSTANTS.STARTING_POWER
+var soldiers: int = 0
 
 signal coins_changed(new_amount: int)
 signal building_placed(building_name: String)
 signal workers_changed(count: int, cap: int, free: int)
 signal food_changed(new_amount: int)
 signal power_changed(new_amount: int)
+signal soldiers_changed(count: int, cap: int)
 signal game_reset
 signal game_over
 signal research_completed(upgrade_id: String)
@@ -73,11 +75,25 @@ func record_worker_assigned(delta: int) -> void:
 func get_worker_cap() -> int:
 	return get_building_count("Housing") * CONSTANTS.HOUSING_WORKER_BONUS
 
+func get_soldier_cap() -> int:
+	return get_building_count("Barracks") * CONSTANTS.BARRACKS_SOLDIER_BONUS
+
+func buy_soldier() -> bool:
+	if soldiers >= get_soldier_cap():
+		return false
+	if not spend_coins(CONSTANTS.SOLDIER_COST):
+		return false
+	soldiers += 1
+	soldiers_changed.emit(soldiers, get_soldier_cap())
+	return true
+
 func record_building_placed(building_name: String) -> void:
 	building_counts[building_name] = building_counts.get(building_name, 0) + 1
 	building_placed.emit(building_name)
 	if building_name == "Housing":
 		workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())
+	if building_name == "Barracks":
+		soldiers_changed.emit(soldiers, get_soldier_cap())
 
 func record_worker_hired() -> void:
 	worker_count += 1
@@ -104,6 +120,9 @@ func record_building_destroyed(building_name: String) -> void:
 		building_counts[building_name] = count - 1
 	if building_name == "Housing":
 		workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())
+	if building_name == "Barracks":
+		soldiers = mini(soldiers, get_soldier_cap())
+		soldiers_changed.emit(soldiers, get_soldier_cap())
 
 func start_research(upgrade_id: String) -> void:
 	lab_research_id = upgrade_id
@@ -149,8 +168,10 @@ func reset() -> void:
 	lab_research_progress = 0.0
 	lab_upgrade_levels = {}
 	power = CONSTANTS.STARTING_POWER
+	soldiers = 0
 	game_reset.emit()
 	coins_changed.emit(coins)
 	food_changed.emit(food)
 	power_changed.emit(power)
+	soldiers_changed.emit(soldiers, get_soldier_cap())
 	workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())

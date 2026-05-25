@@ -38,6 +38,7 @@ func save_game() -> void:
 	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
 	data["day"] = cycle.call("get_day") if cycle != null else 1
 	data["power"] = GameState.power
+	data["soldiers"] = GameState.soldiers
 	data["lab_research_id"] = GameState.lab_research_id
 	data["lab_research_progress"] = GameState.lab_research_progress
 	data["lab_upgrade_levels"] = GameState.lab_upgrade_levels.duplicate()
@@ -86,6 +87,7 @@ func load_game() -> void:
 		cycle.call("set_day", int(data.get("day", 1)))
 
 	GameState.power = int(data.get("power", 0))
+	GameState.soldiers = int(data.get("soldiers", 0))
 	GameState.lab_research_id = str(data.get("lab_research_id", ""))
 	GameState.lab_research_progress = float(data.get("lab_research_progress", 0.0))
 	GameState.lab_upgrade_levels = (data.get("lab_upgrade_levels", {}) as Dictionary).duplicate()
@@ -98,6 +100,7 @@ func load_game() -> void:
 	GameState.coins_changed.emit(GameState.coins)
 	GameState.food_changed.emit(GameState.food)
 	GameState.power_changed.emit(GameState.power)
+	GameState.soldiers_changed.emit(GameState.soldiers, GameState.get_soldier_cap())
 	GameState.workers_changed.emit(GameState.worker_count, GameState.get_worker_cap(), GameState.get_free_workers())
 	if GameState.get_building_count("Core") > 0:
 		GameState.building_placed.emit("Core")

@@ -9,6 +9,7 @@ const FOOD_DRAIN_INTERVAL: float = 5.0
 const BUILDING_COSTS: Dictionary = {
 	"Core": 100,
 	"Housing": 50,
+	"Barracks": 75,
 	"Farm": 75,
 	"Tower": 60,
 	"Lab": 150,
@@ -17,6 +18,11 @@ const BUILDING_COSTS: Dictionary = {
 
 ## Housing
 const HOUSING_WORKER_BONUS: int = 5
+
+## Barracks
+const BARRACKS_MAX_HP: int = 150
+const BARRACKS_SOLDIER_BONUS: int = 5
+const SOLDIER_COST: int = 30
 
 ## Building HP
 const CORE_MAX_HP: int = 500

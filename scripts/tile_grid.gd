@@ -28,6 +28,7 @@ const WORKER_SCENE: PackedScene = preload("res://prefabs/worker.tscn")
 const GOLD_MINE_SCENE: PackedScene = preload("res://prefabs/gold_mine.tscn")
 const LAB_SCENE: PackedScene = preload("res://prefabs/lab.tscn")
 const SOLAR_FARM_SCENE: PackedScene = preload("res://prefabs/solar_farm.tscn")
+const BARRACKS_SCENE: PackedScene = preload("res://prefabs/barracks.tscn")
 
 var _tiles: Dictionary = {}
 
@@ -196,6 +197,8 @@ func place_building(building_name: String, gp: Vector2i) -> void:
 			scene = LAB_SCENE
 		"SolarFarm":
 			scene = SOLAR_FARM_SCENE
+		"Barracks":
+			scene = BARRACKS_SCENE
 		_:
 			return
 
@@ -331,6 +334,8 @@ func place_building_from_save(building_name: String, gp: Vector2i, shield_hp: in
 			scene = LAB_SCENE
 		"SolarFarm":
 			scene = SOLAR_FARM_SCENE
+		"Barracks":
+			scene = BARRACKS_SCENE
 		_:
 			return
 	tile.building = building_name

@@ -6,6 +6,7 @@ var _core_prompt: Label
 var _workers_label: Label
 var _food_label: Label
 var _power_label: Label
+var _soldiers_label: Label
 var _day_label: Label
 var _game_over_root: Control = null
 
@@ -36,6 +37,13 @@ func _ready() -> void:
 	_power_label.position = Vector2(12.0, 84.0)
 	add_child(_power_label)
 	GameState.power_changed.connect(_on_power_changed)
+
+	_soldiers_label = Label.new()
+	_soldiers_label.add_theme_font_size_override("font_size", 16)
+	_soldiers_label.text = "Soldiers: 0 / 0"
+	_soldiers_label.position = Vector2(12.0, 106.0)
+	add_child(_soldiers_label)
+	GameState.soldiers_changed.connect(_on_soldiers_changed)
 
 	_day_label = Label.new()
 	_day_label.add_theme_font_size_override("font_size", 20)
@@ -77,12 +85,16 @@ func _on_food_changed(new_amount: int) -> void:
 func _on_power_changed(new_amount: int) -> void:
 	_power_label.text = "Power: %d" % new_amount
 
+func _on_soldiers_changed(count: int, cap: int) -> void:
+	_soldiers_label.text = "Soldiers: %d / %d" % [count, cap]
+
 func _on_day_changed(day: int) -> void:
 	_day_label.text = "Day %d" % day
 
 func _on_game_reset() -> void:
 	_day_label.text = "Day 1"
 	_power_label.text = "Power: 0"
+	_soldiers_label.text = "Soldiers: 0 / 0"
 	_core_prompt.visible = true
 	if _game_over_root != null:
 		_game_over_root.queue_free()
