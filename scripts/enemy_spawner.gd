@@ -12,22 +12,28 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_elapsed += delta
-	if _elapsed < CONSTANTS.ENEMY_SPAWN_START_DELAY:
+
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	var intensity: float = float(cycle.call("get_night_intensity")) if cycle != null else 0.0
+
+	if intensity <= 0.0:
+		_spawn_timer = 0.0
+		_big_spawn_timer = 0.0
 		return
-	var t: float = minf((_elapsed - CONSTANTS.ENEMY_SPAWN_START_DELAY) / CONSTANTS.ENEMY_SPAWN_RAMP_DURATION, 1.0)
+
+	var t: float = minf(_elapsed / CONSTANTS.ENEMY_SPAWN_RAMP_DURATION, 1.0)
 
 	_spawn_timer += delta
-	var interval: float = CONSTANTS.ENEMY_SPAWN_BASE_INTERVAL + (CONSTANTS.ENEMY_SPAWN_MIN_INTERVAL - CONSTANTS.ENEMY_SPAWN_BASE_INTERVAL) * t
-	if _is_night():
-		interval *= CONSTANTS.NIGHT_SPAWN_INTERVAL_MULT
-	if _spawn_timer >= interval:
+	var base_interval: float = CONSTANTS.ENEMY_SPAWN_BASE_INTERVAL + (CONSTANTS.ENEMY_SPAWN_MIN_INTERVAL - CONSTANTS.ENEMY_SPAWN_BASE_INTERVAL) * t
+	if _spawn_timer >= base_interval / intensity:
 		_spawn_timer = 0.0
-		_spawn_clump()
+		_spawn_clump(intensity)
 
-	if _elapsed >= CONSTANTS.BIG_ENEMY_SPAWN_START_DELAY:
+	var first_cycle: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
+	if _elapsed >= first_cycle:
 		_big_spawn_timer += delta
-		var big_interval: float = CONSTANTS.BIG_ENEMY_SPAWN_INTERVAL + (CONSTANTS.BIG_ENEMY_SPAWN_MIN_INTERVAL - CONSTANTS.BIG_ENEMY_SPAWN_INTERVAL) * t
-		if _big_spawn_timer >= big_interval:
+		var big_base: float = CONSTANTS.BIG_ENEMY_SPAWN_INTERVAL + (CONSTANTS.BIG_ENEMY_SPAWN_MIN_INTERVAL - CONSTANTS.BIG_ENEMY_SPAWN_INTERVAL) * t
+		if _big_spawn_timer >= big_base / intensity:
 			_big_spawn_timer = 0.0
 			_spawn_big_enemy()
 
@@ -36,12 +42,8 @@ func reset() -> void:
 	_spawn_timer = 0.0
 	_big_spawn_timer = 0.0
 
-func _is_night() -> bool:
-	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
-	return cycle != null and bool(cycle.call("is_night"))
-
-func _spawn_clump() -> void:
-	var max_clump: int = CONSTANTS.NIGHT_SPAWN_CLUMP_MAX if _is_night() else CONSTANTS.ENEMY_SPAWN_CLUMP_MAX
+func _spawn_clump(intensity: float) -> void:
+	var max_clump: int = maxi(1, roundi(CONSTANTS.NIGHT_SPAWN_CLUMP_MAX * intensity))
 	var count: int = randi_range(1, max_clump)
 	var angle: float = randf() * TAU
 	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS

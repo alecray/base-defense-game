@@ -48,6 +48,20 @@ func _update_overlay(cycle_duration: float) -> void:
 func is_night() -> bool:
 	return _cycle_timer >= CONSTANTS.DAY_DURATION
 
+func get_night_intensity() -> float:
+	var cycle_duration: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
+	var t: float = _cycle_timer / cycle_duration
+	var day_frac: float = CONSTANTS.DAY_DURATION / cycle_duration
+	var trans: float = CONSTANTS.DAY_NIGHT_TRANSITION / cycle_duration
+	if t < day_frac - trans:
+		return 0.0
+	elif t < day_frac:
+		return smoothstep(0.0, 1.0, (t - (day_frac - trans)) / trans)
+	elif t < 1.0 - trans:
+		return 1.0
+	else:
+		return smoothstep(0.0, 1.0, 1.0 - (t - (1.0 - trans)) / trans)
+
 func get_day() -> int:
 	return _day_count
 

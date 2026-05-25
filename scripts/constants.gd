@@ -110,7 +110,6 @@ const BIG_ENEMY_ATTACK_RANGE: float = 80.0
 const BIG_ENEMY_ATTACK_INTERVAL: float = 2.5
 const BIG_ENEMY_ATTACK_DAMAGE: int = 35
 const BIG_ENEMY_COIN_REWARD: int = 30
-const BIG_ENEMY_SPAWN_START_DELAY: float = 120.0
 const BIG_ENEMY_SPAWN_INTERVAL: float = 35.0
 const BIG_ENEMY_SPAWN_MIN_INTERVAL: float = 12.0
 
@@ -118,7 +117,6 @@ const BIG_ENEMY_SPAWN_MIN_INTERVAL: float = 12.0
 const DAY_DURATION: float = 150.0
 const NIGHT_DURATION: float = 150.0
 const DAY_NIGHT_TRANSITION: float = 15.0
-const NIGHT_SPAWN_INTERVAL_MULT: float = 0.6
 const NIGHT_SPAWN_CLUMP_MAX: int = 10
 
 ## Lab
@@ -135,7 +133,6 @@ const PLAYER_BULLET_LIFETIME: float = 2.0
 
 ## Enemy Spawner
 const ENEMY_SPAWN_RADIUS: float = 1400.0
-const ENEMY_SPAWN_START_DELAY: float = 60.0
 const ENEMY_SPAWN_BASE_INTERVAL: float = 8.0
 const ENEMY_SPAWN_MIN_INTERVAL: float = 1.5
 const ENEMY_SPAWN_RAMP_DURATION: float = 300.0
