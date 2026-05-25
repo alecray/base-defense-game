@@ -1,0 +1,52 @@
+[gd_scene format=4 uid="uid://bx2a2gn3oe7jb"]
+
+[ext_resource type="Script" uid="uid://c2hyvo02bb7k7" path="res://scripts/tower.gd" id="1_tower"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_w33c7"]
+_data = PackedByteArray("AAADAAUAAAABAAAAAAEAAIAAAAAuAQAAUklGRiYBAABXRUJQVlA4TBoBAAAv/8AfEB8gECD854ixYkVIQGj+zzDNCyEB4f8M3zQj5j8A5k0PcGzbjdugQaPVZfoNVpd5QMOtYQfIRFL/GDqUu4j+T4Cci0q7qe6Gh/KErtUZ7bG64LXr10Z7O7nSlRTNlgc8vXI1WhYX2aCcTEN1RvP1AU9PLoeyDGvjtFZc0uIYwNPijOYLpDQsjvOsPvC0rODlMRiU5MDCNJ4fgQMsg1aVPd0rsv3B8hhAMqCooEUeiNK0LP8XwG7+L4CakpaHojStKAZspxiwIwANtTnNi8rMNqI7ZGYb0XpiyADMxZABqE9pWk4OOQBM5ZADQDUxYYDOxIQBWo1IZHp/kz0j0/ub7Hl5ItHbZOfobVKUyOMfYT7+EeblnfQ=")
+size_override = Vector2(256, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o2sv6"]
+atlas = SubResource("PortableCompressedTexture2D_w33c7")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lul14"]
+atlas = SubResource("PortableCompressedTexture2D_w33c7")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_adpuy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o2sv6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lul14")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 1.0
+}]
+
+[node name="Tower" type="AnimatedSprite2D" unique_id=925985240]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_adpuy")
+animation = &"Idle"
+script = ExtResource("1_tower")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/tower.aseprite",
+"source_uid": 4285284147046897979
+}
+metadata/_aseprite_wizard_source_file_hash_ = "1e3a419b058bdc6d97c36ed31f5c9514"

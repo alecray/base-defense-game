@@ -1,0 +1,148 @@
+extends Node
+
+const SAVE_PATH: String = "user://save.json"
+const AUTOSAVE_INTERVAL: float = 300.0
+
+var _autosave_timer: float = 0.0
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	add_to_group("save_manager")
+	if FileAccess.file_exists(SAVE_PATH):
+		call_deferred("load_game")
+
+func _process(delta: float) -> void:
+	_autosave_timer += delta
+	if _autosave_timer >= AUTOSAVE_INTERVAL:
+		_autosave_timer = 0.0
+		save_game()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event is InputEventKey:
+		return
+	var key_event: InputEventKey = event as InputEventKey
+	if key_event.pressed and not key_event.echo and key_event.physical_keycode == KEY_Z:
+		save_game()
+
+func save_game() -> void:
+	var tile_grid: Node = get_tree().get_first_node_in_group("tile_grid")
+	if tile_grid == null:
+		return
+
+	var data: Dictionary = {}
+	data["coins"] = GameState.coins
+	data["food"] = GameState.food
+	data["worker_count"] = GameState.worker_count
+	data["building_counts"] = GameState.building_counts.duplicate()
+	data["tiles"] = tile_grid.call("get_save_data")
+	data["workers"] = _get_worker_save_data()
+	data["farms"] = tile_grid.call("get_farm_save_data")
+
+	var json_string: String = JSON.stringify(data, "\t")
+	var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	if file == null:
+		return
+	file.store_string(json_string)
+	file.close()
+	_show_saved_popup()
+
+func _get_worker_save_data() -> Array:
+	var result: Array = []
+	for worker: Node in get_tree().get_nodes_in_group("workers"):
+		var worker_node: Node2D = worker as Node2D
+		var entry: Dictionary = {}
+		entry["x"] = worker_node.position.x
+		entry["y"] = worker_node.position.y
+		result.append(entry)
+	return result
+
+func load_game() -> void:
+	if not FileAccess.file_exists(SAVE_PATH):
+		return
+
+	var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if file == null:
+		return
+	var json_string: String = file.get_as_text()
+	file.close()
+
+	var json: JSON = JSON.new()
+	var parse_err: int = json.parse(json_string)
+	if parse_err != OK:
+		return
+
+	var data: Dictionary = json.data as Dictionary
+
+	GameState.coins = int(data["coins"])
+	GameState.food = int(data["food"])
+	GameState.worker_count = int(data["worker_count"])
+	GameState.assigned_workers = 0
+	GameState.building_counts = (data["building_counts"] as Dictionary).duplicate()
+	GameState.coins_changed.emit(GameState.coins)
+	GameState.food_changed.emit(GameState.food)
+	GameState.workers_changed.emit(GameState.worker_count, GameState.get_worker_cap(), GameState.get_free_workers())
+	if GameState.get_building_count("Core") > 0:
+		GameState.building_placed.emit("Core")
+
+	var tile_grid: Node = get_tree().get_first_node_in_group("tile_grid")
+	if tile_grid == null:
+		return
+
+	var tiles_data: Array = data["tiles"] as Array
+	for tile_entry: Variant in tiles_data:
+		var tile_dict: Dictionary = tile_entry as Dictionary
+		var gp_arr: Array = tile_dict["gp"] as Array
+		var gp: Vector2i = Vector2i(int(gp_arr[0]), int(gp_arr[1]))
+		var building: String = str(tile_dict["building"])
+		tile_grid.call("unlock_tile_free", gp)
+		if building != "":
+			tile_grid.call("place_building_from_save", building, gp)
+
+	var workers_data: Array = data["workers"] as Array
+	for worker_entry: Variant in workers_data:
+		var worker_dict: Dictionary = worker_entry as Dictionary
+		tile_grid.call("spawn_worker_at", Vector2(float(worker_dict["x"]), float(worker_dict["y"])))
+
+	var farms_data: Array = data["farms"] as Array
+	for farm_entry: Variant in farms_data:
+		var farm_dict: Dictionary = farm_entry as Dictionary
+		var farm_gp_arr: Array = farm_dict["gp"] as Array
+		var farm_gp: Vector2i = Vector2i(int(farm_gp_arr[0]), int(farm_gp_arr[1]))
+		var assigned_count: int = int(farm_dict["assigned_count"])
+		var farm_node: Node = tile_grid.call("get_farm_at", farm_gp) as Node
+		if farm_node != null:
+			for _i: int in range(assigned_count):
+				farm_node.call("assign_worker")
+
+func reset_game() -> void:
+	if FileAccess.file_exists(SAVE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
+
+	var tile_grid: Node = get_tree().get_first_node_in_group("tile_grid")
+	if tile_grid != null:
+		tile_grid.call("clear_for_load")
+
+	GameState.reset()
+
+func _show_saved_popup() -> void:
+	var canvas: CanvasLayer = CanvasLayer.new()
+	canvas.layer = 15
+	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().root.add_child(canvas)
+
+	var label: Label = Label.new()
+	label.text = "Game Saved"
+	label.add_theme_font_size_override("font_size", 18)
+	label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.4))
+	label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	label.offset_left = -160.0
+	label.offset_top = 10.0
+	label.offset_right = -10.0
+	label.offset_bottom = 40.0
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	canvas.add_child(label)
+
+	var tween: Tween = create_tween()
+	tween.tween_interval(1.0)
+	tween.tween_property(label, "modulate:a", 0.0, 0.8)
+	tween.tween_callback(canvas.queue_free)

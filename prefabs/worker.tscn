@@ -1,0 +1,89 @@
+[gd_scene format=4 uid="uid://cnulgyivdhrf8"]
+
+[ext_resource type="Script" uid="uid://du2j0xm51juth" path="res://scripts/worker.gd" id="1_worker"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_w0kqu"]
+_data = PackedByteArray("AAADAAUAAAABAAAAYAAAAEAAAACaAAAAUklGRpIAAABXRUJQVlA4TIUAAAAvX8APECdAmG2c228ekziWI9K2zU3R8PgdnEjbZo6GRi/6Cuc/AOmVb/yBUdtIkkJhKITCUhj+pPbePrTzi+g/I7dtw8hAT+3Gd/APN/YzoJWe+t4V3abvXbHxiSs6eO0KTuTlFcwWGVqLTQbjxjEfOGZAKz01u2PT3A6U7A6SO8SGHVUGAA==")
+size_override = Vector2(96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ont85"]
+atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ji5e"]
+atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3nntn"]
+atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_moqo0"]
+atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xmpa0"]
+atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_de3m2"]
+atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t2wst"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ont85")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ji5e")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3nntn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_moqo0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xmpa0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_de3m2")
+}],
+"loop": true,
+"name": &"Working",
+"speed": 4.0
+}]
+
+[node name="Worker" type="Node2D" unique_id=267216438]
+script = ExtResource("1_worker")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2108001666]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_t2wst")
+animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"animation_section": false,
+"layer_section": false,
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/npcs/worker.aseprite",
+"source_uid": 939342093443161869
+}
+metadata/_aseprite_wizard_source_file_hash_ = "ea7ae4762b71d2f5fba9eda214244480"

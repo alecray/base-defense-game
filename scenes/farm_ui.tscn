@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://mowxxth5cc3e"]
+
+[ext_resource type="Script" path="res://scripts/farm_ui.gd" id="1_farmui"]
+
+[node name="FarmUI" type="CanvasLayer"]
+script = ExtResource("1_farmui")

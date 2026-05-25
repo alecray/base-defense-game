@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://be5nb77rajwtq"]
+
+[ext_resource type="Script" path="res://scripts/tile_grid.gd" id="1_tilgrd"]
+[ext_resource type="Script" path="res://scripts/save_manager.gd" id="8_savemgr"]
+[ext_resource type="Script" path="res://scripts/enemy_spawner.gd" id="9_spawner"]
+[ext_resource type="PackedScene" path="res://prefabs/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/shop_ui.tscn" id="3_shopui"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/worker_ui.tscn" id="5_wrkui"]
+[ext_resource type="PackedScene" path="res://scenes/farm_ui.tscn" id="6_farmui"]
+[ext_resource type="PackedScene" path="res://scenes/dev_menu.tscn" id="7_devmenu"]
+
+[node name="Main" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_tilgrd")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="ShopUI" parent="." instance=ExtResource("3_shopui")]
+
+[node name="WorkerUI" parent="." instance=ExtResource("5_wrkui")]
+
+[node name="FarmUI" parent="." instance=ExtResource("6_farmui")]
+
+[node name="DevMenu" parent="." instance=ExtResource("7_devmenu")]
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="SaveManager" type="Node" parent="."]
+script = ExtResource("8_savemgr")
+
+[node name="EnemySpawner" type="Node" parent="."]
+script = ExtResource("9_spawner")

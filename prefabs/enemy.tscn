@@ -1,0 +1,54 @@
+[gd_scene format=4 uid="uid://bcaj0n52g4whn"]
+
+[ext_resource type="Script" uid="uid://cytgx8hww0krt" path="res://scripts/enemy.gd" id="1_enemy"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_6n8dw"]
+_data = PackedByteArray("AAADAAUAAAABAAAAQAAAAEAAAACkAAAAUklGRpwAAABXRUJQVlA4TI8AAAAvP8APECdAkG0zl9HM5MJ3I8i2meZkR/A7qQlAgI1ZOdxKmP8A2P8LmywwaiPJUVEYCk2hKTR/UnNxLj4j+j8B/MNS1ZWk1q9XY6SqK0mtX6/21eMxrtZ0KZoa81huSZikHbYziabGnoyhJeE6tnNMpuX5soLti2E7CReiMQfbu3CYhO0knHgejUvhcLHPCAA=")
+size_override = Vector2(64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yfjof"]
+atlas = SubResource("PortableCompressedTexture2D_6n8dw")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cypye"]
+atlas = SubResource("PortableCompressedTexture2D_6n8dw")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_a7d0n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yfjof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cypye")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}]
+
+[node name="Enemy" type="Node2D" unique_id=341844333]
+script = ExtResource("1_enemy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=398146464]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_a7d0n")
+animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/npcs/enemy1.aseprite",
+"source_uid": 7268193220696355115
+}
+metadata/_aseprite_wizard_source_file_hash_ = "7c74947472fb760563ba3c9f5597897d"

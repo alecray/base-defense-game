@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://b2b3aen52kgbb"
+path="res://.godot/imported/tower.aseprite-630a287e8a5c93f7a9037ab18924318d.res"
+
+[deps]
+
+source_file="res://assets/sprites/buildings/tower.aseprite"
+dest_files=["res://.godot/imported/tower.aseprite-630a287e8a5c93f7a9037ab18924318d.res"]
+
+[params]
+

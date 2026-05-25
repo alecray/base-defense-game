@@ -1,0 +1,52 @@
+[gd_scene format=4 uid="uid://cbarracktax1m"]
+
+[ext_resource type="Script" uid="uid://c3ayaaad5hwn2" path="res://scripts/building.gd" id="1_bldg"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_nk1w6"]
+_data = PackedByteArray("AAADAAUAAAABAAAAAAEAAIAAAAA8AQAAUklGRjQBAABXRUJQVlA4TCcBAAAv/8AfED9ApgHhc5kOfPqHE4VMA0ILpyngFF81SgMQgjTVBLJm/93umf8AIGlSfHqfNLqYDRBq240bfQqhYAqiYAqiYArmn1X2tyV3m4noPwO3bePI2X2p7bZHYPr8+88f7aiGgxLiPBZthxlu3DQ7D/jk/qg75PnQ+aGP2zM5XPQJSvkCX/sU32FXJpUnDNBtrHIEvjYLeAK5MoUKYH4GGLf7JNnTb0+tTsB+byyTSG3NZc0NuO+NnS5xAvK4ec+aeie5hOc9DsvuLQ+U83mNDjUy71LK6Ty7Q0je6YnzeXaHkLwh0vHHuQreiMYb8Xun/uLheCMtgnd9+b2lFYne+9YL8XjLmRsjo/a23YxbAN7WVexcpIzcOEfkjfYXV7YDAN57r0UAAA==")
+size_override = Vector2(256, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ydotb"]
+atlas = SubResource("PortableCompressedTexture2D_nk1w6")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fkwsd"]
+atlas = SubResource("PortableCompressedTexture2D_nk1w6")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y7lfd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ydotb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fkwsd")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 1.0
+}]
+
+[node name="Barracks" type="AnimatedSprite2D" unique_id=332924309]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_y7lfd")
+animation = &"Idle"
+script = ExtResource("1_bldg")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/barracks.aseprite",
+"source_uid": 8925863381747317713
+}
+metadata/_aseprite_wizard_source_file_hash_ = "bd3bab664731792ca8a17a82a7556fd4"

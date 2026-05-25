@@ -1,0 +1,73 @@
+[gd_scene format=4 uid="uid://bwq7f3knar8xt"]
+
+[ext_resource type="Script" uid="uid://d4tyacomyt18" path="res://scripts/player.gd" id="1_player"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_72ieh"]
+_data = PackedByteArray("AAADAAUAAAABAAAAIAAAAEAAAACUAAAAUklGRowAAABXRUJQVlA4TIAAAAAvH8APEDegpG0EODd27EQcehSykQStygrs3XmcP8VvoKCNJDV2aIHhJfz8BwDR7zSrR6/O02hgFMBtm6MgCqIQCqUgCuXPYavzG9H/CeAdvWx4/Ty3bHu2587qbeixRoEFFSRqulW0TCuVSFJym4QFve1jBEYHxtDUmn4Og6PHig==")
+size_override = Vector2(32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dohe"]
+atlas = SubResource("PortableCompressedTexture2D_72ieh")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r66lb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4dohe")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 16.0
+height = 32.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_detector"]
+size = Vector2(24, 48)
+
+[node name="Player" type="CharacterBody2D" unique_id=755026027]
+z_index = 1
+script = ExtResource("1_player")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1969802250]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_r66lb")
+metadata/_aseprite_wizard_interface_config_ = {
+"animation_section": false,
+"layer_section": true,
+"output_section": false,
+"pending_changes": {},
+"slice_section": false
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/player.aseprite",
+"source_uid": 574283247572002685
+}
+metadata/_aseprite_wizard_source_file_hash_ = "ceb801a23f3d60c3036e0dc5569d6826"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=235188327]
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="TileDetector" type="Area2D" parent="." unique_id=189020032]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TileDetector" unique_id=1280058120]
+shape = SubResource("RectangleShape2D_detector")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1566312019]
+
+[node name="PurchasePrompt" type="Label" parent="." unique_id=2044912843]
+visible = false

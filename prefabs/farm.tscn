@@ -1,0 +1,52 @@
+[gd_scene format=4 uid="uid://mow4gi8qeiqe"]
+
+[ext_resource type="Script" path="res://scripts/farm.gd" id="1_bldg"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_sd1hc"]
+_data = PackedByteArray("AAADAAUAAAABAAAAAAEAAIAAAABGAgAAUklGRj4CAABXRUJQVlA4TDECAAAv/8AfEF+gJADQBvexIJ8l+CouipJIVqiX4lkaoL7laUAHMiBxiiJJai46iIAIfvgvdKX5DwBYnYPpx+dynB05i66pAvzD6w1PQW6tvXmboUuNFbKCV9AKXkF1OqzwroAVtAKmiwmCkuAA+X6KiP5DcNvIkSRtvqS+qr37A/1r0Mw6xybbxo7DcaQ+MLOyOezwHC81eW+qJlbT96Z8VPP35ueTfs39vdXN/k5o0ezBI03fm6rxF81jr53jhVNf5O9N/WTvTfn8L9j9GSuhLSMLG0bWJu9Nvcgpk/emWuSk2XtTKXLe7L0pE7lm8t4UiVw1eW9KRK6bvTf1ITeZvjdfhXHTo3fYm8LQx7byufY99vajNB7XeY+9qYj9Vprq3s+ydddNpzBmtm/8D3hhxtZq9wi2bWiepzFbr92bbd55YmbPVrtjbXrj9t29ddz9aLabbmCbse67ja2nbuq/m26Dma2pbgqhnrtphgIdWAE2a6H7khwJ/zoWKU5CU93s1RldoVECGNxGN8KRxVk+GCIQhYj4133DgJroxkRULK4vKA2fcXCaTroJDo7gIA9BDFjB7E8i4s7aSfdcPL1PMeVBvCoCjI7gXK6gjW4gnBgG4TmWw9SZ0Uv1d5+Ym7jp6DwvzAMM4EHQjn66/XfyHeoDXMOUD38amdsb6V79y+LFH6spQUdncDroGFob3QRaGCGBcK8jnFsT3af1CF8Q0/i66ua7BLiB7gsK3eOfTfdfEQkA")
+size_override = Vector2(256, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vhqe3"]
+atlas = SubResource("PortableCompressedTexture2D_sd1hc")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3r8u4"]
+atlas = SubResource("PortableCompressedTexture2D_sd1hc")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mrxo8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vhqe3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3r8u4")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 1.0
+}]
+
+[node name="Farm" type="AnimatedSprite2D" unique_id=119343184]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_mrxo8")
+animation = &"Idle"
+script = ExtResource("1_bldg")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/farm.aseprite",
+"source_uid": 1313738560755906094
+}
+metadata/_aseprite_wizard_source_file_hash_ = "735139d03129a50dcab597c932e59d58"
