@@ -66,7 +66,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT and _shoot_cooldown <= 0.0:
-			_shoot(get_global_mouse_position())
+			_shoot(_world_mouse_position())
 		return
 	if not event is InputEventKey:
 		return
@@ -81,8 +81,22 @@ func _shoot(target: Vector2) -> void:
 	_shoot_cooldown = CONSTANTS.PLAYER_SHOOT_COOLDOWN
 	var bullet: Node2D = BULLET_SCENE.instantiate() as Node2D
 	bullet.global_position = global_position
-	bullet.call("init", target - global_position)
+	bullet.call("init", target - global_position, velocity)
 	get_parent().add_child(bullet)
+
+## Converts the mouse's screen position to a world position using the player's current
+## global_position as the camera centre, bypassing the one-frame camera transform lag
+## that makes get_global_mouse_position() drift when the player is moving.
+func _world_mouse_position() -> Vector2:
+	var viewport: Viewport = get_viewport()
+	if not viewport:
+		return Vector2.ZERO
+	var camera: Camera2D = viewport.get_camera_2d()
+	if not camera:
+		return get_global_mouse_position()
+	var screen_mouse: Vector2 = viewport.get_mouse_position()
+	var viewport_center: Vector2 = viewport.get_visible_rect().size * 0.5
+	return global_position + (screen_mouse - viewport_center) / camera.zoom.x
 
 func _handle_e_for(area: Area2D) -> bool:
 	if not area.has_meta("tile_gp") or not area.has_meta("tile_unlocked"):
