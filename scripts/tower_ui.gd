@@ -1,15 +1,16 @@
 extends CanvasLayer
 
-var _farm: Node = null
+var _tower: Node = null
 var _assigned_label: Label
 var _free_label: Label
+var _rate_label: Label
 var _assign_btn: Button
 var _unassign_btn: Button
 var _fortify_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
-	add_to_group("farm_ui")
+	add_to_group("tower_ui")
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 10
 	visible = false
@@ -30,7 +31,7 @@ func _build_ui() -> void:
 
 	var panel: PanelContainer = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(260.0, 250.0)
+	panel.custom_minimum_size = Vector2(280.0, 270.0)
 	root.add_child(panel)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
@@ -41,7 +42,7 @@ func _build_ui() -> void:
 	vbox.add_child(title_row)
 
 	var title: Label = Label.new()
-	title.text = "Farm Management"
+	title.text = "Tower Management"
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.add_theme_font_size_override("font_size", 20)
 	title_row.add_child(title)
@@ -61,6 +62,11 @@ func _build_ui() -> void:
 	_free_label = Label.new()
 	_free_label.add_theme_font_size_override("font_size", 16)
 	vbox.add_child(_free_label)
+
+	_rate_label = Label.new()
+	_rate_label.add_theme_font_size_override("font_size", 15)
+	_rate_label.add_theme_color_override("font_color", Color(0.7, 0.9, 1.0))
+	vbox.add_child(_rate_label)
 
 	var sep2: HSeparator = HSeparator.new()
 	vbox.add_child(sep2)
@@ -89,22 +95,27 @@ func _build_ui() -> void:
 	_fortify_btn.pressed.connect(_on_fortify)
 	vbox.add_child(_fortify_btn)
 
-func open_for_farm(farm_node: Node) -> void:
-	_farm = farm_node
+func open_for_tower(tower_node: Node) -> void:
+	_tower = tower_node
 	_refresh()
 	visible = true
 
 func _refresh() -> void:
-	if _farm == null:
+	if _tower == null:
 		return
-	var assigned: int = int(_farm.call("get_assigned_workers"))
+	var assigned: int = int(_tower.call("get_assigned_workers"))
 	var free: int = GameState.get_free_workers()
-	_assigned_label.text = "Assigned Workers: %d" % assigned
+	_assigned_label.text = "Workers: %d / 3" % assigned
 	_free_label.text = "Free Workers: %d" % free
-	_assign_btn.disabled = free <= 0
+	match assigned:
+		0: _rate_label.text = "Status: Inactive (no workers)"
+		1: _rate_label.text = "Fire Rate: Slow (every 2.0s)"
+		2: _rate_label.text = "Fire Rate: Medium (every 1.25s)"
+		3: _rate_label.text = "Fire Rate: Fast (every 0.75s)"
+	_assign_btn.disabled = assigned >= 3 or free <= 0
 	_unassign_btn.disabled = assigned <= 0
-	if bool(_farm.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / 200)" % int(_farm.call("get_shield_hp"))
+	if bool(_tower.call("is_fortified")):
+		_fortify_btn.text = "Fortified  (Shield: %d / 200)" % int(_tower.call("get_shield_hp"))
 		_fortify_btn.disabled = true
 	else:
 		_fortify_btn.text = "Fortify  (%d coins)" % GameState.FORTIFY_COST
@@ -112,28 +123,28 @@ func _refresh() -> void:
 
 func _close() -> void:
 	visible = false
-	_farm = null
+	_tower = null
 
 func _on_overlay_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and (event as InputEventMouseButton).pressed:
 		_close()
 
 func _on_assign() -> void:
-	if _farm == null:
+	if _tower == null:
 		return
-	_farm.call("assign_worker")
+	_tower.call("assign_worker")
 	_refresh()
 
 func _on_unassign() -> void:
-	if _farm == null:
+	if _tower == null:
 		return
-	_farm.call("unassign_worker")
+	_tower.call("unassign_worker")
 	_refresh()
 
 func _on_fortify() -> void:
-	if _farm == null:
+	if _tower == null:
 		return
-	if not bool(_farm.call("fortify")):
+	if not bool(_tower.call("fortify")):
 		_show_error("Not enough coins!")
 		return
 	_refresh()

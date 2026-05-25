@@ -12,6 +12,7 @@ func _ready() -> void:
 	play("Idle")
 
 func _process(delta: float) -> void:
+	_tick_regen(delta)
 	if _assigned_workers.is_empty():
 		return
 	_food_timer += delta
@@ -39,7 +40,7 @@ func assign_worker() -> bool:
 	if free_worker == null:
 		return false
 	_assigned_workers.append(free_worker)
-	free_worker.call("assign_to", global_position)
+	free_worker.call("assign_to", global_position + work_offset)
 	GameState.record_worker_assigned(1)
 	return true
 

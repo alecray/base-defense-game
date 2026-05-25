@@ -2,10 +2,12 @@ extends CharacterBody2D
 
 const SPEED: float = 200.0
 
+@onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _tile_detector: Area2D = $TileDetector
 @onready var _purchase_prompt: Label = $PurchasePrompt
 
 func _ready() -> void:
+	add_to_group("player")
 	_purchase_prompt.visible = false
 	_purchase_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_purchase_prompt.add_theme_font_size_override("font_size", 14)
@@ -22,6 +24,8 @@ func _physics_process(_delta: float) -> void:
 	if Input.is_physical_key_pressed(KEY_W):
 		direction.y -= 1.0
 	velocity = direction.normalized() * SPEED if direction.length_squared() > 0.0 else Vector2.ZERO
+	if direction.x != 0.0:
+		_sprite.flip_h = direction.x < 0.0
 	move_and_slide()
 	_update_prompt()
 
@@ -37,7 +41,7 @@ func _try_show_prompt_for(area: Area2D) -> bool:
 	var unlocked: bool = area.get_meta("tile_unlocked")
 	var has_building: bool = area.get_meta("tile_has_building")
 	var building_name: String = area.get_meta("tile_building") if area.has_meta("tile_building") else ""
-	if unlocked and has_building and building_name != "Core" and building_name != "Farm":
+	if unlocked and has_building and building_name != "Core" and building_name != "Farm" and building_name != "Tower" and building_name != "Barracks" and building_name != "GoldMine":
 		return false
 	if not unlocked:
 		if GameState.get_building_count("Core") == 0:
@@ -46,7 +50,7 @@ func _try_show_prompt_for(area: Area2D) -> bool:
 		var grid_node: Node = get_tree().get_first_node_in_group("tile_grid")
 		var cost: int = int(grid_node.call("get_tile_cost", gp)) if grid_node != null else 0
 		_purchase_prompt.text = "Press [E] to purchase (%d coins)" % cost
-	elif building_name == "Core" or building_name == "Farm":
+	elif building_name == "Core" or building_name == "Farm" or building_name == "Tower" or building_name == "Barracks" or building_name == "GoldMine":
 		_purchase_prompt.text = "Press [E] to manage"
 	else:
 		_purchase_prompt.text = "Press [E] to build"
@@ -69,7 +73,7 @@ func _handle_e_for(area: Area2D) -> bool:
 	var unlocked: bool = area.get_meta("tile_unlocked")
 	var has_building: bool = area.get_meta("tile_has_building")
 	var building_name: String = area.get_meta("tile_building") if area.has_meta("tile_building") else ""
-	if unlocked and has_building and building_name != "Core" and building_name != "Farm":
+	if unlocked and has_building and building_name != "Core" and building_name != "Farm" and building_name != "Tower" and building_name != "Barracks" and building_name != "GoldMine":
 		return false
 	var gp: Vector2i = area.get_meta("tile_gp")
 	if not unlocked:
@@ -81,14 +85,33 @@ func _handle_e_for(area: Area2D) -> bool:
 		return true
 	elif building_name == "Core":
 		var worker_ui: Node = get_tree().get_first_node_in_group("worker_ui")
-		if worker_ui != null:
-			worker_ui.call("open_for_tile", gp)
+		var building_node: Node = area.get_meta("tile_building_node") if area.has_meta("tile_building_node") else null
+		if worker_ui != null and building_node != null:
+			worker_ui.call("open_for_core", gp, building_node)
 		return true
 	elif building_name == "Farm":
 		var farm_ui: Node = get_tree().get_first_node_in_group("farm_ui")
 		var building_node: Node = area.get_meta("tile_building_node") if area.has_meta("tile_building_node") else null
 		if farm_ui != null and building_node != null:
 			farm_ui.call("open_for_farm", building_node)
+		return true
+	elif building_name == "Tower":
+		var tower_ui: Node = get_tree().get_first_node_in_group("tower_ui")
+		var building_node: Node = area.get_meta("tile_building_node") if area.has_meta("tile_building_node") else null
+		if tower_ui != null and building_node != null:
+			tower_ui.call("open_for_tower", building_node)
+		return true
+	elif building_name == "Barracks":
+		var barracks_ui: Node = get_tree().get_first_node_in_group("barracks_ui")
+		var building_node: Node = area.get_meta("tile_building_node") if area.has_meta("tile_building_node") else null
+		if barracks_ui != null and building_node != null:
+			barracks_ui.call("open_for_barracks", building_node)
+		return true
+	elif building_name == "GoldMine":
+		var gold_mine_ui: Node = get_tree().get_first_node_in_group("gold_mine_ui")
+		var building_node: Node = area.get_meta("tile_building_node") if area.has_meta("tile_building_node") else null
+		if gold_mine_ui != null and building_node != null:
+			gold_mine_ui.call("open_for_mine", building_node)
 		return true
 	else:
 		var shop: Node = get_tree().get_first_node_in_group("shop_ui")

@@ -1,0 +1,46 @@
+[gd_scene format=4 uid="uid://cnks6lqekwgaf"]
+
+[ext_resource type="Script" uid="uid://c64i6inslssxp" path="res://scripts/fortification.gd" id="1_fortify"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_nntkv"]
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAAD+AAAAUklGRvYAAABXRUJQVlA4TOkAAAAvf8AfEBcgEEhimXh8gUAS0YLLC0hS7KPGNf8B1R8gZ9vbtoF7OTtLZAqNkEYdOEAKpvASqqc0F3xrEnR6zyGi/xMQPscTedbCkZf+AAafvsmP1+Czd/H/yeTb7+inK3wHFS9VnLzY6YuFlxJn8DwDWZfJWMSWIsUBY28i6zIQ6MGA3EBWIjJObmOgykUUoBjIhbfaE4NVqFeDAWrHJyIyEQI5TSrYJBAN3UBpaLA6oxuogQi6IVquRy2J5pVARQT67WEl0GdqSkDrwypAgQqIdACXSQRnk2w8VVzzNhhYYmAA5qHBeLKTVwA=")
+size_override = Vector2(128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xuhnx"]
+atlas = SubResource("PortableCompressedTexture2D_nntkv")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_02naa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xuhnx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="Fortification" type="Node2D" unique_id=1772548380]
+script = ExtResource("1_fortify")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=560494352]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_02naa")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/building-mods/fortify.aseprite",
+"source_uid": 5404089470880965822
+}
+metadata/_aseprite_wizard_source_file_hash_ = "fae971db8f4ed2296337c710b9dff278"

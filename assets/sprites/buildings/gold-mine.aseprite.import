@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://c1na7yp430aum"
+path="res://.godot/imported/gold-mine.aseprite-158ae592300900b83ecea8a9df05761b.res"
+
+[deps]
+
+source_file="res://assets/sprites/buildings/gold-mine.aseprite"
+dest_files=["res://.godot/imported/gold-mine.aseprite-158ae592300900b83ecea8a9df05761b.res"]
+
+[params]
+

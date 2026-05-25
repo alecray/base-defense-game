@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://ci81tga7miwsc"
+path="res://.godot/imported/fortify.aseprite-3063bd9333b79b2b0bd8f5a4271e49ed.res"
+
+[deps]
+
+source_file="res://assets/sprites/building-mods/fortify.aseprite"
+dest_files=["res://.godot/imported/fortify.aseprite-3063bd9333b79b2b0bd8f5a4271e49ed.res"]
+
+[params]
+

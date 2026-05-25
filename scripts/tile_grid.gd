@@ -28,6 +28,9 @@ const BARRACKS_SCENE: PackedScene = preload("res://prefabs/barracks.tscn")
 const FARM_SCENE: PackedScene = preload("res://prefabs/farm.tscn")
 const TOWER_SCENE: PackedScene = preload("res://prefabs/tower.tscn")
 const WORKER_SCENE: PackedScene = preload("res://prefabs/worker.tscn")
+const GOLD_MINE_SCENE: PackedScene = preload("res://prefabs/gold_mine.tscn")
+
+const EXTRA_MINE_COUNT: int = 5
 
 var _tiles: Dictionary = {}
 
@@ -43,6 +46,66 @@ func _generate_grid() -> void:
 		for x: int in range(grid_cols):
 			var gp: Vector2i = Vector2i(x, y)
 			_create_tile(gp, gp == center)
+	_place_gold_mines(center)
+
+func _place_gold_mines(center: Vector2i) -> void:
+	var cardinal: Array[Vector2i] = [
+		Vector2i(center.x, center.y - 1),
+		Vector2i(center.x, center.y + 1),
+		Vector2i(center.x - 1, center.y),
+		Vector2i(center.x + 1, center.y),
+	]
+	var valid: Array[Vector2i] = []
+	for gp: Vector2i in cardinal:
+		if _tiles.has(gp):
+			valid.append(gp)
+	valid.shuffle()
+	var first_gp: Vector2i = valid[0]
+	_place_gold_mine_at(first_gp)
+
+	var candidates: Array[Vector2i] = []
+	for gp: Vector2i in _tiles:
+		if gp != center and gp != first_gp and not _tiles[gp].unlocked:
+			candidates.append(gp)
+	candidates.shuffle()
+	for i: int in range(mini(EXTRA_MINE_COUNT, candidates.size())):
+		_place_gold_mine_at(candidates[i])
+
+func _place_gold_mine_at(gp: Vector2i) -> void:
+	var tile: TileEntry = _tiles[gp]
+	tile.unlocked = true
+	tile.area.set_meta("tile_unlocked", true)
+	tile.label.visible = false
+	tile.rect.color = COLOR_UNLOCKED if has_unlocked_neighbor(gp) else COLOR_PURCHASABLE
+	tile.building = "GoldMine"
+	tile.area.set_meta("tile_has_building", true)
+	tile.area.set_meta("tile_building", "GoldMine")
+	var instance: Node2D = GOLD_MINE_SCENE.instantiate() as Node2D
+	instance.position = tile.area.position + Vector2(TILE_SIZE * 0.5, TILE_SIZE * 0.5)
+	add_child(instance)
+	instance.set("_tile_gp", gp)
+	tile.area.set_meta("tile_building_node", instance)
+
+func _get_neighbors(gp: Vector2i) -> Array[Vector2i]:
+	var result: Array[Vector2i] = []
+	for dx: int in [-1, 0, 1]:
+		for dy: int in [-1, 0, 1]:
+			if dx == 0 and dy == 0:
+				continue
+			var neighbor: Vector2i = Vector2i(gp.x + dx, gp.y + dy)
+			if _tiles.has(neighbor):
+				result.append(neighbor)
+	return result
+
+func has_unlocked_neighbor(gp: Vector2i) -> bool:
+	for neighbor: Vector2i in _get_neighbors(gp):
+		if _tiles[neighbor].unlocked:
+			return true
+	return false
+
+func reset_gold_mines() -> void:
+	@warning_ignore("integer_division")
+	_place_gold_mines(Vector2i(grid_cols / 2, grid_rows / 2))
 
 func _create_tile(gp: Vector2i, unlocked: bool) -> void:
 	var half: Vector2 = Vector2(grid_cols * TILE_SIZE * 0.5, grid_rows * TILE_SIZE * 0.5)
@@ -159,7 +222,16 @@ func _set_unlocked(gp: Vector2i, value: bool) -> void:
 	tile.area.set_meta("tile_unlocked", value)
 	if value:
 		tile.label.visible = false
+		_refresh_adjacent_mine_colors(gp)
 	_update_tile_visual(gp)
+
+func _refresh_adjacent_mine_colors(gp: Vector2i) -> void:
+	for neighbor: Vector2i in _get_neighbors(gp):
+		if not _tiles.has(neighbor):
+			continue
+		var neighbor_tile: TileEntry = _tiles[neighbor]
+		if neighbor_tile.building == "GoldMine":
+			neighbor_tile.rect.color = COLOR_UNLOCKED if has_unlocked_neighbor(neighbor) else COLOR_PURCHASABLE
 
 func _update_tile_visual(gp: Vector2i) -> void:
 	var tile: TileEntry = _tiles[gp]
@@ -186,6 +258,10 @@ func get_save_data() -> Array:
 		var entry: Dictionary = {}
 		entry["gp"] = [gp.x, gp.y]
 		entry["building"] = tile.building
+		if not tile.building.is_empty() and tile.area.has_meta("tile_building_node"):
+			var bnode: Node = tile.area.get_meta("tile_building_node") as Node
+			if bool(bnode.call("is_fortified")):
+				entry["shield_hp"] = int(bnode.call("get_shield_hp"))
 		result.append(entry)
 	return result
 
@@ -230,7 +306,7 @@ func unlock_tile_free(gp: Vector2i) -> void:
 		return
 	_set_unlocked(gp, true)
 
-func place_building_from_save(building_name: String, gp: Vector2i) -> void:
+func place_building_from_save(building_name: String, gp: Vector2i, shield_hp: int = 0) -> void:
 	if not _tiles.has(gp):
 		return
 	var tile: TileEntry = _tiles[gp]
@@ -246,6 +322,8 @@ func place_building_from_save(building_name: String, gp: Vector2i) -> void:
 			scene = FARM_SCENE
 		"Tower":
 			scene = TOWER_SCENE
+		"GoldMine":
+			scene = GOLD_MINE_SCENE
 		_:
 			return
 	tile.building = building_name
@@ -258,6 +336,8 @@ func place_building_from_save(building_name: String, gp: Vector2i) -> void:
 	instance.set("_tile_gp", gp)
 	instance.set("_building_name", building_name)
 	tile.area.set_meta("tile_building_node", instance)
+	if shield_hp > 0 and building_name != "GoldMine":
+		instance.call("restore_fortification", shield_hp)
 
 func destroy_building_at(gp: Vector2i) -> void:
 	if not _tiles.has(gp):
@@ -274,6 +354,45 @@ func spawn_worker_at(pos: Vector2) -> void:
 	var instance: Node2D = WORKER_SCENE.instantiate() as Node2D
 	instance.position = pos
 	add_child(instance)
+
+func get_tower_save_data() -> Array:
+	var result: Array = []
+	for gp: Vector2i in _tiles:
+		var tile: TileEntry = _tiles[gp]
+		if tile.building != "Tower":
+			continue
+		if not tile.area.has_meta("tile_building_node"):
+			continue
+		var tower_node: Node = tile.area.get_meta("tile_building_node") as Node
+		var entry: Dictionary = {}
+		entry["gp"] = [gp.x, gp.y]
+		entry["assigned_count"] = int(tower_node.call("get_assigned_workers"))
+		result.append(entry)
+	return result
+
+func get_gold_mine_at(gp: Vector2i) -> Node:
+	if not _tiles.has(gp):
+		return null
+	var tile: TileEntry = _tiles[gp]
+	if not tile.area.has_meta("tile_building_node"):
+		return null
+	return tile.area.get_meta("tile_building_node") as Node
+
+func get_gold_mine_save_data() -> Array:
+	var result: Array = []
+	for gp: Vector2i in _tiles:
+		var tile: TileEntry = _tiles[gp]
+		if tile.building != "GoldMine":
+			continue
+		if not tile.area.has_meta("tile_building_node"):
+			continue
+		var mine_node: Node = tile.area.get_meta("tile_building_node") as Node
+		var entry: Dictionary = {}
+		entry["gp"] = [gp.x, gp.y]
+		entry["reserves"] = int(mine_node.call("get_reserves"))
+		entry["assigned_count"] = int(mine_node.call("get_assigned_workers"))
+		result.append(entry)
+	return result
 
 func get_farm_at(gp: Vector2i) -> Node:
 	if not _tiles.has(gp):

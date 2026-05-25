@@ -8,6 +8,7 @@ const BUILDING_COSTS: Dictionary = {
 }
 
 const WORKER_COST: int = 20
+const FORTIFY_COST: int = 75
 
 const BUILDING_MAX_COUNTS: Dictionary = {
 	"Core": 1

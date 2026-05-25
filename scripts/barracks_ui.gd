@@ -1,15 +1,12 @@
 extends CanvasLayer
 
-var _farm: Node = null
-var _assigned_label: Label
-var _free_label: Label
-var _assign_btn: Button
-var _unassign_btn: Button
+var _building: Node = null
+var _status_label: Label
 var _fortify_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
-	add_to_group("farm_ui")
+	add_to_group("barracks_ui")
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 10
 	visible = false
@@ -30,7 +27,7 @@ func _build_ui() -> void:
 
 	var panel: PanelContainer = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(260.0, 250.0)
+	panel.custom_minimum_size = Vector2(260.0, 160.0)
 	root.add_child(panel)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
@@ -41,7 +38,7 @@ func _build_ui() -> void:
 	vbox.add_child(title_row)
 
 	var title: Label = Label.new()
-	title.text = "Farm Management"
+	title.text = "Barracks Management"
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.add_theme_font_size_override("font_size", 20)
 	title_row.add_child(title)
@@ -54,57 +51,30 @@ func _build_ui() -> void:
 	var sep: HSeparator = HSeparator.new()
 	vbox.add_child(sep)
 
-	_assigned_label = Label.new()
-	_assigned_label.add_theme_font_size_override("font_size", 16)
-	vbox.add_child(_assigned_label)
-
-	_free_label = Label.new()
-	_free_label.add_theme_font_size_override("font_size", 16)
-	vbox.add_child(_free_label)
+	_status_label = Label.new()
+	_status_label.add_theme_font_size_override("font_size", 15)
+	_status_label.add_theme_color_override("font_color", Color(0.8, 0.9, 0.8))
+	vbox.add_child(_status_label)
 
 	var sep2: HSeparator = HSeparator.new()
 	vbox.add_child(sep2)
-
-	var btn_row: HBoxContainer = HBoxContainer.new()
-	btn_row.add_theme_constant_override("separation", 8)
-	vbox.add_child(btn_row)
-
-	_unassign_btn = Button.new()
-	_unassign_btn.text = "- Remove Worker"
-	_unassign_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_unassign_btn.pressed.connect(_on_unassign)
-	btn_row.add_child(_unassign_btn)
-
-	_assign_btn = Button.new()
-	_assign_btn.text = "+ Assign Worker"
-	_assign_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_assign_btn.pressed.connect(_on_assign)
-	btn_row.add_child(_assign_btn)
-
-	var sep3: HSeparator = HSeparator.new()
-	vbox.add_child(sep3)
 
 	_fortify_btn = Button.new()
 	_fortify_btn.custom_minimum_size = Vector2(0.0, 40.0)
 	_fortify_btn.pressed.connect(_on_fortify)
 	vbox.add_child(_fortify_btn)
 
-func open_for_farm(farm_node: Node) -> void:
-	_farm = farm_node
+func open_for_barracks(building_node: Node) -> void:
+	_building = building_node
 	_refresh()
 	visible = true
 
 func _refresh() -> void:
-	if _farm == null:
+	if _building == null:
 		return
-	var assigned: int = int(_farm.call("get_assigned_workers"))
-	var free: int = GameState.get_free_workers()
-	_assigned_label.text = "Assigned Workers: %d" % assigned
-	_free_label.text = "Free Workers: %d" % free
-	_assign_btn.disabled = free <= 0
-	_unassign_btn.disabled = assigned <= 0
-	if bool(_farm.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / 200)" % int(_farm.call("get_shield_hp"))
+	_status_label.text = "Worker Cap Bonus: +5  (Total cap: %d)" % GameState.get_worker_cap()
+	if bool(_building.call("is_fortified")):
+		_fortify_btn.text = "Fortified  (Shield: %d / 200)" % int(_building.call("get_shield_hp"))
 		_fortify_btn.disabled = true
 	else:
 		_fortify_btn.text = "Fortify  (%d coins)" % GameState.FORTIFY_COST
@@ -112,28 +82,16 @@ func _refresh() -> void:
 
 func _close() -> void:
 	visible = false
-	_farm = null
+	_building = null
 
 func _on_overlay_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and (event as InputEventMouseButton).pressed:
 		_close()
 
-func _on_assign() -> void:
-	if _farm == null:
-		return
-	_farm.call("assign_worker")
-	_refresh()
-
-func _on_unassign() -> void:
-	if _farm == null:
-		return
-	_farm.call("unassign_worker")
-	_refresh()
-
 func _on_fortify() -> void:
-	if _farm == null:
+	if _building == null:
 		return
-	if not bool(_farm.call("fortify")):
+	if not bool(_building.call("fortify")):
 		_show_error("Not enough coins!")
 		return
 	_refresh()

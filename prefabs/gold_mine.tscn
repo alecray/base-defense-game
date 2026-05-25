@@ -1,0 +1,46 @@
+[gd_scene format=4 uid="uid://caesr724xi00h"]
+
+[ext_resource type="Script" uid="uid://1xrdu2r3p0nq" path="res://scripts/gold_mine.gd" id="1_goldmine"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_qedrx"]
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAAAgAQAAUklGRhgBAABXRUJQVlA4TAwBAAAvf8AfEC9AmG2c228eIzidIwswTc5idwJJZBBZgMkQJtGdQdARzn8AaquW+MYfIMS2WrvCAhawgAUsHP9icpKQG2j7vhPR/wmQf1MCkGgsMEa0FeARPUVEzKIZp0MACNqD7w6r9Xnqknt5kuLuxGl1/sTanAI44pU5BW3JKaYHvCw/BjSRjpF5UX4YvC90B+7TmsyO7BdlvRkAM3uKFWQYjT7ACjJwwtOMV2MpfMvmxdjEnouCzGD52ANQi+pwEMCWAShG9QTGDBSiNA98TVUrUtUjtqgU0Dp0M2FdV+uiWbpd2ZxofgeHpQq9VrqT1mS9G0nsRVL7kPT7JEPGHTl5nyzJnfcJkZvv+84L")
+size_override = Vector2(128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ybta1"]
+atlas = SubResource("PortableCompressedTexture2D_qedrx")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_31wux"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ybta1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="GoldMine" type="Node2D" unique_id=1636721153]
+script = ExtResource("1_goldmine")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=785735831]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_31wux")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/gold-mine.aseprite",
+"source_uid": 6624646643271275548
+}
+metadata/_aseprite_wizard_source_file_hash_ = "f764337ad796b2af41ed453d7d0b6444"

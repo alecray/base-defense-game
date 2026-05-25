@@ -37,6 +37,8 @@ func save_game() -> void:
 	data["tiles"] = tile_grid.call("get_save_data")
 	data["workers"] = _get_worker_save_data()
 	data["farms"] = tile_grid.call("get_farm_save_data")
+	data["towers"] = tile_grid.call("get_tower_save_data")
+	data["gold_mines"] = tile_grid.call("get_gold_mine_save_data")
 
 	var json_string: String = JSON.stringify(data, "\t")
 	var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -96,14 +98,15 @@ func load_game() -> void:
 		var building: String = str(tile_dict["building"])
 		tile_grid.call("unlock_tile_free", gp)
 		if building != "":
-			tile_grid.call("place_building_from_save", building, gp)
+			var shield_hp: int = int(tile_dict.get("shield_hp", 0))
+			tile_grid.call("place_building_from_save", building, gp, shield_hp)
 
 	var workers_data: Array = data["workers"] as Array
 	for worker_entry: Variant in workers_data:
 		var worker_dict: Dictionary = worker_entry as Dictionary
 		tile_grid.call("spawn_worker_at", Vector2(float(worker_dict["x"]), float(worker_dict["y"])))
 
-	var farms_data: Array = data["farms"] as Array
+	var farms_data: Array = data.get("farms", []) as Array
 	for farm_entry: Variant in farms_data:
 		var farm_dict: Dictionary = farm_entry as Dictionary
 		var farm_gp_arr: Array = farm_dict["gp"] as Array
@@ -114,13 +117,49 @@ func load_game() -> void:
 			for _i: int in range(assigned_count):
 				farm_node.call("assign_worker")
 
+	var towers_data: Array = data.get("towers", []) as Array
+	for tower_entry: Variant in towers_data:
+		var tower_dict: Dictionary = tower_entry as Dictionary
+		var tower_gp_arr: Array = tower_dict["gp"] as Array
+		var tower_gp: Vector2i = Vector2i(int(tower_gp_arr[0]), int(tower_gp_arr[1]))
+		var assigned_count: int = int(tower_dict["assigned_count"])
+		var tower_node: Node = tile_grid.call("get_farm_at", tower_gp) as Node
+		if tower_node != null:
+			for _i: int in range(assigned_count):
+				tower_node.call("assign_worker")
+
+	var gold_mines_data: Array = data.get("gold_mines", []) as Array
+	for mine_entry: Variant in gold_mines_data:
+		var mine_dict: Dictionary = mine_entry as Dictionary
+		var mine_gp_arr: Array = mine_dict["gp"] as Array
+		var mine_gp: Vector2i = Vector2i(int(mine_gp_arr[0]), int(mine_gp_arr[1]))
+		var reserves: int = int(mine_dict["reserves"])
+		var assigned_count: int = int(mine_dict["assigned_count"])
+		var mine_node: Node = tile_grid.call("get_gold_mine_at", mine_gp) as Node
+		if mine_node != null:
+			mine_node.call("set_reserves", reserves)
+			for _i: int in range(assigned_count):
+				mine_node.call("assign_worker")
+
 func reset_game() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
 
+	for enemy: Node in get_tree().get_nodes_in_group("enemies"):
+		enemy.queue_free()
+
 	var tile_grid: Node = get_tree().get_first_node_in_group("tile_grid")
 	if tile_grid != null:
 		tile_grid.call("clear_for_load")
+		tile_grid.call("reset_gold_mines")
+
+	var spawner: Node = get_tree().get_first_node_in_group("enemy_spawner")
+	if spawner != null:
+		spawner.call("reset")
+
+	var player: Node2D = get_tree().get_first_node_in_group("player") as Node2D
+	if player != null:
+		player.position = Vector2.ZERO
 
 	GameState.reset()
 

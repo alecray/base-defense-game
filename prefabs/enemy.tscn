@@ -3,16 +3,16 @@
 [ext_resource type="Script" uid="uid://cytgx8hww0krt" path="res://scripts/enemy.gd" id="1_enemy"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_6n8dw"]
-_data = PackedByteArray("AAADAAUAAAABAAAAQAAAAEAAAACkAAAAUklGRpwAAABXRUJQVlA4TI8AAAAvP8APECdAkG0zl9HM5MJ3I8i2meZkR/A7qQlAgI1ZOdxKmP8A2P8LmywwaiPJUVEYCk2hKTR/UnNxLj4j+j8B/MNS1ZWk1q9XY6SqK0mtX6/21eMxrtZ0KZoa81huSZikHbYziabGnoyhJeE6tnNMpuX5soLti2E7CReiMQfbu3CYhO0knHgejUvhcLHPCAA=")
-size_override = Vector2(64, 64)
+_data = PackedByteArray("AAADAAUAAAABAAAAQAAAACAAAABwAAAAUklGRmgAAABXRUJQVlA4TFwAAAAvP8AHEB8gJCBTHtihEQiQKStitBAIEGZ0+E9wM/8BqK58YBRJUqT+jMTiUoOcCfyNAmDv/Uf0fwL04w52Sx/A5GC39AFcFHEXrCLugknesHukhbxhq/U56dy/Aw==")
+size_override = Vector2(64, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yfjof"]
 atlas = SubResource("PortableCompressedTexture2D_6n8dw")
-region = Rect2(0, 0, 32, 64)
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cypye"]
 atlas = SubResource("PortableCompressedTexture2D_6n8dw")
-region = Rect2(32, 0, 32, 64)
+region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_a7d0n"]
 animations = [{
@@ -51,4 +51,4 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/npcs/enemy1.aseprite",
 "source_uid": 7268193220696355115
 }
-metadata/_aseprite_wizard_source_file_hash_ = "7c74947472fb760563ba3c9f5597897d"
+metadata/_aseprite_wizard_source_file_hash_ = "3347bbec4d473a8b62d51215fef24ed5"

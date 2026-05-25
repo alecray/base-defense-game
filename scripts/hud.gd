@@ -5,6 +5,7 @@ extends CanvasLayer
 var _core_prompt: Label
 var _workers_label: Label
 var _food_label: Label
+var _game_over_root: Control = null
 
 func _ready() -> void:
 	layer = 5
@@ -53,14 +54,18 @@ func _on_food_changed(new_amount: int) -> void:
 
 func _on_game_reset() -> void:
 	_core_prompt.visible = true
+	if _game_over_root != null:
+		_game_over_root.queue_free()
+		_game_over_root = null
 
 func _on_game_over() -> void:
 	get_tree().paused = true
 
-	var root: Control = Control.new()
-	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	root.process_mode = Node.PROCESS_MODE_ALWAYS
-	add_child(root)
+	_game_over_root = Control.new()
+	_game_over_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_game_over_root.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(_game_over_root)
+	var root: Control = _game_over_root
 
 	var overlay: ColorRect = ColorRect.new()
 	overlay.color = Color(0.0, 0.0, 0.0, 0.75)
