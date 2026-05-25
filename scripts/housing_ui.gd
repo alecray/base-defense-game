@@ -6,7 +6,7 @@ var _fortify_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
-	add_to_group("barracks_ui")
+	add_to_group("housing_ui")
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 10
 	visible = false
@@ -38,7 +38,7 @@ func _build_ui() -> void:
 	vbox.add_child(title_row)
 
 	var title: Label = Label.new()
-	title.text = "Barracks Management"
+	title.text = "Housing Management"
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.add_theme_font_size_override("font_size", 20)
 	title_row.add_child(title)
@@ -64,7 +64,7 @@ func _build_ui() -> void:
 	_fortify_btn.pressed.connect(_on_fortify)
 	vbox.add_child(_fortify_btn)
 
-func open_for_barracks(building_node: Node) -> void:
+func open_for_housing(building_node: Node) -> void:
 	_building = building_node
 	_refresh()
 	visible = true
@@ -72,7 +72,7 @@ func open_for_barracks(building_node: Node) -> void:
 func _refresh() -> void:
 	if _building == null:
 		return
-	_status_label.text = "Worker Cap Bonus: +%d  (Total cap: %d)" % [CONSTANTS.BARRACKS_WORKER_BONUS, GameState.get_worker_cap()]
+	_status_label.text = "Worker Cap Bonus: +%d  (Total cap: %d)" % [CONSTANTS.HOUSING_WORKER_BONUS, GameState.get_worker_cap()]
 	if bool(_building.call("is_fortified")):
 		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_building.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
 		_fortify_btn.disabled = true

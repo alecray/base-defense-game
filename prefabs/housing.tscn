@@ -28,7 +28,7 @@ animations = [{
 "speed": 1.0
 }]
 
-[node name="Barracks" type="AnimatedSprite2D" unique_id=332924309]
+[node name="Housing" type="AnimatedSprite2D" unique_id=332924309]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_y7lfd")
 animation = &"Idle"
@@ -46,7 +46,7 @@ metadata/_aseprite_wizard_config_ = {
 "scale": "1.0",
 "should_round_fps": true,
 "slice": "",
-"source": "res://assets/sprites/buildings/barracks.aseprite",
+"source": "res://assets/sprites/buildings/housing.aseprite",
 "source_uid": 8925863381747317713
 }
 metadata/_aseprite_wizard_source_file_hash_ = "bd3bab664731792ca8a17a82a7556fd4"

@@ -21,7 +21,7 @@ const COLOR_UNLOCKED: Color = Color("a9b2a2")
 const COLOR_PURCHASABLE: Color = Color("6e7469")
 
 const CORE_SCENE: PackedScene = preload("res://prefabs/core.tscn")
-const BARRACKS_SCENE: PackedScene = preload("res://prefabs/barracks.tscn")
+const HOUSING_SCENE: PackedScene = preload("res://prefabs/housing.tscn")
 const FARM_SCENE: PackedScene = preload("res://prefabs/farm.tscn")
 const TOWER_SCENE: PackedScene = preload("res://prefabs/tower.tscn")
 const WORKER_SCENE: PackedScene = preload("res://prefabs/worker.tscn")
@@ -186,8 +186,8 @@ func place_building(building_name: String, gp: Vector2i) -> void:
 	match building_name:
 		"Core":
 			scene = CORE_SCENE
-		"Barracks":
-			scene = BARRACKS_SCENE
+		"Housing":
+			scene = HOUSING_SCENE
 		"Farm":
 			scene = FARM_SCENE
 		"Tower":
@@ -319,8 +319,8 @@ func place_building_from_save(building_name: String, gp: Vector2i, shield_hp: in
 	match building_name:
 		"Core":
 			scene = CORE_SCENE
-		"Barracks":
-			scene = BARRACKS_SCENE
+		"Housing":
+			scene = HOUSING_SCENE
 		"Farm":
 			scene = FARM_SCENE
 		"Tower":

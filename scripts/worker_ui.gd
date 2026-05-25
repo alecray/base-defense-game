@@ -96,7 +96,7 @@ func _on_buy_worker() -> void:
 	if _target_tile == Vector2i(-1, -1):
 		return
 	if GameState.worker_count >= GameState.get_worker_cap():
-		_show_error("Needs more Barracks!")
+		_show_error("Needs more Housing!")
 		return
 	if not GameState.spend_coins(CONSTANTS.WORKER_COST):
 		_show_error("Not enough coins!")

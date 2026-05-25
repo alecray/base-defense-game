@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" path="res://scenes/worker_ui.tscn" id="5_wrkui"]
 [ext_resource type="PackedScene" path="res://scenes/farm_ui.tscn" id="6_farmui"]
 [ext_resource type="PackedScene" path="res://scenes/tower_ui.tscn" id="10_towerui"]
-[ext_resource type="PackedScene" path="res://scenes/barracks_ui.tscn" id="11_barrui"]
+[ext_resource type="PackedScene" path="res://scenes/housing_ui.tscn" id="11_barrui"]
 [ext_resource type="PackedScene" path="res://scenes/gold_mine_ui.tscn" id="12_goldmineui"]
 [ext_resource type="PackedScene" path="res://scenes/dev_menu.tscn" id="7_devmenu"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="13_daycycle"]
@@ -29,7 +29,7 @@ script = ExtResource("1_tilgrd")
 
 [node name="TowerUI" parent="." instance=ExtResource("10_towerui")]
 
-[node name="BarracksUI" parent="." instance=ExtResource("11_barrui")]
+[node name="HousingUI" parent="." instance=ExtResource("11_barrui")]
 
 [node name="GoldMineUI" parent="." instance=ExtResource("12_goldmineui")]
 

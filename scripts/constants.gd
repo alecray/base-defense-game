@@ -8,19 +8,19 @@ const FORTIFY_COST: int = 75
 const FOOD_DRAIN_INTERVAL: float = 5.0
 const BUILDING_COSTS: Dictionary = {
 	"Core": 100,
-	"Barracks": 50,
+	"Housing": 50,
 	"Farm": 75,
 	"Tower": 60,
 	"Lab": 150,
 	"SolarFarm": 80
 }
 
-## Barracks
-const BARRACKS_WORKER_BONUS: int = 5
+## Housing
+const HOUSING_WORKER_BONUS: int = 5
 
 ## Building HP
 const CORE_MAX_HP: int = 500
-const BARRACKS_MAX_HP: int = 150
+const HOUSING_MAX_HP: int = 150
 const FARM_MAX_HP: int = 100
 const TOWER_MAX_HP: int = 200
 

@@ -71,12 +71,12 @@ func record_worker_assigned(delta: int) -> void:
 	workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())
 
 func get_worker_cap() -> int:
-	return get_building_count("Barracks") * CONSTANTS.BARRACKS_WORKER_BONUS
+	return get_building_count("Housing") * CONSTANTS.HOUSING_WORKER_BONUS
 
 func record_building_placed(building_name: String) -> void:
 	building_counts[building_name] = building_counts.get(building_name, 0) + 1
 	building_placed.emit(building_name)
-	if building_name == "Barracks":
+	if building_name == "Housing":
 		workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())
 
 func record_worker_hired() -> void:
@@ -102,7 +102,7 @@ func record_building_destroyed(building_name: String) -> void:
 	var count: int = get_building_count(building_name)
 	if count > 0:
 		building_counts[building_name] = count - 1
-	if building_name == "Barracks":
+	if building_name == "Housing":
 		workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())
 
 func start_research(upgrade_id: String) -> void:
