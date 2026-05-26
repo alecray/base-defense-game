@@ -10,6 +10,7 @@ var _soldiers_label: Label
 var _day_label: Label
 var _time_label: Label
 var _game_over_root: Control = null
+var _tutorial_step: int = 0
 
 func _ready() -> void:
 	layer = 5
@@ -77,6 +78,9 @@ func _ready() -> void:
 	add_child(_core_prompt)
 	GameState.game_reset.connect(_on_game_reset)
 	GameState.game_over.connect(_on_game_over)
+	GameState.first_mine_worker_assigned.connect(_on_first_mine_worker_assigned)
+	GameState.first_farm_worker_assigned.connect(_on_first_farm_worker_assigned)
+	GameState.first_wall_placed.connect(_on_first_wall_placed)
 
 func _process(_delta: float) -> void:
 	if _time_label == null:
@@ -88,11 +92,33 @@ func _process(_delta: float) -> void:
 func _on_coins_changed(new_amount: int) -> void:
 	_coins_label.text = "Coins: %d" % new_amount
 
-func _on_building_placed(building_name: String) -> void:
-	if building_name == "Core":
-		_core_prompt.text = "Build a Solar Farm for power"
-	elif building_name == "SolarFarm" and GameState.get_building_count("SolarFarm") == 1:
+func _advance_tutorial(required_step: int, text: String) -> void:
+	if _tutorial_step != required_step:
+		return
+	_tutorial_step += 1
+	if text.is_empty():
 		_core_prompt.visible = false
+	else:
+		_core_prompt.text = text
+		_core_prompt.visible = true
+
+func _on_building_placed(building_name: String) -> void:
+	match building_name:
+		"Core":       _advance_tutorial(0, "Build a Solar Farm for power")
+		"SolarFarm":  _advance_tutorial(1, "Build Housing to expand worker cap")
+		"Housing":    _advance_tutorial(2, "Buy workers and assign them to Gold")
+		"Farm":       _advance_tutorial(4, "Assign workers to the farm")
+		"Tower":      _advance_tutorial(6, "Build Walls to protect your base")
+		"Lab":        _advance_tutorial(8, "")
+
+func _on_first_mine_worker_assigned() -> void:
+	_advance_tutorial(3, "Buy a Farm")
+
+func _on_first_farm_worker_assigned() -> void:
+	_advance_tutorial(5, "Build a Turret")
+
+func _on_first_wall_placed() -> void:
+	_advance_tutorial(7, "Build a Lab")
 
 func _on_workers_changed(count: int, cap: int, free: int) -> void:
 	_workers_label.text = "Workers: %d/%d (%d free)" % [count, cap, free]
@@ -113,6 +139,7 @@ func _on_game_reset() -> void:
 	_day_label.text = "Day 1"
 	_power_label.text = "Power: 0 / %d" % GameState.power_cap
 	_soldiers_label.text = "Soldiers: 0 / 0"
+	_tutorial_step = 0
 	_core_prompt.text = "Build a Core to start expanding"
 	_core_prompt.visible = true
 	if _game_over_root != null:

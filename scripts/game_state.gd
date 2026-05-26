@@ -23,6 +23,9 @@ signal power_changed(new_amount: int)
 signal soldiers_changed(count: int, cap: int)
 signal game_reset
 signal game_over
+signal first_mine_worker_assigned
+signal first_farm_worker_assigned
+signal first_wall_placed
 signal research_completed(upgrade_id: String)
 signal research_progress_changed(upgrade_id: String, progress: float)
 
@@ -31,6 +34,27 @@ var lab_research_progress: float = 0.0
 var lab_upgrade_levels: Dictionary = {}
 
 var _food_timer: float = 0.0
+var _mine_worker_ever_assigned: bool = false
+var _farm_worker_ever_assigned: bool = false
+var _wall_ever_placed: bool = false
+
+func notify_mine_worker_assigned() -> void:
+	if _mine_worker_ever_assigned:
+		return
+	_mine_worker_ever_assigned = true
+	first_mine_worker_assigned.emit()
+
+func notify_farm_worker_assigned() -> void:
+	if _farm_worker_ever_assigned:
+		return
+	_farm_worker_ever_assigned = true
+	first_farm_worker_assigned.emit()
+
+func notify_wall_placed() -> void:
+	if _wall_ever_placed:
+		return
+	_wall_ever_placed = true
+	first_wall_placed.emit()
 
 func _process(delta: float) -> void:
 	if worker_count <= 0:
@@ -191,6 +215,9 @@ func reset() -> void:
 	power_cap = CONSTANTS.POWER_CAP_BASE
 	food_cap = CONSTANTS.FOOD_CAP_BASE
 	soldiers = 0
+	_mine_worker_ever_assigned = false
+	_farm_worker_ever_assigned = false
+	_wall_ever_placed = false
 	game_reset.emit()
 	coins_changed.emit(coins)
 	food_changed.emit(food)

@@ -497,6 +497,7 @@ func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> String:
 	add_child(instance)
 	instance.call("init", edge["vertical"], key)
 	_walls[key] = instance
+	GameState.notify_wall_placed()
 	return ""
 
 func on_wall_destroyed(edge_key: String) -> void:
