@@ -2,9 +2,11 @@ extends Node
 
 const ENEMY_SCENE: PackedScene = preload("res://prefabs/enemy.tscn")
 const BIG_ENEMY_SCENE: PackedScene = preload("res://prefabs/big_enemy.tscn")
+const FLYING_ENEMY_SCENE: PackedScene = preload("res://prefabs/flying_enemy.tscn")
 
 var _elapsed: float = 0.0
 var _big_spawn_timer: float = 0.0
+var _fly_spawn_timer: float = 0.0
 var _in_night: bool = false
 var _wave_number: int = 0
 var _wave_timer: float = 0.0
@@ -45,6 +47,13 @@ func _process(delta: float) -> void:
 			_big_spawn_timer = 0.0
 			_spawn_big_enemy()
 
+	# Flying enemy — starts from night 3, independent timer
+	if day >= CONSTANTS.FLYING_ENEMY_SPAWN_START_DAY:
+		_fly_spawn_timer += delta
+		if _fly_spawn_timer >= CONSTANTS.FLYING_ENEMY_SPAWN_INTERVAL:
+			_fly_spawn_timer = 0.0
+			_spawn_flying_enemy()
+
 	# Drain burst queue — one enemy every WAVE_BURST_INTERVAL
 	if _burst_queue > 0:
 		_burst_timer -= delta
@@ -61,9 +70,17 @@ func _process(delta: float) -> void:
 	if _wave_timer <= 0.0:
 		_start_wave(day)
 
+func _spawn_flying_enemy() -> void:
+	var angle: float = randf() * TAU
+	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS
+	var instance: Node2D = FLYING_ENEMY_SCENE.instantiate() as Node2D
+	instance.position = pos
+	get_parent().add_child(instance)
+
 func reset() -> void:
 	_elapsed = 0.0
 	_big_spawn_timer = 0.0
+	_fly_spawn_timer = 0.0
 	_in_night = false
 	_wave_number = 0
 	_wave_timer = 0.0

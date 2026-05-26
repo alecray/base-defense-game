@@ -106,6 +106,17 @@ const ENEMY_ATTACK_RANGE: float = 72.0
 const ENEMY_ATTACK_INTERVAL: float = 1.2
 const ENEMY_ATTACK_DAMAGE: int = 10
 
+## Flying Enemy
+const FLYING_ENEMY_MAX_HP: int = 60
+const FLYING_ENEMY_SPEED: float = 38.0
+const FLYING_ENEMY_ATTACK_RANGE: float = 280.0
+const FLYING_ENEMY_ATTACK_INTERVAL: float = 2.5
+const FLYING_ENEMY_ATTACK_DAMAGE: int = 12
+const FLYING_ENEMY_COIN_REWARD: int = 20
+const FLYING_ENEMY_PROJECTILE_SPEED: float = 220.0
+const FLYING_ENEMY_SPAWN_START_DAY: int = 3
+const FLYING_ENEMY_SPAWN_INTERVAL: float = 22.0
+
 ## Big Enemy
 const BIG_ENEMY_MAX_HP: int = 350
 const BIG_ENEMY_SPEED: float = 28.0

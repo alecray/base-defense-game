@@ -1,0 +1,38 @@
+[gd_scene format=4 uid="uid://flyenemy00001"]
+
+[ext_resource type="Script" path="res://scripts/flying_enemy.gd" id="1_flyenemy"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_fly01"]
+_data = PackedByteArray("AAADAAUAAAABAAAAQAAAACAAAABwAAAAUklGRmgAAABXRUJQVlA4TFwAAAAvP8AHEB8gJCBTHtihEQiQKStitBAIEGZ0+E9wM/8BqK58YBRJUqT+jMTiUoOcCfyNAmDv/Uf0fwL04w52Sx/A5GC39AFcFHEXrCLugknesHukhbxhq/U56dy/Aw==")
+size_override = Vector2(64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fly01"]
+atlas = SubResource("PortableCompressedTexture2D_fly01")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fly02"]
+atlas = SubResource("PortableCompressedTexture2D_fly01")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fly01"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fly01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fly02")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 8.0
+}]
+
+[node name="FlyingEnemy" type="Node2D"]
+script = ExtResource("1_flyenemy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+modulate = Color(0.4, 0.9, 1.0, 1.0)
+sprite_frames = SubResource("SpriteFrames_fly01")
+animation = &"Idle"

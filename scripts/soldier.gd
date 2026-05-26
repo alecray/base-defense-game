@@ -65,6 +65,8 @@ func _find_threat() -> Node2D:
 	var nearest_dist: float = INF
 	for enemy: Node in get_tree().get_nodes_in_group("enemies"):
 		var e: Node2D = enemy as Node2D
+		if e.is_in_group("flying_enemies"):
+			continue
 		if _is_threatening(e):
 			var dist: float = global_position.distance_to(e.global_position)
 			if dist < nearest_dist:
