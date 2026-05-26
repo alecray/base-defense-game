@@ -12,8 +12,21 @@ var _time_label: Label
 var _game_over_root: Control = null
 var _tutorial_step: int = 0
 
+const _TUTORIAL_PROMPTS: Array = [
+	"Build a Core to start expanding",
+	"Build a Solar Farm for power",
+	"Build Housing to expand worker cap",
+	"Buy workers and assign them to Gold",
+	"Buy a Farm",
+	"Assign workers to the farm",
+	"Build a Turret",
+	"Build Walls to protect your base",
+	"Build a Lab",
+]
+
 func _ready() -> void:
 	layer = 5
+	add_to_group("hud")
 	_coins_label.add_theme_font_size_override("font_size", 20)
 	_coins_label.text = "Coins: %d" % GameState.coins
 	GameState.coins_changed.connect(_on_coins_changed)
@@ -92,33 +105,45 @@ func _process(_delta: float) -> void:
 func _on_coins_changed(new_amount: int) -> void:
 	_coins_label.text = "Coins: %d" % new_amount
 
-func _advance_tutorial(required_step: int, text: String) -> void:
+func get_tutorial_step() -> int:
+	return _tutorial_step
+
+func restore_tutorial_step(step: int) -> void:
+	_tutorial_step = step
+	GameState.restore_tutorial_flags(step)
+	if step >= _TUTORIAL_PROMPTS.size():
+		_core_prompt.visible = false
+	else:
+		_core_prompt.text = _TUTORIAL_PROMPTS[step]
+		_core_prompt.visible = true
+
+func _advance_tutorial(required_step: int) -> void:
 	if _tutorial_step != required_step:
 		return
 	_tutorial_step += 1
-	if text.is_empty():
+	if _tutorial_step >= _TUTORIAL_PROMPTS.size():
 		_core_prompt.visible = false
 	else:
-		_core_prompt.text = text
+		_core_prompt.text = _TUTORIAL_PROMPTS[_tutorial_step]
 		_core_prompt.visible = true
 
 func _on_building_placed(building_name: String) -> void:
 	match building_name:
-		"Core":       _advance_tutorial(0, "Build a Solar Farm for power")
-		"SolarFarm":  _advance_tutorial(1, "Build Housing to expand worker cap")
-		"Housing":    _advance_tutorial(2, "Buy workers and assign them to Gold")
-		"Farm":       _advance_tutorial(4, "Assign workers to the farm")
-		"Tower":      _advance_tutorial(6, "Build Walls to protect your base")
-		"Lab":        _advance_tutorial(8, "")
+		"Core":      _advance_tutorial(0)
+		"SolarFarm": _advance_tutorial(1)
+		"Housing":   _advance_tutorial(2)
+		"Farm":      _advance_tutorial(4)
+		"Tower":     _advance_tutorial(6)
+		"Lab":       _advance_tutorial(8)
 
 func _on_first_mine_worker_assigned() -> void:
-	_advance_tutorial(3, "Buy a Farm")
+	_advance_tutorial(3)
 
 func _on_first_farm_worker_assigned() -> void:
-	_advance_tutorial(5, "Build a Turret")
+	_advance_tutorial(5)
 
 func _on_first_wall_placed() -> void:
-	_advance_tutorial(7, "Build a Lab")
+	_advance_tutorial(7)
 
 func _on_workers_changed(count: int, cap: int, free: int) -> void:
 	_workers_label.text = "Workers: %d/%d (%d free)" % [count, cap, free]

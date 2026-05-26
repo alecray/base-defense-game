@@ -49,6 +49,8 @@ func save_game() -> void:
 	data["towers"] = tile_grid.call("get_tower_save_data")
 	data["gold_mines"] = tile_grid.call("get_gold_mine_save_data")
 	data["walls"] = tile_grid.call("get_wall_save_data")
+	var hud: Node = get_tree().get_first_node_in_group("hud")
+	data["tutorial_step"] = int(hud.call("get_tutorial_step")) if hud != null else 0
 
 	var json_string: String = JSON.stringify(data, "\t")
 	var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -176,6 +178,10 @@ func load_game() -> void:
 	for _i: int in range(soldiers_count):
 		var spawn_pos: Vector2 = Vector2(randf_range(-64.0, 64.0), randf_range(-64.0, 64.0))
 		tile_grid.call("spawn_soldier_at", spawn_pos)
+
+	var hud: Node = get_tree().get_first_node_in_group("hud")
+	if hud != null:
+		hud.call("restore_tutorial_step", int(data.get("tutorial_step", 0)))
 
 func reset_game() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
