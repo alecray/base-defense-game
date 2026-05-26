@@ -2,7 +2,6 @@
 
 | Impact | Item |
 |--------|------|
-| ★★★☆☆ | Siege Tower (AoE damage tower, no worker needed, uses power, slow fire rate) |
 | ★★★☆☆ | Market building (convert excess food/power into coins) |
 | ★★★☆☆ | Repair (spend coins to restore building HP manually) |
 | ★★☆☆☆ | More enemy variety (fast/fragile runners, armored tanks — 4 types already exist) |
@@ -29,3 +28,4 @@
 - [x] Balance the food drain (starting food 50→100, real-time net rate indicator in HUD)
 - [x] Tech gates (Armory Blueprint research in Lab unlocks Armory building)
 - [x] More Lab research (Combat Training, Soldier Endurance, Efficient Workers, Agricultural Methods)
+- [x] Siege Tower (AoE boulder, cluster targeting, no worker, 2 power/4s drain, 60 dmg / 90px radius / 750px range)

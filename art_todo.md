@@ -7,9 +7,6 @@
   - Static or simple animation (~128×128px), top-down perspective — heavy stone tower with a mounted catapult arm, medieval aesthetic
   - Currently uses a barracks-shape sprite with purple tint as placeholder
   - Swap in by updating `prefabs/siege_tower.tscn`: replace PackedByteArray texture and remove `modulate = Color(0.55, 0.40, 0.75, 1.0)`
-- [ ] Projectile — `assets/sprites/fx/siege_projectile.aseprite`
-  - Small dark boulder (~12–14px) — currently drawn as a brown circle in code
-  - Explosion ring is code-drawn (orange arc) — can remain code-drawn or be replaced with a particle effect
 
 ### Armory
 - [ ] Sprite — `assets/sprites/structures/armory.aseprite`
@@ -62,3 +59,9 @@
   - Tower bullet: `scripts/bullet.gd` `_draw()` — yellow circle + lighter trailing dot
   - Player bullet: `scripts/player_bullet.gd` `_draw()` — same style
   - Replace both `_draw()` methods with AnimatedSprite2D once ready
+
+### Siege Boulder
+- [ ] Sprite — `assets/sprites/fx/siege_projectile.aseprite`
+  - Small dark boulder (~12–14px) — currently drawn as a brown circle in `scripts/siege_projectile.gd` `_draw()`
+  - Explosion ring is code-drawn (expanding orange arc, fades over 0.4s) — can remain code-drawn or be replaced with a particle effect
+  - Replace `_draw()` flight rendering with a Node2D + Sprite2D once art is ready

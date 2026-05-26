@@ -15,11 +15,13 @@ The game is endless survival — enemies only spawn during the night, but they g
 | Core | 100 | 500 | Required first. Opens management menu for workers, fortification, and resource upgrades. |
 | Housing | 50 | 150 | Increases worker cap by 5 per building. |
 | Farm | 75 | 100 | Produces food with assigned workers (3 food per worker every 5s). Right-click to upgrade. |
-| Tower | 60 | 200 | Attacks enemies within 600px. Requires 1 assigned worker and available power. Right-click to upgrade. |
+| Tower | 60 | 200 | Attacks nearest enemy within 600px. Requires 1 worker and power. Right-click to upgrade. |
 | Barracks | 75 | 150 | Increases soldier cap by 5 per building. Allows purchasing soldiers. |
-| Lab | 150 | 200 | Research upgrades using coins. Currently: Turret Damage. |
+| Lab | 150 | 200 | Research permanent upgrades using coins. Six research options available. |
 | Solar Farm | 80 | 100 | Generates 6 power every 4 seconds during daytime only. |
 | Gold Mine | — | — | Spawns automatically on map generation. Staff with workers to earn coins (5 per worker every 5s). Depletes over time. |
+| Armory | 150 | 175 | Passively buffs all soldiers (+15 attack, new soldiers +25 HP per Armory built). Requires Armory Blueprint research. |
+| Siege Tower | 120 | 250 | Fires AoE boulders at the densest enemy cluster in range. No worker needed. Drains 2 power every 4s. |
 
 All buildings regenerate HP at 2% of max per tick (every 3 seconds) after 30 seconds without taking damage. Health bars appear automatically when a building takes damage and hide at full HP.
 
@@ -34,9 +36,13 @@ Right-click a Farm or Tower to open its upgrade option (max 1 upgrade each).
 
 ## Towers
 
-Towers require exactly 1 assigned worker and available power to fire. Each shot deals 25 base damage (upgradable via the Lab) to the nearest enemy within 600px range every 1 second. Towers drain 1 power every 4 seconds while staffed.
+Towers require exactly 1 assigned worker and available power to fire. Each shot deals 25 base damage (upgradable via the Lab) to the nearest enemy within 600px range every 1 second. Towers drain 1 power every 4 seconds while staffed. If power reaches 0, towers stop firing even if staffed.
 
-If power reaches 0, towers stop firing even if staffed.
+## Siege Towers
+
+Siege Towers fire automatically without a worker whenever power is available. Every 4.5 seconds they launch a boulder at the densest enemy cluster within 750px, dealing 60 damage to all enemies within a 90px explosion radius on impact. They drain 2 power every 4 seconds continuously.
+
+The targeting algorithm picks the enemy position with the most neighbors within the blast radius, making them naturally effective against tight groups and wave clusters.
 
 ## Workers
 
@@ -50,7 +56,7 @@ Soldiers are combat units purchased from the Barracks menu (press E on a Barrack
 
 Soldiers automatically hunt enemies that come within range of any player building. When no threats are nearby they patrol the perimeter of your unlocked territory. If an enemy camp is on the map and no regular enemies are threatening your base, soldiers will march to destroy it.
 
-Each soldier has 80 HP and deals 20 damage per second in melee range.
+Each soldier has 80 HP (base) and deals 20 damage per second (base) in melee range. Both stats increase with Armory buildings and Lab research.
 
 ## Enemies
 
@@ -84,7 +90,12 @@ Starting from night 2, an enemy camp spawns roughly 900px from your base. The ca
 
 ## Power
 
-Power is produced by Solar Farms (daytime only) and consumed by staffed Towers. The power cap starts at **120** and can be upgraded from the Core menu for 150 coins (+60 per upgrade). Surplus power is capped — build more Solar Farms and upgrade the cap before expanding your tower network.
+Power is produced by Solar Farms (daytime only) and consumed by Towers and Siege Towers. The power cap starts at **120** and can be upgraded from the Core menu for 150 coins (+60 per upgrade). Surplus power is capped — build more Solar Farms and upgrade the cap before expanding your tower network.
+
+| Consumer | Drain |
+|----------|-------|
+| Tower (staffed) | 1 power / 4s |
+| Siege Tower | 2 power / 4s (continuous) |
 
 ## Food
 
@@ -96,11 +107,16 @@ Each day and night lasts 150 seconds with a 15-second dusk/dawn transition. The 
 
 ## Lab Research
 
-Open the Lab menu (press E on the Lab) to start research. Research costs coins and takes real time to complete.
+Open the Lab menu (press E on the Lab) to start research. Only one research can run at a time. The UI scrolls to show all available options.
 
-| Upgrade | Cost | Time | Effect |
-|---------|------|------|--------|
-| Turret Damage | 100 | 45s | +5 damage per Tower shot per level |
+| Research | Cost | Time | Effect |
+|----------|------|------|--------|
+| Turret Damage | 100 | 45s | +5 Tower damage per level. No cap. |
+| Armory Blueprint | 175 | 75s | **One-time unlock.** Adds Armory to the build menu. |
+| Combat Training | 120 | 50s | +5 soldier attack damage per level. No cap. |
+| Soldier Endurance | 130 | 55s | +20 soldier max HP per level (new soldiers). No cap. |
+| Efficient Workers | 100 | 40s | +10 worker travel speed per level. No cap. |
+| Agricultural Methods | 110 | 45s | +1 food per farm worker per harvest tick per level. No cap. |
 
 ## Fortification
 
@@ -131,8 +147,8 @@ Legacy Point bonuses persist between runs and are stored separately from run sav
 ## Economy
 
 - **Coins** — earned from staffed Gold Mines and by killing enemies. Spent on tiles, buildings, workers, soldiers, research, and upgrades. Total coins earned this run drives enemy threat scaling.
-- **Food** — produced by Farms. Consumed by all workers (1 per worker every 5s). Starting supply: 50 (increased by legacy upgrades). Cap upgradable from Core.
-- **Power** — generated by Solar Farms (6 per tick) during daytime. Consumed by staffed Towers (1 per 4s). Starting cap: 120 (increased by legacy upgrades). Cap upgradable from Core.
+- **Food** — produced by Farms. Consumed by all workers (1 per worker every 5s). Starting supply: 100 (increased by legacy upgrades). Cap upgradable from Core. The HUD shows a live net rate indicator (+X/5s green, −X/5s red) next to the food counter.
+- **Power** — generated by Solar Farms (6 per tick) during daytime. Consumed by Towers (1/4s) and Siege Towers (2/4s). Starting cap: 120 (increased by legacy upgrades). Cap upgradable from Core.
 
 ## Controls
 
@@ -197,6 +213,9 @@ addons/      — Godot plugins (AsepriteWizard)
 | `burrower.gd` | Tunneling enemy — underground phase → emerge warning → surfaces and attacks |
 | `enemy_camp.gd` | Destroyable enemy structure — periodically spawns enemy bursts |
 | `tower.gd` | Tower attack loop, power drain, bullet spawning, upgrade-aware fire rate |
+| `siege_tower.gd` | AoE tower — cluster targeting, boulder fire, power drain |
+| `siege_projectile.gd` | Boulder projectile — flies to target position, AoE damage on impact, explosion ring visual |
+| `armory.gd` | Passive buff building — no logic beyond building_base; stats read by soldiers at spawn/attack |
 | `solar_farm.gd` | Power generation during daytime |
 | `wall.gd` | Placeable wall segment with HP, repair mechanic, depth sorting, and save/load support |
 | `day_night_cycle.gd` | Cycle timer, overlay alpha, time-of-day string, night intensity for spawning |
