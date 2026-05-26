@@ -531,6 +531,17 @@ func place_wall_from_save(key: String, hp: int) -> void:
 	instance.set("_hp", hp)
 	_walls[key] = instance
 
+func get_minimap_tile_data() -> Array:
+	var result: Array = []
+	for gp: Vector2i in _tiles:
+		var tile: TileEntry = _tiles[gp]
+		var entry: Dictionary = {}
+		entry["gp"] = gp
+		entry["unlocked"] = tile.unlocked
+		entry["building"] = tile.building
+		result.append(entry)
+	return result
+
 func clear_walls() -> void:
 	for key: String in _walls:
 		var wall: Node2D = _walls[key] as Node2D

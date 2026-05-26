@@ -95,6 +95,8 @@ func _ready() -> void:
 	add_child(_core_prompt)
 	GameState.game_reset.connect(_on_game_reset)
 	GameState.game_over.connect(_on_game_over)
+	var minimap: Control = load("res://scripts/minimap.gd").new()
+	add_child(minimap)
 	GameState.first_mine_worker_assigned.connect(_on_first_mine_worker_assigned)
 	GameState.first_farm_worker_assigned.connect(_on_first_farm_worker_assigned)
 	GameState.first_wall_placed.connect(_on_first_wall_placed)
