@@ -5,10 +5,8 @@
 | ★★★★★ | Threat scaling tied to economy (enemies scale with total coins earned, not just time) |
 | ★★★★☆ | Building upgrades (spend coins to level up existing buildings) |
 | ★★★★☆ | Enemy camp (visible target on the map soldiers can destroy for a big reward) |
-| ★★★★☆ | Balance the food drain |
 | ★★★☆☆ | More Lab research (soldier damage/HP, worker speed, farm yield) |
 | ★★★☆☆ | Catapult/Mortar (AoE damage tower, no worker needed, uses power, slow fire rate) |
-| ★★★☆☆ | Tech gates (Lab research that unlocks new buildings) |
 | ★★★☆☆ | Market building (convert excess food/power into coins) |
 | ★★★☆☆ | Repair (spend coins to restore building HP manually) |
 | ★★☆☆☆ | More enemy variety (fast/fragile runners, armored tanks — 4 types already exist) |
@@ -32,3 +30,5 @@
 - [x] Threat scaling (enemy HP/damage scales with total coins earned this run)
 - [x] Building upgrades (Farm: +food/worker, Tower: faster fire rate — right-click to upgrade)
 - [x] Enemy camp (spawns night 2+, periodically releases enemy bursts, soldiers march to destroy it, 150 coin reward)
+- [x] Balance the food drain (starting food 50→100, real-time net rate indicator in HUD)
+- [x] Tech gates (Armory Blueprint research in Lab unlocks Armory building)
