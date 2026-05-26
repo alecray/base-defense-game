@@ -23,10 +23,10 @@ var _grid_rows: int = 15
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	offset_right  = -MM_PAD
+	set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	offset_left   = MM_PAD
 	offset_bottom = -MM_PAD
-	offset_left   = offset_right  - MM_SIZE - BORDER * 2.0
+	offset_right  = offset_left  + MM_SIZE + BORDER * 2.0
 	offset_top    = offset_bottom - MM_SIZE - BORDER * 2.0
 	var tile_grid: Node = get_tree().get_first_node_in_group("tile_grid")
 	if tile_grid != null:

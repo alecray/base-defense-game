@@ -1,7 +1,6 @@
 extends CanvasLayer
 
-@onready var _coins_label: Label = $CoinsLabel
-
+var _coins_label: Label
 var _core_prompt: Label
 var _workers_label: Label
 var _food_label: Label
@@ -31,43 +30,47 @@ const _TUTORIAL_PROMPTS: Array = [
 func _ready() -> void:
 	layer = 5
 	add_to_group("hud")
-	_coins_label.add_theme_font_size_override("font_size", 20)
-	_coins_label.text = "Coins: %d" % GameState.coins
-	GameState.coins_changed.connect(_on_coins_changed)
-	GameState.building_placed.connect(_on_building_placed)
-	GameState.workers_changed.connect(_on_workers_changed)
-	GameState.food_changed.connect(_on_food_changed)
 
-	_workers_label = Label.new()
-	_workers_label.add_theme_font_size_override("font_size", 16)
-	_workers_label.text = "Workers: 0/0 (0 free)"
-	_workers_label.position = Vector2(12.0, 40.0)
-	add_child(_workers_label)
+	# --- Full-width top resource bar ---
+	var bar_bg: ColorRect = ColorRect.new()
+	bar_bg.color = Color(0.06, 0.06, 0.06, 0.82)
+	bar_bg.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	bar_bg.offset_bottom = 40.0
+	bar_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(bar_bg)
 
-	_food_label = Label.new()
-	_food_label.add_theme_font_size_override("font_size", 16)
-	_food_label.text = "Food: %d / %d" % [GameState.food, GameState.food_cap]
-	_food_label.position = Vector2(12.0, 62.0)
-	add_child(_food_label)
+	var hbox: HBoxContainer = HBoxContainer.new()
+	hbox.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	hbox.offset_bottom = 40.0
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.add_theme_constant_override("separation", 12)
+	hbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(hbox)
 
-	_power_label = Label.new()
-	_power_label.add_theme_font_size_override("font_size", 16)
-	_power_label.text = "Power: %d / %d" % [GameState.power, GameState.power_cap]
-	_power_label.position = Vector2(12.0, 84.0)
-	add_child(_power_label)
-	GameState.power_changed.connect(_on_power_changed)
+	_coins_label = _make_bar_label("Coins: %d" % GameState.coins)
+	hbox.add_child(_coins_label)
+	hbox.add_child(_make_sep())
 
-	_soldiers_label = Label.new()
-	_soldiers_label.add_theme_font_size_override("font_size", 16)
-	_soldiers_label.text = "Soldiers: 0 / 0"
-	_soldiers_label.position = Vector2(12.0, 106.0)
-	add_child(_soldiers_label)
-	GameState.soldiers_changed.connect(_on_soldiers_changed)
+	_food_label = _make_bar_label("Food: %d / %d" % [GameState.food, GameState.food_cap])
+	hbox.add_child(_food_label)
+	hbox.add_child(_make_sep())
 
+	_power_label = _make_bar_label("Power: %d / %d" % [GameState.power, GameState.power_cap])
+	hbox.add_child(_power_label)
+	hbox.add_child(_make_sep())
+
+	_workers_label = _make_bar_label("Workers: 0/0 (0 free)")
+	hbox.add_child(_workers_label)
+	hbox.add_child(_make_sep())
+
+	_soldiers_label = _make_bar_label("Soldiers: 0 / 0")
+	hbox.add_child(_soldiers_label)
+
+	# --- Day / Time (below bar, center) ---
 	_day_label = Label.new()
-	_day_label.add_theme_font_size_override("font_size", 20)
+	_day_label.add_theme_font_size_override("font_size", 18)
 	_day_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	_day_label.offset_top = 10.0
+	_day_label.offset_top = 46.0
 	_day_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(_day_label)
 	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
@@ -78,29 +81,57 @@ func _ready() -> void:
 		_day_label.text = "Day 1"
 
 	_time_label = Label.new()
-	_time_label.add_theme_font_size_override("font_size", 14)
+	_time_label.add_theme_font_size_override("font_size", 13)
 	_time_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	_time_label.offset_top = 36.0
+	_time_label.offset_top = 68.0
 	_time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_time_label.text = "6:00 AM"
 	add_child(_time_label)
 
+	# --- Tutorial prompt ---
 	_core_prompt = Label.new()
 	_core_prompt.text = "Build a Core to start expanding"
-	_core_prompt.add_theme_font_size_override("font_size", 16)
+	_core_prompt.add_theme_font_size_override("font_size", 15)
 	_core_prompt.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	_core_prompt.offset_top = 58.0
+	_core_prompt.offset_top = 88.0
 	_core_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_core_prompt.visible = GameState.get_building_count("Core") == 0
 	add_child(_core_prompt)
-	GameState.game_reset.connect(_on_game_reset)
-	GameState.game_over.connect(_on_game_over)
+
+	# --- Minimap (bottom-left) ---
 	var minimap: Control = load("res://scripts/minimap.gd").new()
 	add_child(minimap)
+
+	# --- Signals ---
+	GameState.coins_changed.connect(_on_coins_changed)
+	GameState.building_placed.connect(_on_building_placed)
+	GameState.workers_changed.connect(_on_workers_changed)
+	GameState.food_changed.connect(_on_food_changed)
+	GameState.power_changed.connect(_on_power_changed)
+	GameState.soldiers_changed.connect(_on_soldiers_changed)
+	GameState.game_reset.connect(_on_game_reset)
+	GameState.game_over.connect(_on_game_over)
 	GameState.first_mine_worker_assigned.connect(_on_first_mine_worker_assigned)
 	GameState.first_farm_worker_assigned.connect(_on_first_farm_worker_assigned)
 	GameState.first_wall_placed.connect(_on_first_wall_placed)
 	GameState.building_attacked.connect(_on_building_attacked)
+
+func _make_bar_label(text: String) -> Label:
+	var lbl: Label = Label.new()
+	lbl.text = text
+	lbl.add_theme_font_size_override("font_size", 15)
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return lbl
+
+func _make_sep() -> Label:
+	var sep: Label = Label.new()
+	sep.text = "|"
+	sep.add_theme_font_size_override("font_size", 15)
+	sep.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 0.55))
+	sep.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	sep.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return sep
 
 func _process(delta: float) -> void:
 	if _time_label == null:
