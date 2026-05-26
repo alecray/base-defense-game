@@ -8,6 +8,7 @@ var _food_label: Label
 var _power_label: Label
 var _soldiers_label: Label
 var _day_label: Label
+var _time_label: Label
 var _game_over_root: Control = null
 
 func _ready() -> void:
@@ -58,16 +59,31 @@ func _ready() -> void:
 	else:
 		_day_label.text = "Day 1"
 
+	_time_label = Label.new()
+	_time_label.add_theme_font_size_override("font_size", 14)
+	_time_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	_time_label.offset_top = 36.0
+	_time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_time_label.text = "6:00 AM"
+	add_child(_time_label)
+
 	_core_prompt = Label.new()
 	_core_prompt.text = "Build a Core to start expanding"
 	_core_prompt.add_theme_font_size_override("font_size", 16)
 	_core_prompt.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	_core_prompt.offset_top = 38.0
+	_core_prompt.offset_top = 58.0
 	_core_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_core_prompt.visible = GameState.get_building_count("Core") == 0
 	add_child(_core_prompt)
 	GameState.game_reset.connect(_on_game_reset)
 	GameState.game_over.connect(_on_game_over)
+
+func _process(_delta: float) -> void:
+	if _time_label == null:
+		return
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	if cycle != null:
+		_time_label.text = cycle.call("get_time_string") as String
 
 func _on_coins_changed(new_amount: int) -> void:
 	_coins_label.text = "Coins: %d" % new_amount

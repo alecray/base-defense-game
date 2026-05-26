@@ -19,7 +19,7 @@ func _build_ui() -> void:
 
 	var panel: PanelContainer = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(260.0, 240.0)
+	panel.custom_minimum_size = Vector2(260.0, 290.0)
 	root.add_child(panel)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
@@ -56,11 +56,25 @@ func _build_ui() -> void:
 	var sep2: HSeparator = HSeparator.new()
 	vbox.add_child(sep2)
 
+	var skip_dusk_btn: Button = Button.new()
+	skip_dusk_btn.text = "Skip to Dusk"
+	skip_dusk_btn.pressed.connect(_on_skip_dusk_pressed)
+	vbox.add_child(skip_dusk_btn)
+
+	var sep3: HSeparator = HSeparator.new()
+	vbox.add_child(sep3)
+
 	var reset_btn: Button = Button.new()
 	reset_btn.text = "Reset Game"
 	reset_btn.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4))
 	reset_btn.pressed.connect(_on_reset_pressed)
 	vbox.add_child(reset_btn)
+
+func _on_skip_dusk_pressed() -> void:
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	if cycle != null:
+		cycle.call("skip_to_dusk")
+	_close()
 
 func _on_reset_pressed() -> void:
 	var sm: Node = get_tree().get_first_node_in_group("save_manager")

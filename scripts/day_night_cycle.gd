@@ -62,6 +62,22 @@ func get_night_intensity() -> float:
 	else:
 		return smoothstep(0.0, 1.0, 1.0 - (t - (1.0 - trans)) / trans)
 
+func get_time_string() -> String:
+	var cycle_duration: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
+	var raw_hours: float = 6.0 + (_cycle_timer / cycle_duration) * 24.0
+	var hour_of_day: int = int(raw_hours) % 24
+	var minutes: int = int(fmod(raw_hours, 1.0) * 60.0)
+	var am_pm: String = "AM" if hour_of_day < 12 else "PM"
+	var display_hour: int = hour_of_day % 12
+	if display_hour == 0:
+		display_hour = 12
+	return "%d:%02d %s" % [display_hour, minutes, am_pm]
+
+func skip_to_dusk() -> void:
+	var dusk_start: float = CONSTANTS.DAY_DURATION - CONSTANTS.DAY_NIGHT_TRANSITION
+	if _cycle_timer < dusk_start:
+		_cycle_timer = dusk_start
+
 func get_day() -> int:
 	return _day_count
 
