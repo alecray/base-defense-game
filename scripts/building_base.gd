@@ -60,6 +60,7 @@ func take_damage(amount: int) -> void:
 		return
 	_hp = maxi(0, _hp - remaining)
 	_health_bar.call("set_hp", _hp)
+	GameState.building_attacked.emit(global_position)
 	if _hp <= 0:
 		_dying = true
 		_on_destroyed()

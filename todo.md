@@ -17,6 +17,6 @@
 - [ ] Repair (spend coins to restore building HP manually)
 - [x] Wall repairing (right-click a damaged wall to repair it for coins, enabling removal again)
 - [ ] Storehouse (increases overall resource caps, requires workers to staff)
-- [ ] Building attack alerts (screen flash or sound when a building is under attack off-screen)
+- [x] Building attack alerts (screen flash or sound when a building is under attack off-screen)
 - [ ] Structured waves (discrete enemy waves with cooldown windows instead of a pure spawn ramp)
 - [ ] Lights that come on at night (buildings/torches emit a glow when darkness falls)

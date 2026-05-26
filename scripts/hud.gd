@@ -11,6 +11,9 @@ var _day_label: Label
 var _time_label: Label
 var _game_over_root: Control = null
 var _tutorial_step: int = 0
+var _vignette: ColorRect = null
+var _vignette_tween: Tween = null
+var _indicator_cooldown: float = 0.0
 
 const _TUTORIAL_PROMPTS: Array = [
 	"Build a Core to start expanding",
@@ -95,13 +98,77 @@ func _ready() -> void:
 	GameState.first_mine_worker_assigned.connect(_on_first_mine_worker_assigned)
 	GameState.first_farm_worker_assigned.connect(_on_first_farm_worker_assigned)
 	GameState.first_wall_placed.connect(_on_first_wall_placed)
+	GameState.building_attacked.connect(_on_building_attacked)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if _time_label == null:
 		return
 	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
 	if cycle != null:
 		_time_label.text = cycle.call("get_time_string") as String
+	if _indicator_cooldown > 0.0:
+		_indicator_cooldown -= delta
+
+func _on_building_attacked(world_pos: Vector2) -> void:
+	_flash_vignette()
+	if _indicator_cooldown <= 0.0 and _is_world_pos_off_screen(world_pos):
+		_indicator_cooldown = 1.5
+		_show_direction_indicator(world_pos)
+
+func _flash_vignette() -> void:
+	if _vignette == null:
+		_vignette = ColorRect.new()
+		_vignette.color = Color(0.8, 0.0, 0.0, 0.0)
+		_vignette.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		_vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(_vignette)
+	if _vignette_tween != null:
+		_vignette_tween.kill()
+	_vignette.color.a = 0.3
+	_vignette_tween = create_tween()
+	_vignette_tween.tween_property(_vignette, "color:a", 0.0, 0.5)
+
+func _world_to_screen(world_pos: Vector2) -> Vector2:
+	var viewport: Viewport = get_viewport()
+	var camera: Camera2D = viewport.get_camera_2d()
+	if camera == null:
+		return world_pos
+	var viewport_size: Vector2 = viewport.get_visible_rect().size
+	return viewport_size / 2.0 + (world_pos - camera.global_position) * camera.zoom.x
+
+func _is_world_pos_off_screen(world_pos: Vector2) -> bool:
+	var screen_pos: Vector2 = _world_to_screen(world_pos)
+	var size: Vector2 = get_viewport().get_visible_rect().size
+	return screen_pos.x < 0.0 or screen_pos.x > size.x or screen_pos.y < 0.0 or screen_pos.y > size.y
+
+func _show_direction_indicator(world_pos: Vector2) -> void:
+	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+	var center: Vector2 = viewport_size / 2.0
+	var dir: Vector2 = (_world_to_screen(world_pos) - center).normalized()
+	var edge_pos: Vector2 = _screen_edge_point(dir, viewport_size, 36.0)
+	var label: Label = Label.new()
+	label.text = "▶"
+	label.add_theme_font_size_override("font_size", 22)
+	label.add_theme_color_override("font_color", Color(1.0, 0.15, 0.15))
+	label.position = edge_pos - Vector2(11.0, 11.0)
+	label.pivot_offset = Vector2(11.0, 11.0)
+	label.rotation = dir.angle()
+	add_child(label)
+	var tween: Tween = create_tween()
+	tween.tween_interval(1.5)
+	tween.tween_property(label, "modulate:a", 0.0, 0.6)
+	tween.tween_callback(label.queue_free)
+
+func _screen_edge_point(dir: Vector2, viewport_size: Vector2, margin: float) -> Vector2:
+	var center: Vector2 = viewport_size / 2.0
+	var t: float = INF
+	if absf(dir.x) > 0.001:
+		var tx: float = (((viewport_size.x - margin) if dir.x > 0.0 else margin) - center.x) / dir.x
+		t = minf(t, tx)
+	if absf(dir.y) > 0.001:
+		var ty: float = (((viewport_size.y - margin) if dir.y > 0.0 else margin) - center.y) / dir.y
+		t = minf(t, ty)
+	return center + dir * t
 
 func _on_coins_changed(new_amount: int) -> void:
 	_coins_label.text = "Coins: %d" % new_amount

@@ -26,6 +26,7 @@ signal game_over
 signal first_mine_worker_assigned
 signal first_farm_worker_assigned
 signal first_wall_placed
+signal building_attacked(world_pos: Vector2)
 signal research_completed(upgrade_id: String)
 signal research_progress_changed(upgrade_id: String, progress: float)
 
