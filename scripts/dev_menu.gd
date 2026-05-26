@@ -19,7 +19,7 @@ func _build_ui() -> void:
 
 	var panel: PanelContainer = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(260.0, 290.0)
+	panel.custom_minimum_size = Vector2(260.0, 320.0)
 	root.add_child(panel)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
@@ -52,6 +52,11 @@ func _build_ui() -> void:
 	add_1000.text = "Add 1000 Coins"
 	add_1000.pressed.connect(func() -> void: GameState.add_coins(1000))
 	vbox.add_child(add_1000)
+
+	var add_power: Button = Button.new()
+	add_power.text = "Add 50 Power"
+	add_power.pressed.connect(func() -> void: GameState.add_power(50))
+	vbox.add_child(add_power)
 
 	var sep2: HSeparator = HSeparator.new()
 	vbox.add_child(sep2)
