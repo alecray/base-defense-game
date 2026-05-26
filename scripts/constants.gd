@@ -54,7 +54,7 @@ const FARM_FOOD_PER_WORKER: int = 3
 ## Tower
 const TOWER_MAX_WORKERS: int = 1
 const TOWER_DAMAGE: int = 25
-const TOWER_RANGE: float = 300.0
+const TOWER_RANGE: float = 600.0
 const TOWER_INTERVAL: float = 1.0
 const TOWER_POWER_DRAIN_INTERVAL: float = 4.0
 const TOWER_POWER_DRAIN_AMOUNT: int = 1
