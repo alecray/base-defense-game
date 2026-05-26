@@ -43,7 +43,7 @@ func _ready() -> void:
 	hbox.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	hbox.offset_bottom = 40.0
 	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	hbox.add_theme_constant_override("separation", 8)
+	hbox.add_theme_constant_override("separation", 6)
 	hbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(hbox)
 
@@ -59,7 +59,7 @@ func _ready() -> void:
 	hbox.add_child(_power_label)
 	hbox.add_child(_make_sep())
 
-	_workers_label = _make_bar_label("Workers: 0/0 (0 free)")
+	_workers_label = _make_bar_label("Workers: 0/0")
 	hbox.add_child(_workers_label)
 	hbox.add_child(_make_sep())
 
@@ -119,7 +119,7 @@ func _ready() -> void:
 func _make_bar_label(text: String) -> Label:
 	var lbl: Label = Label.new()
 	lbl.text = text
-	lbl.add_theme_font_size_override("font_size", 13)
+	lbl.add_theme_font_size_override("font_size", 12)
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return lbl
@@ -127,7 +127,7 @@ func _make_bar_label(text: String) -> Label:
 func _make_sep() -> Label:
 	var sep: Label = Label.new()
 	sep.text = "|"
-	sep.add_theme_font_size_override("font_size", 13)
+	sep.add_theme_font_size_override("font_size", 12)
 	sep.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 0.55))
 	sep.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	sep.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -249,8 +249,8 @@ func _on_first_farm_worker_assigned() -> void:
 func _on_first_wall_placed() -> void:
 	_advance_tutorial(7)
 
-func _on_workers_changed(count: int, cap: int, free: int) -> void:
-	_workers_label.text = "Workers: %d/%d (%d free)" % [count, cap, free]
+func _on_workers_changed(count: int, cap: int, _free: int) -> void:
+	_workers_label.text = "Workers: %d/%d" % [count, cap]
 
 func _on_food_changed(new_amount: int) -> void:
 	_food_label.text = "Food: %d / %d" % [new_amount, GameState.food_cap]
