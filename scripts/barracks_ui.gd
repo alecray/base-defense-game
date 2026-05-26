@@ -109,7 +109,7 @@ func _on_buy_soldier() -> void:
 	if _building != null:
 		var grid: Node = get_tree().get_first_node_in_group("tile_grid")
 		if grid != null:
-			grid.call("spawn_soldier_at", (_building as Node2D).global_position)
+			grid.call("spawn_soldier_at", grid.call("get_soldier_spawn_pos"))
 	_refresh()
 
 func _on_fortify() -> void:

@@ -550,24 +550,53 @@ func clear_walls() -> void:
 	_walls.clear()
 
 func get_patrol_points() -> Array:
-	var result: Array = []
-	for gp: Vector2i in _tiles:
-		var tile: TileEntry = _tiles[gp]
-		if not tile.unlocked:
-			continue
-		var is_edge: bool = false
-		for dx: int in [-1, 0, 1]:
-			for dy: int in [-1, 0, 1]:
-				if dx == 0 and dy == 0:
-					continue
-				var neighbor: Vector2i = Vector2i(gp.x + dx, gp.y + dy)
-				if not _tiles.has(neighbor) or not _tiles[neighbor].unlocked:
-					is_edge = true
+	var center: Vector2 = Vector2.ZERO
+	var points: Array = []
+
+	if not _walls.is_empty():
+		for key: String in _walls:
+			var wall_node: Node2D = _walls[key] as Node2D
+			if not is_instance_valid(wall_node):
+				continue
+			var wall_pos: Vector2 = wall_node.global_position
+			var outward: Vector2 = wall_pos - center
+			outward = outward.normalized() if outward.length() > 0.1 else Vector2.RIGHT
+			points.append(wall_pos + outward * CONSTANTS.SOLDIER_PATROL_OFFSET)
+	else:
+		for gp: Vector2i in _tiles:
+			var tile: TileEntry = _tiles[gp]
+			if not tile.unlocked:
+				continue
+			var is_edge: bool = false
+			for dx: int in [-1, 0, 1]:
+				for dy: int in [-1, 0, 1]:
+					if dx == 0 and dy == 0:
+						continue
+					var neighbor: Vector2i = Vector2i(gp.x + dx, gp.y + dy)
+					if not _tiles.has(neighbor) or not _tiles[neighbor].unlocked:
+						is_edge = true
+						break
+				if is_edge:
 					break
 			if is_edge:
-				break
-		if is_edge:
-			var world_pos: Vector2 = tile.area.position + Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE * 0.5)
-			var dir: Vector2 = world_pos.normalized() if world_pos.length() > 0.1 else Vector2.RIGHT
-			result.append(world_pos + dir * float(CONSTANTS.TILE_SIZE) * 0.6)
-	return result
+				var world_pos: Vector2 = tile.area.position + Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE * 0.5)
+				var dir: Vector2 = world_pos.normalized() if world_pos.length() > 0.1 else Vector2.RIGHT
+				points.append(world_pos + dir * float(CONSTANTS.TILE_SIZE) * 0.6)
+
+	points.sort_custom(func(a: Vector2, b: Vector2) -> bool:
+		return (a - center).angle() < (b - center).angle()
+	)
+
+	# Thin out points that are too close together for smooth perimeter walking
+	var min_dist: float = float(CONSTANTS.TILE_SIZE) * 1.2
+	var thinned: Array = []
+	for pt: Vector2 in points:
+		if thinned.is_empty() or pt.distance_to(thinned.back() as Vector2) >= min_dist:
+			thinned.append(pt)
+	return thinned
+
+func get_soldier_spawn_pos() -> Vector2:
+	var pts: Array = get_patrol_points()
+	if pts.is_empty():
+		return Vector2(randf_range(-150.0, 150.0), randf_range(-150.0, 150.0))
+	return pts[randi() % pts.size()]

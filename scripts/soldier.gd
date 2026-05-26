@@ -12,6 +12,7 @@ var _patrol_points: Array = []
 var _patrol_index: int = 0
 var _retarget_timer: float = 0.0
 var _attack_timer: float = 0.0
+var _patrol_refresh_timer: float = 0.0
 var _hp: int = CONSTANTS.SOLDIER_HP
 var _health_bar: Node2D = null
 var _dying: bool = false
@@ -32,6 +33,11 @@ func _process(delta: float) -> void:
 	if _retarget_timer >= CONSTANTS.SOLDIER_RETARGET_INTERVAL:
 		_retarget_timer = 0.0
 		_update_target()
+	if _state == State.PATROL:
+		_patrol_refresh_timer += delta
+		if _patrol_refresh_timer >= CONSTANTS.SOLDIER_PATROL_REFRESH:
+			_patrol_refresh_timer = 0.0
+			_refresh_patrol_points()
 	match _state:
 		State.PATROL:
 			_do_patrol(delta)
@@ -49,6 +55,8 @@ func _update_target() -> void:
 		var dist: float = global_position.distance_to(_target.global_position)
 		_state = State.ATTACK if dist <= CONSTANTS.SOLDIER_ATTACK_RANGE else State.CHASE
 	else:
+		if _target != null:
+			_refresh_patrol_points()
 		_target = null
 		_state = State.PATROL
 
@@ -88,6 +96,9 @@ func _do_chase(delta: float) -> void:
 	if _target == null or not is_instance_valid(_target):
 		_state = State.PATROL
 		return
+	if global_position.distance_to(Vector2.ZERO) > CONSTANTS.SOLDIER_CHASE_RADIUS:
+		_state = State.PATROL
+		return
 	var to_target: Vector2 = _target.global_position - global_position
 	if to_target.length() <= CONSTANTS.SOLDIER_ATTACK_RANGE:
 		_state = State.ATTACK
@@ -114,8 +125,17 @@ func _refresh_patrol_points() -> void:
 	if grid == null:
 		return
 	_patrol_points = grid.call("get_patrol_points") as Array
-	_patrol_points.shuffle()
-	_patrol_index = 0
+	if _patrol_points.is_empty():
+		return
+	# Start from the patrol point closest to current position
+	var best_idx: int = 0
+	var best_dist: float = INF
+	for i: int in range(_patrol_points.size()):
+		var d: float = global_position.distance_to(_patrol_points[i] as Vector2)
+		if d < best_dist:
+			best_dist = d
+			best_idx = i
+	_patrol_index = best_idx
 
 func take_damage(amount: int) -> void:
 	if _dying:

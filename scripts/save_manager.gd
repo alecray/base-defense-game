@@ -185,8 +185,7 @@ func load_game() -> void:
 	GameState.soldiers = soldiers_count
 	GameState.soldiers_changed.emit(GameState.soldiers, GameState.get_soldier_cap())
 	for _i: int in range(soldiers_count):
-		var spawn_pos: Vector2 = Vector2(randf_range(-64.0, 64.0), randf_range(-64.0, 64.0))
-		tile_grid.call("spawn_soldier_at", spawn_pos)
+		tile_grid.call("spawn_soldier_at", tile_grid.call("get_soldier_spawn_pos"))
 
 func _infer_tutorial_step(data: Dictionary) -> int:
 	var bc: Dictionary = data.get("building_counts", {}) as Dictionary
