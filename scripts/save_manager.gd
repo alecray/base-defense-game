@@ -48,6 +48,7 @@ func save_game() -> void:
 	data["farms"] = tile_grid.call("get_farm_save_data")
 	data["towers"] = tile_grid.call("get_tower_save_data")
 	data["gold_mines"] = tile_grid.call("get_gold_mine_save_data")
+	data["walls"] = tile_grid.call("get_wall_save_data")
 
 	var json_string: String = JSON.stringify(data, "\t")
 	var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -163,6 +164,11 @@ func load_game() -> void:
 			mine_node.call("set_reserves", reserves)
 			for _i: int in range(assigned_count):
 				mine_node.call("assign_worker")
+
+	var walls_data: Array = data.get("walls", []) as Array
+	for wall_entry: Variant in walls_data:
+		var wall_dict: Dictionary = wall_entry as Dictionary
+		tile_grid.call("place_wall_from_save", str(wall_dict["key"]), int(wall_dict["hp"]))
 
 	var soldiers_count: int = int(data.get("soldiers", 0))
 	GameState.soldiers = soldiers_count

@@ -1,0 +1,48 @@
+[gd_scene format=4 uid="uid://wall000001"]
+
+[ext_resource type="Script" path="res://scripts/wall.gd" id="1_wall"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_v"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h"]
+size = Vector2(128, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v"]
+size = Vector2(20, 128)
+
+[node name="Wall" type="Node2D"]
+script = ExtResource("1_wall")
+
+[node name="SpriteH" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_h")
+animation = &"Idle"
+
+[node name="SpriteV" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_v")
+animation = &"Idle"
+visible = false
+
+[node name="Body" type="StaticBody2D" parent="."]
+
+[node name="ShapeH" type="CollisionShape2D" parent="Body"]
+shape = SubResource("RectangleShape2D_h")
+
+[node name="ShapeV" type="CollisionShape2D" parent="Body"]
+shape = SubResource("RectangleShape2D_v")
+disabled = true

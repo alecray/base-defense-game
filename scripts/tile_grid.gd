@@ -30,8 +30,10 @@ const LAB_SCENE: PackedScene = preload("res://prefabs/lab.tscn")
 const SOLAR_FARM_SCENE: PackedScene = preload("res://prefabs/solar_farm.tscn")
 const BARRACKS_SCENE: PackedScene = preload("res://prefabs/barracks.tscn")
 const SOLDIER_SCENE: PackedScene = preload("res://prefabs/soldier.tscn")
+const WALL_SCENE: PackedScene = preload("res://prefabs/wall.tscn")
 
 var _tiles: Dictionary = {}
+var _walls: Dictionary = {}
 
 func _ready() -> void:
 	add_to_group("tile_grid")
@@ -288,6 +290,7 @@ func get_farm_save_data() -> Array:
 	return result
 
 func clear_for_load() -> void:
+	clear_walls()
 	for worker: Node in get_tree().get_nodes_in_group("workers"):
 		worker.queue_free()
 	@warning_ignore("integer_division")
@@ -419,6 +422,95 @@ func spawn_soldier_at(pos: Vector2) -> void:
 	var instance: Node2D = SOLDIER_SCENE.instantiate() as Node2D
 	instance.position = pos
 	add_child(instance)
+
+func _tile_origin(gp: Vector2i) -> Vector2:
+	var half: Vector2 = Vector2(grid_cols * CONSTANTS.TILE_SIZE * 0.5, grid_rows * CONSTANTS.TILE_SIZE * 0.5)
+	return Vector2(gp.x * CONSTANTS.TILE_SIZE, gp.y * CONSTANTS.TILE_SIZE) - half
+
+func get_nearest_wall_edge(world_pos: Vector2) -> Dictionary:
+	var half: Vector2 = Vector2(grid_cols * CONSTANTS.TILE_SIZE * 0.5, grid_rows * CONSTANTS.TILE_SIZE * 0.5)
+	var local: Vector2 = world_pos + half
+	var gp_x: int = int(local.x / CONSTANTS.TILE_SIZE)
+	var gp_y: int = int(local.y / CONSTANTS.TILE_SIZE)
+	var best_dist: float = CONSTANTS.WALL_SNAP_DISTANCE
+	var best: Dictionary = {}
+	for dy: int in range(-1, 2):
+		for dx: int in range(-1, 2):
+			var tgp: Vector2i = Vector2i(gp_x + dx, gp_y + dy)
+			if not _tiles.has(tgp):
+				continue
+			var origin: Vector2 = _tile_origin(tgp)
+			var right_pos: Vector2 = origin + Vector2(CONSTANTS.TILE_SIZE, CONSTANTS.TILE_SIZE * 0.5)
+			var dist_r: float = world_pos.distance_to(right_pos)
+			if dist_r < best_dist:
+				best_dist = dist_r
+				best = {"key": "V,%d,%d" % [tgp.x, tgp.y], "vertical": true, "world_pos": right_pos, "gp": tgp}
+			var bot_pos: Vector2 = origin + Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE)
+			var dist_b: float = world_pos.distance_to(bot_pos)
+			if dist_b < best_dist:
+				best_dist = dist_b
+				best = {"key": "H,%d,%d" % [tgp.x, tgp.y], "vertical": false, "world_pos": bot_pos, "gp": tgp}
+	return best
+
+func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> bool:
+	var edge: Dictionary = get_nearest_wall_edge(world_pos)
+	if edge.is_empty():
+		return false
+	var edge_world: Vector2 = edge["world_pos"] as Vector2
+	if player_pos.distance_to(edge_world) > CONSTANTS.WALL_PLAYER_RANGE:
+		return false
+	var gp: Vector2i = edge["gp"] as Vector2i
+	if not _tiles.has(gp) or not _tiles[gp].unlocked:
+		return false
+	var key: String = edge["key"] as String
+	if _walls.has(key):
+		return false
+	if not GameState.spend_coins(CONSTANTS.WALL_COST):
+		return false
+	var instance: Node2D = WALL_SCENE.instantiate() as Node2D
+	instance.position = edge_world
+	add_child(instance)
+	instance.call("init", edge["vertical"], key)
+	_walls[key] = instance
+	return true
+
+func on_wall_destroyed(edge_key: String) -> void:
+	_walls.erase(edge_key)
+
+func get_wall_save_data() -> Array:
+	var result: Array = []
+	for key: String in _walls:
+		var wall: Node2D = _walls[key] as Node2D
+		if not is_instance_valid(wall):
+			continue
+		result.append({"key": key, "hp": int(wall.get("_hp"))})
+	return result
+
+func place_wall_from_save(key: String, hp: int) -> void:
+	if _walls.has(key):
+		return
+	var parts: PackedStringArray = key.split(",")
+	if parts.size() != 3:
+		return
+	var vertical: bool = parts[0] == "V"
+	var gp: Vector2i = Vector2i(int(parts[1]), int(parts[2]))
+	if not _tiles.has(gp):
+		return
+	var origin: Vector2 = _tile_origin(gp)
+	var wall_pos: Vector2 = origin + (Vector2(CONSTANTS.TILE_SIZE, CONSTANTS.TILE_SIZE * 0.5) if vertical else Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE))
+	var instance: Node2D = WALL_SCENE.instantiate() as Node2D
+	instance.position = wall_pos
+	add_child(instance)
+	instance.call("init", vertical, key)
+	instance.set("_hp", hp)
+	_walls[key] = instance
+
+func clear_walls() -> void:
+	for key: String in _walls:
+		var wall: Node2D = _walls[key] as Node2D
+		if is_instance_valid(wall):
+			wall.queue_free()
+	_walls.clear()
 
 func get_patrol_points() -> Array:
 	var result: Array = []

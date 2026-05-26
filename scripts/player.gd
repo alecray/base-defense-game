@@ -67,6 +67,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT and _shoot_cooldown <= 0.0:
 			_shoot(_world_mouse_position())
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
+			_try_place_wall(_world_mouse_position())
 		return
 	if not event is InputEventKey:
 		return
@@ -76,6 +78,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	for area: Area2D in _tile_detector.get_overlapping_areas():
 		if _handle_e_for(area):
 			return
+
+func _try_place_wall(world_pos: Vector2) -> void:
+	var grid: Node = get_tree().get_first_node_in_group("tile_grid")
+	if grid == null:
+		return
+	if not bool(grid.call("try_place_wall", world_pos, global_position)):
+		_show_error("Can't build wall here!")
 
 func _shoot(target: Vector2) -> void:
 	_shoot_cooldown = CONSTANTS.PLAYER_SHOOT_COOLDOWN

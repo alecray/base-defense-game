@@ -77,6 +77,7 @@ Fortify the Core from the Core menu for 75 coins. This adds a 200 HP shield laye
 |-------|--------|
 | WASD | Move player |
 | Left click | Shoot toward cursor |
+| Right click | Place wall on nearest tile edge (25 coins) |
 | E | Interact — purchase tile / open build menu / manage building |
 | Z | Manual save |
 | U | Toggle developer menu |
