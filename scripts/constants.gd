@@ -117,7 +117,6 @@ const BIG_ENEMY_SPAWN_MIN_INTERVAL: float = 12.0
 const DAY_DURATION: float = 150.0
 const NIGHT_DURATION: float = 150.0
 const DAY_NIGHT_TRANSITION: float = 15.0
-const NIGHT_SPAWN_CLUMP_MAX: int = 10
 
 ## Lab
 const LAB_MAX_HP: int = 200
@@ -142,8 +141,11 @@ const PLAYER_BULLET_LIFETIME: float = 2.0
 
 ## Enemy Spawner
 const ENEMY_SPAWN_RADIUS: float = 1400.0
-const ENEMY_SPAWN_BASE_INTERVAL: float = 8.0
-const ENEMY_SPAWN_MIN_INTERVAL: float = 1.5
-const ENEMY_SPAWN_RAMP_DAYS: int = 5
-const ENEMY_SPAWN_CLUMP_MAX: int = 3
 const ENEMY_SPAWN_SCATTER: float = 48.0
+const ENEMY_SPAWN_RAMP_DAYS: int = 5
+const WAVE_INITIAL_DELAY: float = 20.0
+const WAVE_COOLDOWN: float = 30.0
+const WAVE_BASE_COUNT: int = 3
+const WAVE_COUNT_PER_WAVE: int = 2
+const WAVE_COUNT_PER_DAY: int = 2
+const WAVE_BURST_INTERVAL: float = 0.4
