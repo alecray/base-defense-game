@@ -18,6 +18,7 @@ var _regen_timer: float = 0.0
 func _ready() -> void:
 	_hp = max_hp
 	add_to_group("buildings")
+	position.y += foot_y_offset
 	offset = Vector2(0.0, -foot_y_offset)
 	_health_bar = HEALTH_BAR_SCENE.instantiate() as Node2D
 	_health_bar.position = Vector2(0.0, -38.0 - foot_y_offset)
