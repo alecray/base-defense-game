@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 	_food_timer += delta
 	if _food_timer >= CONSTANTS.FARM_FOOD_INTERVAL:
 		_food_timer -= CONSTANTS.FARM_FOOD_INTERVAL
-		var amount: int = _assigned_workers.size() * (CONSTANTS.FARM_FOOD_PER_WORKER + upgrade_level * CONSTANTS.FARM_UPGRADE_FOOD_BONUS)
+		var amount: int = _assigned_workers.size() * (CONSTANTS.FARM_FOOD_PER_WORKER + upgrade_level * CONSTANTS.FARM_UPGRADE_FOOD_BONUS + GameState.get_farm_yield_bonus())
 		GameState.add_food(amount)
 		_show_food_popup(amount)
 

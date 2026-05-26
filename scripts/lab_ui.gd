@@ -1,13 +1,9 @@
 extends CanvasLayer
 
 var _ui_root: Control
-var _progress_bar: ProgressBar
-var _research_btn: Button
-var _level_label: Label
-var _status_label: Label
-var _armory_progress_bar: ProgressBar
-var _armory_research_btn: Button
-var _armory_status_label: Label
+var _status_labels: Dictionary = {}
+var _progress_bars: Dictionary = {}
+var _buttons: Dictionary = {}
 
 func _ready() -> void:
 	add_to_group("lab_ui")
@@ -17,6 +13,58 @@ func _ready() -> void:
 	_build_ui()
 	GameState.research_progress_changed.connect(_on_research_progress)
 	GameState.research_completed.connect(_on_research_completed)
+
+func _get_research_defs() -> Array:
+	return [
+		{
+			"id": "turret_damage",
+			"name": "Turret Damage",
+			"cost": CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_COST,
+			"duration": CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_DURATION,
+			"one_time": false,
+			"desc": "+%d tower damage per level. No cap." % CONSTANTS.LAB_TURRET_DAMAGE_UPGRADE_AMOUNT,
+		},
+		{
+			"id": "armory_blueprint",
+			"name": "Armory Blueprint",
+			"cost": CONSTANTS.LAB_RESEARCH_ARMORY_COST,
+			"duration": CONSTANTS.LAB_RESEARCH_ARMORY_DURATION,
+			"one_time": true,
+			"desc": "Unlocks the Armory building. Each Armory gives soldiers +%d attack and new soldiers spawn with +%d HP." % [CONSTANTS.ARMORY_DAMAGE_BONUS, CONSTANTS.ARMORY_HP_BONUS],
+		},
+		{
+			"id": "soldier_damage",
+			"name": "Combat Training",
+			"cost": CONSTANTS.LAB_RESEARCH_SOLDIER_DAMAGE_COST,
+			"duration": CONSTANTS.LAB_RESEARCH_SOLDIER_DAMAGE_DURATION,
+			"one_time": false,
+			"desc": "+%d soldier attack damage per level. No cap." % CONSTANTS.LAB_SOLDIER_DAMAGE_UPGRADE_AMOUNT,
+		},
+		{
+			"id": "soldier_hp",
+			"name": "Soldier Endurance",
+			"cost": CONSTANTS.LAB_RESEARCH_SOLDIER_HP_COST,
+			"duration": CONSTANTS.LAB_RESEARCH_SOLDIER_HP_DURATION,
+			"one_time": false,
+			"desc": "+%d soldier max HP per level (applies to newly spawned soldiers)." % CONSTANTS.LAB_SOLDIER_HP_UPGRADE_AMOUNT,
+		},
+		{
+			"id": "worker_speed",
+			"name": "Efficient Workers",
+			"cost": CONSTANTS.LAB_RESEARCH_WORKER_SPEED_COST,
+			"duration": CONSTANTS.LAB_RESEARCH_WORKER_SPEED_DURATION,
+			"one_time": false,
+			"desc": "+%d worker travel speed per level. No cap." % int(CONSTANTS.LAB_WORKER_SPEED_UPGRADE_AMOUNT),
+		},
+		{
+			"id": "farm_yield",
+			"name": "Agricultural Methods",
+			"cost": CONSTANTS.LAB_RESEARCH_FARM_YIELD_COST,
+			"duration": CONSTANTS.LAB_RESEARCH_FARM_YIELD_DURATION,
+			"one_time": false,
+			"desc": "+%d food per farm worker per harvest tick per level." % CONSTANTS.LAB_FARM_YIELD_UPGRADE_AMOUNT,
+		},
+	]
 
 func _build_ui() -> void:
 	var root: Control = Control.new()
@@ -33,15 +81,15 @@ func _build_ui() -> void:
 
 	var panel: PanelContainer = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(380.0, 460.0)
+	panel.custom_minimum_size = Vector2(420.0, 580.0)
 	root.add_child(panel)
 
-	var vbox: VBoxContainer = VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 10)
-	panel.add_child(vbox)
+	var outer_vbox: VBoxContainer = VBoxContainer.new()
+	outer_vbox.add_theme_constant_override("separation", 8)
+	panel.add_child(outer_vbox)
 
 	var title_row: HBoxContainer = HBoxContainer.new()
-	vbox.add_child(title_row)
+	outer_vbox.add_child(title_row)
 
 	var title: Label = Label.new()
 	title.text = "Lab Research"
@@ -50,174 +98,160 @@ func _build_ui() -> void:
 	title_row.add_child(title)
 
 	var close_btn: Button = Button.new()
-	close_btn.text = "X"
+	close_btn.text = "✕"
 	close_btn.pressed.connect(_close)
 	title_row.add_child(close_btn)
 
-	var sep: HSeparator = HSeparator.new()
-	vbox.add_child(sep)
+	outer_vbox.add_child(HSeparator.new())
 
-	var upgrade_vbox: VBoxContainer = VBoxContainer.new()
-	upgrade_vbox.add_theme_constant_override("separation", 8)
-	vbox.add_child(upgrade_vbox)
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	outer_vbox.add_child(scroll)
+
+	var content: VBoxContainer = VBoxContainer.new()
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 0)
+	scroll.add_child(content)
+
+	var defs: Array = _get_research_defs()
+	for i: int in range(defs.size()):
+		var def: Dictionary = defs[i] as Dictionary
+		_build_research_row(content, def)
+		if i < defs.size() - 1:
+			content.add_child(HSeparator.new())
+
+func _build_research_row(parent: VBoxContainer, def: Dictionary) -> void:
+	var id: String = str(def["id"])
+
+	var row: VBoxContainer = VBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	var margin: MarginContainer = MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 4)
+	margin.add_theme_constant_override("margin_right", 4)
+	margin.add_theme_constant_override("margin_top", 8)
+	margin.add_theme_constant_override("margin_bottom", 8)
+	margin.add_child(row)
+	parent.add_child(margin)
 
 	var name_row: HBoxContainer = HBoxContainer.new()
-	upgrade_vbox.add_child(name_row)
+	row.add_child(name_row)
 
 	var name_lbl: Label = Label.new()
-	name_lbl.text = "Turret Damage"
+	name_lbl.text = str(def["name"])
 	name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	name_lbl.add_theme_font_size_override("font_size", 16)
+	name_lbl.add_theme_font_size_override("font_size", 15)
 	name_row.add_child(name_lbl)
 
-	_level_label = Label.new()
-	_level_label.add_theme_font_size_override("font_size", 14)
-	name_row.add_child(_level_label)
+	var level_lbl: Label = Label.new()
+	level_lbl.add_theme_font_size_override("font_size", 13)
+	level_lbl.add_theme_color_override("font_color", Color(0.75, 0.85, 1.0))
+	name_row.add_child(level_lbl)
+	_status_labels[id + "_level"] = level_lbl
 
 	var desc_lbl: Label = Label.new()
-	desc_lbl.text = "+%d tower damage per level. No cap." % CONSTANTS.LAB_TURRET_DAMAGE_UPGRADE_AMOUNT
+	desc_lbl.text = str(def["desc"])
 	desc_lbl.add_theme_font_size_override("font_size", 12)
 	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
-	upgrade_vbox.add_child(desc_lbl)
+	desc_lbl.add_theme_color_override("font_color", Color(0.75, 0.75, 0.75))
+	row.add_child(desc_lbl)
 
-	_status_label = Label.new()
-	_status_label.add_theme_font_size_override("font_size", 12)
-	_status_label.add_theme_color_override("font_color", Color(0.6, 0.9, 1.0))
-	upgrade_vbox.add_child(_status_label)
+	var status_lbl: Label = Label.new()
+	status_lbl.add_theme_font_size_override("font_size", 12)
+	status_lbl.add_theme_color_override("font_color", Color(0.6, 0.9, 1.0))
+	row.add_child(status_lbl)
+	_status_labels[id] = status_lbl
 
-	_progress_bar = ProgressBar.new()
-	_progress_bar.min_value = 0.0
-	_progress_bar.max_value = 1.0
-	_progress_bar.value = 0.0
-	_progress_bar.custom_minimum_size = Vector2(0.0, 18.0)
-	_progress_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_progress_bar.show_percentage = false
-	upgrade_vbox.add_child(_progress_bar)
+	var pb: ProgressBar = ProgressBar.new()
+	pb.min_value = 0.0
+	pb.max_value = 1.0
+	pb.value = 0.0
+	pb.custom_minimum_size = Vector2(0.0, 14.0)
+	pb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pb.show_percentage = false
+	row.add_child(pb)
+	_progress_bars[id] = pb
 
-	_research_btn = Button.new()
-	_research_btn.custom_minimum_size = Vector2(0.0, 40.0)
-	_research_btn.pressed.connect(_on_research_pressed)
-	upgrade_vbox.add_child(_research_btn)
-
-	var sep2: HSeparator = HSeparator.new()
-	vbox.add_child(sep2)
-
-	var armory_vbox: VBoxContainer = VBoxContainer.new()
-	armory_vbox.add_theme_constant_override("separation", 8)
-	vbox.add_child(armory_vbox)
-
-	var armory_name_row: HBoxContainer = HBoxContainer.new()
-	armory_vbox.add_child(armory_name_row)
-
-	var armory_name_lbl: Label = Label.new()
-	armory_name_lbl.text = "Armory Blueprint"
-	armory_name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	armory_name_lbl.add_theme_font_size_override("font_size", 16)
-	armory_name_row.add_child(armory_name_lbl)
-
-	var armory_desc_lbl: Label = Label.new()
-	armory_desc_lbl.text = "Unlocks the Armory building. Each Armory gives soldiers +%d attack damage and new soldiers spawn with +%d HP." % [CONSTANTS.ARMORY_DAMAGE_BONUS, CONSTANTS.ARMORY_HP_BONUS]
-	armory_desc_lbl.add_theme_font_size_override("font_size", 12)
-	armory_desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
-	armory_vbox.add_child(armory_desc_lbl)
-
-	_armory_status_label = Label.new()
-	_armory_status_label.add_theme_font_size_override("font_size", 12)
-	_armory_status_label.add_theme_color_override("font_color", Color(0.6, 0.9, 1.0))
-	armory_vbox.add_child(_armory_status_label)
-
-	_armory_progress_bar = ProgressBar.new()
-	_armory_progress_bar.min_value = 0.0
-	_armory_progress_bar.max_value = 1.0
-	_armory_progress_bar.value = 0.0
-	_armory_progress_bar.custom_minimum_size = Vector2(0.0, 18.0)
-	_armory_progress_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_armory_progress_bar.show_percentage = false
-	armory_vbox.add_child(_armory_progress_bar)
-
-	_armory_research_btn = Button.new()
-	_armory_research_btn.custom_minimum_size = Vector2(0.0, 40.0)
-	_armory_research_btn.pressed.connect(_on_armory_research_pressed)
-	armory_vbox.add_child(_armory_research_btn)
+	var btn: Button = Button.new()
+	btn.custom_minimum_size = Vector2(0.0, 36.0)
+	btn.pressed.connect(_on_research_pressed.bind(id))
+	row.add_child(btn)
+	_buttons[id] = btn
 
 func open_for_lab(_gp: Vector2i, _building_node: Node) -> void:
 	_refresh()
 	visible = true
 
 func _refresh() -> void:
-	var level: int = GameState.get_upgrade_level("turret_damage")
-	var current_dmg: int = GameState.get_turret_damage()
-	_level_label.text = "Lv. %d  (%d dmg)" % [level, current_dmg]
-
-	var researching: bool = GameState.lab_research_id == "turret_damage"
 	var busy: bool = not GameState.lab_research_id.is_empty()
+	var active_id: String = GameState.lab_research_id
 
-	_research_btn.disabled = busy
-	_research_btn.text = "Research  (%d coins / %ds)" % [
-		CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_COST,
-		int(CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_DURATION)
-	]
+	for def: Variant in _get_research_defs():
+		var d: Dictionary = def as Dictionary
+		var id: String = str(d["id"])
+		var one_time: bool = bool(d["one_time"])
+		var level: int = GameState.get_upgrade_level(id)
+		var done: bool = one_time and level > 0
+		var cost: int = int(d["cost"])
+		var duration: float = float(d["duration"])
+		var is_active: bool = active_id == id
 
-	if researching:
-		_status_label.text = "Researching..."
-		_progress_bar.value = GameState.lab_research_progress / CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_DURATION
-	elif busy:
-		_status_label.text = "Another research in progress"
-		_progress_bar.value = 0.0
-	else:
-		_status_label.text = ""
-		_progress_bar.value = 0.0
+		var level_lbl: Label = _status_labels.get(id + "_level") as Label
+		var status_lbl: Label = _status_labels.get(id) as Label
+		var pb: ProgressBar = _progress_bars.get(id) as ProgressBar
+		var btn: Button = _buttons.get(id) as Button
 
-	# Armory Blueprint section
-	var armory_done: bool = GameState.get_upgrade_level("armory_blueprint") > 0
-	var armory_researching: bool = GameState.lab_research_id == "armory_blueprint"
-
-	if armory_done:
-		_armory_status_label.text = "Unlocked!"
-		_armory_status_label.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4))
-		_armory_progress_bar.value = 1.0
-		_armory_research_btn.disabled = true
-		_armory_research_btn.text = "Already Researched"
-	else:
-		_armory_status_label.add_theme_color_override("font_color", Color(0.6, 0.9, 1.0))
-		_armory_research_btn.disabled = busy
-		_armory_research_btn.text = "Research  (%d coins / %ds)" % [
-			CONSTANTS.LAB_RESEARCH_ARMORY_COST,
-			int(CONSTANTS.LAB_RESEARCH_ARMORY_DURATION)
-		]
-		if armory_researching:
-			_armory_status_label.text = "Researching..."
-			_armory_progress_bar.value = GameState.lab_research_progress / CONSTANTS.LAB_RESEARCH_ARMORY_DURATION
-		elif busy:
-			_armory_status_label.text = "Another research in progress"
-			_armory_progress_bar.value = 0.0
+		if done:
+			level_lbl.text = "Unlocked"
+			level_lbl.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4))
+			status_lbl.text = ""
+			pb.value = 1.0
+			btn.disabled = true
+			btn.text = "Already Researched"
 		else:
-			_armory_status_label.text = ""
-			_armory_progress_bar.value = 0.0
+			if one_time:
+				level_lbl.text = ""
+			else:
+				level_lbl.text = "Lv. %d" % level
+				level_lbl.add_theme_color_override("font_color", Color(0.75, 0.85, 1.0))
 
-func _on_research_pressed() -> void:
-	if not GameState.spend_coins(CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_COST):
+			btn.disabled = busy
+			btn.text = "Research  (%d coins / %ds)" % [cost, int(duration)]
+
+			if is_active:
+				var progress: float = GameState.lab_research_progress / duration
+				status_lbl.text = "Researching... %d%%" % int(progress * 100.0)
+				pb.value = progress
+			elif busy:
+				status_lbl.text = "Another research in progress"
+				pb.value = 0.0
+			else:
+				status_lbl.text = ""
+				pb.value = 0.0
+
+func _on_research_pressed(id: String) -> void:
+	var defs: Array = _get_research_defs()
+	var cost: int = 0
+	for def: Variant in defs:
+		var d: Dictionary = def as Dictionary
+		if str(d["id"]) == id:
+			cost = int(d["cost"])
+			break
+	if not GameState.spend_coins(cost):
 		_show_error("Not enough coins!")
 		return
-	GameState.start_research("turret_damage")
-	_refresh()
-
-func _on_armory_research_pressed() -> void:
-	if not GameState.spend_coins(CONSTANTS.LAB_RESEARCH_ARMORY_COST):
-		_show_error("Not enough coins!")
-		return
-	GameState.start_research("armory_blueprint")
+	GameState.start_research(id)
 	_refresh()
 
 func _on_research_progress(id: String, progress: float) -> void:
 	if not visible:
 		return
-	if id == "turret_damage":
-		_progress_bar.value = progress
-		_status_label.text = "Researching... %d%%" % int(progress * 100.0)
-	elif id == "armory_blueprint":
-		_armory_progress_bar.value = progress
-		_armory_status_label.text = "Researching... %d%%" % int(progress * 100.0)
+	var pb: ProgressBar = _progress_bars.get(id) as ProgressBar
+	var status_lbl: Label = _status_labels.get(id) as Label
+	if pb != null:
+		pb.value = progress
+	if status_lbl != null:
+		status_lbl.text = "Researching... %d%%" % int(progress * 100.0)
 
 func _on_research_completed(_id: String) -> void:
 	if visible:

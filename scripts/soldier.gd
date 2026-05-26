@@ -20,7 +20,7 @@ var _dying: bool = false
 
 func _ready() -> void:
 	add_to_group("soldiers")
-	_max_hp = CONSTANTS.SOLDIER_HP + GameState.get_armory_hp_bonus()
+	_max_hp = CONSTANTS.SOLDIER_HP + GameState.get_armory_hp_bonus() + GameState.get_soldier_hp_bonus()
 	_hp = _max_hp
 	_health_bar = HEALTH_BAR_SCENE.instantiate() as Node2D
 	_health_bar.position = Vector2(0.0, -38.0)
@@ -133,7 +133,7 @@ func _do_attack(delta: float) -> void:
 	_attack_timer += delta
 	if _attack_timer >= CONSTANTS.SOLDIER_ATTACK_INTERVAL:
 		_attack_timer = 0.0
-		_target.call("take_damage", CONSTANTS.SOLDIER_ATTACK_DAMAGE + GameState.get_armory_damage_bonus())
+		_target.call("take_damage", CONSTANTS.SOLDIER_ATTACK_DAMAGE + GameState.get_armory_damage_bonus() + GameState.get_soldier_damage_bonus())
 
 func _refresh_patrol_points() -> void:
 	var grid: Node = get_tree().get_first_node_in_group("tile_grid")

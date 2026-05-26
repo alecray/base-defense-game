@@ -106,6 +106,18 @@ func get_armory_damage_bonus() -> int:
 func get_armory_hp_bonus() -> int:
 	return get_building_count("Armory") * CONSTANTS.ARMORY_HP_BONUS
 
+func get_soldier_damage_bonus() -> int:
+	return get_upgrade_level("soldier_damage") * CONSTANTS.LAB_SOLDIER_DAMAGE_UPGRADE_AMOUNT
+
+func get_soldier_hp_bonus() -> int:
+	return get_upgrade_level("soldier_hp") * CONSTANTS.LAB_SOLDIER_HP_UPGRADE_AMOUNT
+
+func get_worker_speed_bonus() -> float:
+	return float(get_upgrade_level("worker_speed")) * CONSTANTS.LAB_WORKER_SPEED_UPGRADE_AMOUNT
+
+func get_farm_yield_bonus() -> int:
+	return get_upgrade_level("farm_yield") * CONSTANTS.LAB_FARM_YIELD_UPGRADE_AMOUNT
+
 func get_enemy_hp_multiplier() -> float:
 	return 1.0 + (float(total_coins_earned) / CONSTANTS.THREAT_SCALE_COINS) * CONSTANTS.THREAT_HP_SCALE
 
@@ -242,6 +254,14 @@ func _get_research_duration(id: String) -> float:
 			return CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_DURATION
 		"armory_blueprint":
 			return CONSTANTS.LAB_RESEARCH_ARMORY_DURATION
+		"soldier_damage":
+			return CONSTANTS.LAB_RESEARCH_SOLDIER_DAMAGE_DURATION
+		"soldier_hp":
+			return CONSTANTS.LAB_RESEARCH_SOLDIER_HP_DURATION
+		"worker_speed":
+			return CONSTANTS.LAB_RESEARCH_WORKER_SPEED_DURATION
+		"farm_yield":
+			return CONSTANTS.LAB_RESEARCH_FARM_YIELD_DURATION
 		_:
 			return 60.0
 

@@ -199,6 +199,26 @@ const ARMORY_HP_BONUS: int = 25
 const LAB_RESEARCH_ARMORY_COST: int = 175
 const LAB_RESEARCH_ARMORY_DURATION: float = 75.0
 
+## Lab — Combat Training (soldier damage)
+const LAB_RESEARCH_SOLDIER_DAMAGE_COST: int = 120
+const LAB_RESEARCH_SOLDIER_DAMAGE_DURATION: float = 50.0
+const LAB_SOLDIER_DAMAGE_UPGRADE_AMOUNT: int = 5
+
+## Lab — Soldier Endurance (soldier HP)
+const LAB_RESEARCH_SOLDIER_HP_COST: int = 130
+const LAB_RESEARCH_SOLDIER_HP_DURATION: float = 55.0
+const LAB_SOLDIER_HP_UPGRADE_AMOUNT: int = 20
+
+## Lab — Efficient Workers (worker speed)
+const LAB_RESEARCH_WORKER_SPEED_COST: int = 100
+const LAB_RESEARCH_WORKER_SPEED_DURATION: float = 40.0
+const LAB_WORKER_SPEED_UPGRADE_AMOUNT: float = 10.0
+
+## Lab — Agricultural Methods (farm yield)
+const LAB_RESEARCH_FARM_YIELD_COST: int = 110
+const LAB_RESEARCH_FARM_YIELD_DURATION: float = 45.0
+const LAB_FARM_YIELD_UPGRADE_AMOUNT: int = 1
+
 ## Legacy System
 const LEGACY_POINTS_PER_DAY: int = 10
 

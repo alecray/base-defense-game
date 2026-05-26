@@ -24,7 +24,7 @@ func _process(delta: float) -> void:
 				return
 			if to_target.x != 0.0:
 				_sprite.flip_h = to_target.x < 0.0
-			position += to_target.normalized() * CONSTANTS.WORKER_SPEED * delta
+			position += to_target.normalized() * (CONSTANTS.WORKER_SPEED + GameState.get_worker_speed_bonus()) * delta
 		1: # TRAVELING
 			var to_target: Vector2 = _target - position
 			if to_target.length() < CONSTANTS.WORKER_ARRIVAL_THRESHOLD:
@@ -33,7 +33,7 @@ func _process(delta: float) -> void:
 				return
 			if to_target.x != 0.0:
 				_sprite.flip_h = to_target.x < 0.0
-			position += to_target.normalized() * CONSTANTS.WORKER_SPEED * delta
+			position += to_target.normalized() * (CONSTANTS.WORKER_SPEED + GameState.get_worker_speed_bonus()) * delta
 		2: # WORKING
 			_roam_timer -= delta
 			if _roam_timer <= 0.0:
