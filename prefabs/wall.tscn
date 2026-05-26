@@ -1,9 +1,9 @@
-[gd_scene format=3 uid="uid://ykdni0fsggav"]
+[gd_scene format=4 uid="uid://ykdni0fsggav"]
 
 [ext_resource type="Script" uid="uid://ccocjlsrilbrw" path="res://scripts/wall.gd" id="1_wall"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_3usl3"]
-_data = PackedByteArray(0, 0, 3, 0, 5, 0, 0, 0, 1, 0, 0, 0, 128, 0, 0, 0, 20, 0, 0, 0, 38, 0, 0, 0, 82, 73, 70, 70, 30, 0, 0, 0, 87, 69, 66, 80, 86, 80, 56, 76, 17, 0, 0, 0, 47, 127, 192, 4, 0, 7, 80, 176, 94, 53, 173, 255, 129, 136, 232, 127, 0, 0)
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAABQAAAAwAAAAUklGRigAAABXRUJQVlA4TBwAAAAvf8AEEA8wIuMyL/Mf8BASEP6fdoAe0f9kZ54d")
 size_override = Vector2(128, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aw5sf"]
@@ -22,7 +22,7 @@ animations = [{
 }]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_3uv27"]
-_data = PackedByteArray(0, 0, 3, 0, 5, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0, 128, 0, 0, 0, 38, 0, 0, 0, 82, 73, 70, 70, 30, 0, 0, 0, 87, 69, 66, 80, 86, 80, 56, 76, 17, 0, 0, 0, 47, 19, 192, 31, 0, 7, 80, 176, 94, 53, 173, 255, 129, 136, 232, 127, 0, 0)
+_data = PackedByteArray("AAADAAUAAAABAAAAFAAAAIAAAAAwAAAAUklGRigAAABXRUJQVlA4TBwAAAAvE8AfEA8wIuMyL/Mf8BASEJ74/8JEMaL/kcwH")
 size_override = Vector2(20, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3usl3"]
@@ -69,7 +69,7 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/building-mods/wall_h.aseprite",
 "source_uid": 2547316863971844287
 }
-metadata/_aseprite_wizard_source_file_hash_ = "af9c14c1f1021e1dacbcb06716239fed"
+metadata/_aseprite_wizard_source_file_hash_ = "6d6ff74a9616dc050b934d9741e57594"
 
 [node name="SpriteV" type="AnimatedSprite2D" parent="." unique_id=617409733]
 visible = false
@@ -92,7 +92,7 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/building-mods/wall_v.aseprite",
 "source_uid": 3549572889790406251
 }
-metadata/_aseprite_wizard_source_file_hash_ = "f74f8e06ec6a0de4e4f2cdc785340893"
+metadata/_aseprite_wizard_source_file_hash_ = "892acd9a1666175521f8d5ca22d68c11"
 
 [node name="Body" type="StaticBody2D" parent="." unique_id=1970035602]
 
