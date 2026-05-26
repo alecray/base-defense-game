@@ -92,8 +92,8 @@ func load_game() -> void:
 		cycle.call("set_day", int(data.get("day", 1)))
 
 	GameState.power = int(data.get("power", 0))
-	GameState.power_cap = int(data.get("power_cap", CONSTANTS.POWER_CAP_BASE))
-	GameState.food_cap = int(data.get("food_cap", CONSTANTS.FOOD_CAP_BASE))
+	GameState.power_cap = maxi(int(data.get("power_cap", CONSTANTS.POWER_CAP_BASE)), CONSTANTS.POWER_CAP_BASE)
+	GameState.food_cap = maxi(int(data.get("food_cap", CONSTANTS.FOOD_CAP_BASE)), CONSTANTS.FOOD_CAP_BASE)
 	GameState.soldiers = int(data.get("soldiers", 0))
 	GameState.lab_research_id = str(data.get("lab_research_id", ""))
 	GameState.lab_research_progress = float(data.get("lab_research_progress", 0.0))
