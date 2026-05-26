@@ -1,21 +1,43 @@
-[gd_scene format=4 uid="uid://wall000001"]
+[gd_scene format=3 uid="uid://ykdni0fsggav"]
 
-[ext_resource type="Script" path="res://scripts/wall.gd" id="1_wall"]
+[ext_resource type="Script" uid="uid://ccocjlsrilbrw" path="res://scripts/wall.gd" id="1_wall"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_h"]
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_3usl3"]
+_data = PackedByteArray(0, 0, 3, 0, 5, 0, 0, 0, 1, 0, 0, 0, 128, 0, 0, 0, 20, 0, 0, 0, 38, 0, 0, 0, 82, 73, 70, 70, 30, 0, 0, 0, 87, 69, 66, 80, 86, 80, 56, 76, 17, 0, 0, 0, 47, 127, 192, 4, 0, 7, 80, 176, 94, 53, 173, 255, 129, 136, 232, 127, 0, 0)
+size_override = Vector2(128, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw5sf"]
+atlas = SubResource("PortableCompressedTexture2D_3usl3")
+region = Rect2(0, 0, 128, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b6sur"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw5sf")
+}],
 "loop": true,
 "name": &"Idle",
-"speed": 5.0
+"speed": 10.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_v"]
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_3uv27"]
+_data = PackedByteArray(0, 0, 3, 0, 5, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0, 128, 0, 0, 0, 38, 0, 0, 0, 82, 73, 70, 70, 30, 0, 0, 0, 87, 69, 66, 80, 86, 80, 56, 76, 17, 0, 0, 0, 47, 19, 192, 31, 0, 7, 80, 176, 94, 53, 173, 255, 129, 136, 232, 127, 0, 0)
+size_override = Vector2(20, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3usl3"]
+atlas = SubResource("PortableCompressedTexture2D_3uv27")
+region = Rect2(0, 0, 20, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aw5sf"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3usl3")
+}],
 "loop": true,
 "name": &"Idle",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h"]
@@ -24,25 +46,59 @@ size = Vector2(128, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v"]
 size = Vector2(20, 128)
 
-[node name="Wall" type="Node2D"]
+[node name="Wall" type="Node2D" unique_id=917909775]
 script = ExtResource("1_wall")
 
-[node name="SpriteH" type="AnimatedSprite2D" parent="."]
+[node name="SpriteH" type="AnimatedSprite2D" parent="." unique_id=1129796752]
 texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_h")
+sprite_frames = SubResource("SpriteFrames_b6sur")
 animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/building-mods/wall_h.aseprite",
+"source_uid": 2547316863971844287
+}
+metadata/_aseprite_wizard_source_file_hash_ = "af9c14c1f1021e1dacbcb06716239fed"
 
-[node name="SpriteV" type="AnimatedSprite2D" parent="."]
-texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_v")
-animation = &"Idle"
+[node name="SpriteV" type="AnimatedSprite2D" parent="." unique_id=617409733]
 visible = false
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_aw5sf")
+animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/building-mods/wall_v.aseprite",
+"source_uid": 3549572889790406251
+}
+metadata/_aseprite_wizard_source_file_hash_ = "f74f8e06ec6a0de4e4f2cdc785340893"
 
-[node name="Body" type="StaticBody2D" parent="."]
+[node name="Body" type="StaticBody2D" parent="." unique_id=1970035602]
 
-[node name="ShapeH" type="CollisionShape2D" parent="Body"]
+[node name="ShapeH" type="CollisionShape2D" parent="Body" unique_id=1970273929]
 shape = SubResource("RectangleShape2D_h")
 
-[node name="ShapeV" type="CollisionShape2D" parent="Body"]
+[node name="ShapeV" type="CollisionShape2D" parent="Body" unique_id=2073706019]
 shape = SubResource("RectangleShape2D_v")
 disabled = true

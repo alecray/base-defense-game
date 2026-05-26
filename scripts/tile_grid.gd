@@ -440,16 +440,21 @@ func get_nearest_wall_edge(world_pos: Vector2) -> Dictionary:
 			if not _tiles.has(tgp):
 				continue
 			var origin: Vector2 = _tile_origin(tgp)
-			var right_pos: Vector2 = origin + Vector2(CONSTANTS.TILE_SIZE, CONSTANTS.TILE_SIZE * 0.5)
-			var dist_r: float = world_pos.distance_to(right_pos)
-			if dist_r < best_dist:
-				best_dist = dist_r
-				best = {"key": "V,%d,%d" % [tgp.x, tgp.y], "vertical": true, "world_pos": right_pos, "gp": tgp}
-			var bot_pos: Vector2 = origin + Vector2(CONSTANTS.TILE_SIZE * 0.5, CONSTANTS.TILE_SIZE)
-			var dist_b: float = world_pos.distance_to(bot_pos)
-			if dist_b < best_dist:
-				best_dist = dist_b
-				best = {"key": "H,%d,%d" % [tgp.x, tgp.y], "vertical": false, "world_pos": bot_pos, "gp": tgp}
+			var ts: float = CONSTANTS.TILE_SIZE
+			# Vertical wall: right edge of tgp — measure distance to the full line segment
+			var vx: float = origin.x + ts
+			var near_v: Vector2 = Vector2(vx, clampf(world_pos.y, origin.y, origin.y + ts))
+			var dist_v: float = world_pos.distance_to(near_v)
+			if dist_v < best_dist:
+				best_dist = dist_v
+				best = {"key": "V,%d,%d" % [tgp.x, tgp.y], "vertical": true, "world_pos": origin + Vector2(ts, ts * 0.5), "gp": tgp}
+			# Horizontal wall: bottom edge of tgp — measure distance to the full line segment
+			var hy: float = origin.y + ts
+			var near_h: Vector2 = Vector2(clampf(world_pos.x, origin.x, origin.x + ts), hy)
+			var dist_h: float = world_pos.distance_to(near_h)
+			if dist_h < best_dist:
+				best_dist = dist_h
+				best = {"key": "H,%d,%d" % [tgp.x, tgp.y], "vertical": false, "world_pos": origin + Vector2(ts * 0.5, ts), "gp": tgp}
 	return best
 
 func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> bool:
