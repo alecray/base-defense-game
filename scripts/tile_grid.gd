@@ -468,7 +468,14 @@ func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> bool:
 		return false
 	var key: String = edge["key"] as String
 	if _walls.has(key):
-		return false
+		var wall: Node2D = _walls[key] as Node2D
+		_walls.erase(key)
+		wall.remove_from_group("buildings")
+		GameState.add_coins(CONSTANTS.WALL_COST)
+		var remove_tween: Tween = wall.create_tween()
+		remove_tween.tween_property(wall, "scale", Vector2.ZERO, 0.15)
+		remove_tween.tween_callback(wall.queue_free)
+		return true
 	if not GameState.spend_coins(CONSTANTS.WALL_COST):
 		return false
 	var instance: Node2D = WALL_SCENE.instantiate() as Node2D
