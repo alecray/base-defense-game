@@ -8,7 +8,7 @@ func _ready() -> void:
 	play("Idle")
 
 func _process(delta: float) -> void:
-	_tick_regen(delta)
+	super._process(delta)
 	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
 	if cycle != null and bool(cycle.call("is_night")):
 		return

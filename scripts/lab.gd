@@ -5,6 +5,6 @@ func _ready() -> void:
 	super._ready()
 
 func _process(delta: float) -> void:
-	_tick_regen(delta)
+	super._process(delta)
 	if not GameState.lab_research_id.is_empty():
 		GameState.advance_research(delta)

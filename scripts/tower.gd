@@ -14,7 +14,7 @@ func _ready() -> void:
 	play("Idle")
 
 func _process(delta: float) -> void:
-	_tick_regen(delta)
+	super._process(delta)
 	if _assigned_workers.is_empty():
 		return
 	_power_drain_timer += delta

@@ -11,7 +11,7 @@ func _ready() -> void:
 	play("Idle")
 
 func _process(delta: float) -> void:
-	_tick_regen(delta)
+	super._process(delta)
 	if _assigned_workers.is_empty():
 		return
 	_food_timer += delta
