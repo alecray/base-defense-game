@@ -11,6 +11,7 @@ var _hp: int = CONSTANTS.WALL_MAX_HP
 var _health_bar: Node2D = null
 var _dying: bool = false
 var _edge_key: String = ""
+var _player_ref: Node2D = null
 
 func init(vertical: bool, edge_key: String) -> void:
 	_edge_key = edge_key
@@ -20,11 +21,18 @@ func init(vertical: bool, edge_key: String) -> void:
 	_shape_v.disabled = not vertical
 
 func _ready() -> void:
+	z_as_relative = false
 	add_to_group("buildings")
 	_health_bar = HEALTH_BAR_SCENE.instantiate() as Node2D
 	_health_bar.position = Vector2(0.0, -20.0)
 	_health_bar.call("setup", CONSTANTS.WALL_MAX_HP, 36.0)
 	add_child(_health_bar)
+
+func _process(_delta: float) -> void:
+	if _player_ref == null or not is_instance_valid(_player_ref):
+		_player_ref = get_tree().get_first_node_in_group("player") as Node2D
+	if _player_ref != null:
+		z_index = 0 if _player_ref.global_position.y >= global_position.y else 1
 
 func take_damage(amount: int) -> void:
 	if _dying:

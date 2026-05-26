@@ -7,12 +7,18 @@ var _tile_gp: Vector2i = Vector2i(-1, -1)
 var _assigned_workers: Array = []
 var _reserves: int = CONSTANTS.MINE_MAX_RESERVES
 var _tick_timer: float = 0.0
+var _player_ref: Node2D = null
 
 func _ready() -> void:
+	z_as_relative = false
 	if _sprite != null and _sprite.sprite_frames != null and _sprite.sprite_frames.has_animation("Idle"):
 		_sprite.play("Idle")
 
 func _process(delta: float) -> void:
+	if _player_ref == null or not is_instance_valid(_player_ref):
+		_player_ref = get_tree().get_first_node_in_group("player") as Node2D
+	if _player_ref != null:
+		z_index = 0 if _player_ref.global_position.y >= global_position.y + 32.0 else 1
 	if _sprite != null:
 		_sprite.modulate = Color.WHITE if has_unlocked_neighbor() else Color(0.4, 0.4, 0.4)
 	if _assigned_workers.is_empty():
