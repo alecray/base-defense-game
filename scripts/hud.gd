@@ -22,7 +22,9 @@ const _TUTORIAL_PROMPTS: Array = [
 	"Buy a Farm",
 	"Assign workers to the farm",
 	"Build a Turret",
+	"Assign a worker to the Turret",
 	"Build a Barracks",
+	"Buy a Soldier",
 	"Build Walls to protect your base",
 	"Build a Lab",
 	"Build 2 more Turrets",
@@ -114,6 +116,8 @@ func _ready() -> void:
 	GameState.game_over.connect(_on_game_over)
 	GameState.first_mine_worker_assigned.connect(_on_first_mine_worker_assigned)
 	GameState.first_farm_worker_assigned.connect(_on_first_farm_worker_assigned)
+	GameState.first_tower_worker_assigned.connect(_on_first_tower_worker_assigned)
+	GameState.first_soldier_bought.connect(_on_first_soldier_bought)
 	GameState.first_wall_placed.connect(_on_first_wall_placed)
 	GameState.building_attacked.connect(_on_building_attacked)
 
@@ -237,10 +241,10 @@ func _on_building_placed(building_name: String) -> void:
 		"Farm":      _advance_tutorial(4)
 		"Tower":
 			_advance_tutorial(6)
-			if _tutorial_step == 10 and GameState.get_building_count("Tower") >= 3:
-				_advance_tutorial(10)
-		"Barracks":  _advance_tutorial(7)
-		"Lab":       _advance_tutorial(9)
+			if _tutorial_step == 12 and GameState.get_building_count("Tower") >= 3:
+				_advance_tutorial(12)
+		"Barracks":  _advance_tutorial(8)
+		"Lab":       _advance_tutorial(11)
 
 func _on_first_mine_worker_assigned() -> void:
 	_advance_tutorial(3)
@@ -248,8 +252,14 @@ func _on_first_mine_worker_assigned() -> void:
 func _on_first_farm_worker_assigned() -> void:
 	_advance_tutorial(5)
 
+func _on_first_tower_worker_assigned() -> void:
+	_advance_tutorial(7)
+
+func _on_first_soldier_bought() -> void:
+	_advance_tutorial(9)
+
 func _on_first_wall_placed() -> void:
-	_advance_tutorial(8)
+	_advance_tutorial(10)
 
 func _on_workers_changed(count: int, cap: int, _free: int) -> void:
 	_workers_label.text = "Workers: %d/%d" % [count, cap]

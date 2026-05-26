@@ -63,6 +63,7 @@ func assign_worker() -> bool:
 	_assigned_workers.append(free_worker)
 	free_worker.call("assign_to", _work_point.global_position)
 	GameState.record_worker_assigned(1)
+	GameState.notify_tower_worker_assigned()
 	return true
 
 func unassign_worker() -> bool:

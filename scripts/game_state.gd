@@ -25,6 +25,8 @@ signal game_reset
 signal game_over
 signal first_mine_worker_assigned
 signal first_farm_worker_assigned
+signal first_tower_worker_assigned
+signal first_soldier_bought
 signal first_wall_placed
 signal building_attacked(world_pos: Vector2)
 signal research_completed(upgrade_id: String)
@@ -37,6 +39,8 @@ var lab_upgrade_levels: Dictionary = {}
 var _food_timer: float = 0.0
 var _mine_worker_ever_assigned: bool = false
 var _farm_worker_ever_assigned: bool = false
+var _tower_worker_ever_assigned: bool = false
+var _soldier_ever_bought: bool = false
 var _wall_ever_placed: bool = false
 
 func notify_mine_worker_assigned() -> void:
@@ -51,6 +55,18 @@ func notify_farm_worker_assigned() -> void:
 	_farm_worker_ever_assigned = true
 	first_farm_worker_assigned.emit()
 
+func notify_tower_worker_assigned() -> void:
+	if _tower_worker_ever_assigned:
+		return
+	_tower_worker_ever_assigned = true
+	first_tower_worker_assigned.emit()
+
+func notify_soldier_bought() -> void:
+	if _soldier_ever_bought:
+		return
+	_soldier_ever_bought = true
+	first_soldier_bought.emit()
+
 func notify_wall_placed() -> void:
 	if _wall_ever_placed:
 		return
@@ -60,7 +76,9 @@ func notify_wall_placed() -> void:
 func restore_tutorial_flags(step: int) -> void:
 	_mine_worker_ever_assigned = step >= 4
 	_farm_worker_ever_assigned = step >= 6
-	_wall_ever_placed = step >= 9
+	_tower_worker_ever_assigned = step >= 8
+	_soldier_ever_bought = step >= 10
+	_wall_ever_placed = step >= 11
 
 func _process(delta: float) -> void:
 	if worker_count <= 0:
@@ -131,6 +149,7 @@ func buy_soldier() -> bool:
 		return false
 	soldiers += 1
 	soldiers_changed.emit(soldiers, get_soldier_cap())
+	notify_soldier_bought()
 	return true
 
 func record_soldier_killed() -> void:
@@ -223,6 +242,8 @@ func reset() -> void:
 	soldiers = 0
 	_mine_worker_ever_assigned = false
 	_farm_worker_ever_assigned = false
+	_tower_worker_ever_assigned = false
+	_soldier_ever_bought = false
 	_wall_ever_placed = false
 	game_reset.emit()
 	coins_changed.emit(coins)
