@@ -21,18 +21,19 @@ func _process(delta: float) -> void:
 		_big_spawn_timer = 0.0
 		return
 
-	var t: float = minf(_elapsed / CONSTANTS.ENEMY_SPAWN_RAMP_DURATION, 1.0)
+	var day: int = int(cycle.call("get_day")) if cycle != null else 1
+	var t: float = minf(float(day - 1) / float(CONSTANTS.ENEMY_SPAWN_RAMP_DAYS), 1.0)
 
 	_spawn_timer += delta
-	var base_interval: float = CONSTANTS.ENEMY_SPAWN_BASE_INTERVAL + (CONSTANTS.ENEMY_SPAWN_MIN_INTERVAL - CONSTANTS.ENEMY_SPAWN_BASE_INTERVAL) * t
+	var base_interval: float = lerpf(CONSTANTS.ENEMY_SPAWN_BASE_INTERVAL, CONSTANTS.ENEMY_SPAWN_MIN_INTERVAL, t)
 	if _spawn_timer >= base_interval / intensity:
 		_spawn_timer = 0.0
-		_spawn_clump(intensity)
+		_spawn_clump(t, intensity)
 
 	var first_cycle: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
 	if _elapsed >= first_cycle:
 		_big_spawn_timer += delta
-		var big_base: float = CONSTANTS.BIG_ENEMY_SPAWN_INTERVAL + (CONSTANTS.BIG_ENEMY_SPAWN_MIN_INTERVAL - CONSTANTS.BIG_ENEMY_SPAWN_INTERVAL) * t
+		var big_base: float = lerpf(CONSTANTS.BIG_ENEMY_SPAWN_INTERVAL, CONSTANTS.BIG_ENEMY_SPAWN_MIN_INTERVAL, t)
 		if _big_spawn_timer >= big_base / intensity:
 			_big_spawn_timer = 0.0
 			_spawn_big_enemy()
@@ -42,8 +43,8 @@ func reset() -> void:
 	_spawn_timer = 0.0
 	_big_spawn_timer = 0.0
 
-func _spawn_clump(intensity: float) -> void:
-	var max_clump: int = maxi(1, roundi(CONSTANTS.NIGHT_SPAWN_CLUMP_MAX * intensity))
+func _spawn_clump(t: float, intensity: float) -> void:
+	var max_clump: int = maxi(1, roundi(lerpf(1.0, float(CONSTANTS.NIGHT_SPAWN_CLUMP_MAX), t) * intensity))
 	var count: int = randi_range(1, max_clump)
 	var angle: float = randf() * TAU
 	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS
