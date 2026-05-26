@@ -14,20 +14,22 @@ The game is endless survival — enemies only spawn during the night, but they g
 |----------|------|----|-------------|
 | Core | 100 | 500 | Required first. Opens management menu for workers, fortification, and resource upgrades. |
 | Housing | 50 | 150 | Increases worker cap by 5 per building. |
-| Farm | 75 | 100 | Produces food with assigned workers (3 food per worker every 5s). Right-click to upgrade. |
-| Tower | 60 | 200 | Attacks nearest enemy within 600px. Requires 1 worker and power. Right-click to upgrade. |
+| Farm | 75 | 100 | Produces food with assigned workers (3 food per worker every 5s). Upgradeable. |
+| Tower | 60 | 200 | Attacks nearest enemy within 600px. Requires 1 worker and power. Upgradeable. |
 | Barracks | 75 | 150 | Increases soldier cap by 5 per building. Allows purchasing soldiers. |
-| Arcanum | 150 | 200 | Research permanent upgrades using coins. Six research options available. |
+| Library | 150 | 200 | Research permanent upgrades using coins. Six research options available. |
 | Solar Farm | 80 | 100 | Generates 6 power every 4 seconds during daytime only. |
 | Gold Mine | — | — | Spawns automatically on map generation. Staff with workers to earn coins (5 per worker every 5s). Depletes over time. |
 | Armory | 150 | 175 | Passively buffs all soldiers (+15 attack, new soldiers +25 HP per Armory built). Requires Armory Blueprint research. |
 | Siege Tower | 120 | 250 | Fires AoE boulders at the densest enemy cluster in range. No worker needed. Drains 2 power every 4s. |
+| Storehouse | 110 | 175 | Assign up to 5 workers to expand resource caps (+50 food cap and +30 power cap per worker). |
+| Market | 100 | 175 | Passive. Converts excess food and power into coins automatically. |
 
 All buildings regenerate HP at 2% of max per tick (every 3 seconds) after 30 seconds without taking damage. Health bars appear automatically when a building takes damage and hide at full HP.
 
 ## Building Upgrades
 
-Right-click a Farm or Tower to open its upgrade option (max 1 upgrade each).
+Press E on a Farm or Tower, then click the upgrade button (max 1 upgrade each).
 
 | Building | Upgrade Cost | Effect |
 |----------|-------------|--------|
@@ -36,7 +38,7 @@ Right-click a Farm or Tower to open its upgrade option (max 1 upgrade each).
 
 ## Towers
 
-Towers require exactly 1 assigned worker and available power to fire. Each shot deals 25 base damage (upgradable via the Arcanum) to the nearest enemy within 600px range every 1 second. Towers drain 1 power every 4 seconds while staffed. If power reaches 0, towers stop firing even if staffed.
+Towers require exactly 1 assigned worker and available power to fire. Each shot deals 25 base damage (upgradable via the Library) to the nearest enemy within 600px range every 1 second. Towers drain 1 power every 4 seconds while staffed. If power reaches 0, towers stop firing even if staffed.
 
 ## Siege Towers
 
@@ -44,19 +46,37 @@ Siege Towers fire automatically without a worker whenever power is available. Ev
 
 The targeting algorithm picks the enemy position with the most neighbors within the blast radius, making them naturally effective against tight groups and wave clusters.
 
+## Storehouse
+
+Open the Storehouse menu (press E) to assign or unassign workers. Each worker raises the food cap by 50 and the power cap by 30 (up to 5 workers). Caps drop immediately if a worker is unassigned or the Storehouse is destroyed.
+
+## Market
+
+The Market requires no interaction and operates passively. Whenever food exceeds 60% of the food cap, the surplus is sold at a rate of 1 coin per 8 food. Whenever power exceeds 60% of the power cap, the surplus is sold at 1 coin per 5 power. Build a Market when your resource caps consistently overflow to turn waste into income.
+
 ## Workers
 
 Workers cost 20 coins and are hired from the Core menu (press E on the Core). Each Housing building adds 5 to the worker cap. Workers roam near the Core when idle.
 
-Assign workers to **Farms** to produce food, **Towers** to enable firing, or **Gold Mines** to generate coins. All workers consume food at a rate of 1 food per worker every 5 seconds.
+Assign workers to **Farms** to produce food, **Towers** to enable firing, **Gold Mines** to generate coins, or **Storehouses** to raise resource caps. All workers consume food at a rate of 1 food per worker every 5 seconds.
 
 ## Soldiers
 
 Soldiers are combat units purchased from the Barracks menu (press E on a Barracks) for 30 coins each. Each Barracks adds 5 to the soldier cap.
 
-Soldiers automatically hunt enemies that come within range of any player building. When no threats are nearby they patrol the perimeter of your unlocked territory. If an enemy camp is on the map and no regular enemies are threatening your base, soldiers will march to destroy it.
+Soldiers automatically hunt enemies that come within range of any player building. When no threats are nearby they patrol either the perimeter of your unlocked territory or around a custom rally point (see **Rally Point** below). If an enemy camp is on the map and no regular enemies are threatening your base, soldiers will march to destroy it.
 
-Each soldier has 80 HP (base) and deals 20 damage per second (base) in melee range. Both stats increase with Armory buildings and Arcanum research.
+Each soldier has 80 HP (base) and deals 20 damage per second (base) in melee range. Both stats increase with Armory buildings and Library research.
+
+## Rally Point
+
+Middle-click anywhere on the map to set a soldier rally point. A cyan crosshair marker appears at the chosen location. While a rally point is active:
+
+- Soldiers patrol a circle (80px radius) around it instead of the base perimeter
+- Soldiers use the rally point as their chase leash center — they won't pursue enemies far beyond it
+- All existing soldiers immediately update to the new patrol circuit
+
+The rally point is saved with the game. Middle-click a new position to move it.
 
 ## Enemies
 
@@ -90,7 +110,7 @@ Starting from night 2, an enemy camp spawns roughly 900px from your base. The ca
 
 ## Power
 
-Power is produced by Solar Farms (daytime only) and consumed by Towers and Siege Towers. The power cap starts at **120** and can be upgraded from the Core menu for 150 coins (+60 per upgrade). Surplus power is capped — build more Solar Farms and upgrade the cap before expanding your tower network.
+Power is produced by Solar Farms (daytime only) and consumed by Towers and Siege Towers. The base power cap is **120** and can be raised by upgrading from the Core menu (150 coins, +60 per upgrade) or by staffing a Storehouse (+30 per worker).
 
 | Consumer | Drain |
 |----------|-------|
@@ -99,15 +119,15 @@ Power is produced by Solar Farms (daytime only) and consumed by Towers and Siege
 
 ## Food
 
-Food is produced by Farms with assigned workers. All workers consume food over time. The food cap starts at 200 and can be upgraded from the Core menu for 100 coins (+100 per upgrade). If food runs out workers continue functioning but food won't accumulate beyond zero.
+Food is produced by Farms with assigned workers. All workers consume food over time. The base food cap is **200** and can be raised by upgrading from the Core menu (100 coins, +100 per upgrade) or by staffing a Storehouse (+50 per worker). If food runs out workers continue functioning but food won't accumulate beyond zero.
 
 ## Day / Night Cycle
 
 Each day and night lasts 150 seconds with a 15-second dusk/dawn transition. The current in-game time is displayed under the day counter (6:00 AM → 6:00 PM during the day, 6:00 PM → 6:00 AM during the night). Enemies only spawn at night, with spawn rate and clump size scaling with darkness intensity. Solar Farms produce no power at night.
 
-## Arcanum Research
+## Library Research
 
-Open the Arcanum menu (press E on the Arcanum) to start research. Only one research can run at a time. The UI scrolls to show all available options.
+Open the Library menu (press E on the Library) to start research. Only one research can run at a time.
 
 | Research | Cost | Time | Effect |
 |----------|------|------|--------|
@@ -120,7 +140,13 @@ Open the Arcanum menu (press E on the Arcanum) to start research. Only one resea
 
 ## Fortification
 
-Fortify the Core from the Core menu for 75 coins. This adds a 200 HP shield layer that absorbs damage before the Core's own HP. The shield does not regenerate.
+Any building with a management menu can be fortified for **75 coins**. This adds a 200 HP shield layer that absorbs damage before the building's own HP. The shield does not regenerate.
+
+Open a building's menu (press E) and click Fortify. The button shows the current shield HP once a fortification is active.
+
+## Building Repair
+
+While standing near a building, hold **R** and **left-click** to repair it. Repair costs **1 coin per 5 HP** restored (rounded up) and restores the building to full HP in one action. The prompt on the building label updates to show the repair cost while R is held.
 
 ## Walls
 
@@ -146,9 +172,9 @@ Legacy Point bonuses persist between runs and are stored separately from run sav
 
 ## Economy
 
-- **Coins** — earned from staffed Gold Mines and by killing enemies. Spent on tiles, buildings, workers, soldiers, research, and upgrades. Total coins earned this run drives enemy threat scaling.
-- **Food** — produced by Farms. Consumed by all workers (1 per worker every 5s). Starting supply: 100 (increased by legacy upgrades). Cap upgradable from Core. The HUD shows a live net rate indicator (+X/5s green, −X/5s red) next to the food counter.
-- **Power** — generated by Solar Farms (6 per tick) during daytime. Consumed by Towers (1/4s) and Siege Towers (2/4s). Starting cap: 120 (increased by legacy upgrades). Cap upgradable from Core.
+- **Coins** — earned from staffed Gold Mines, enemy kills, and the Market. Spent on tiles, buildings, workers, soldiers, research, and upgrades. Total coins earned this run drives enemy threat scaling.
+- **Food** — produced by Farms. Consumed by all workers (1 per worker every 5s). Starting supply: 100 (increased by legacy upgrades). Cap raised from Core menu or Storehouse.
+- **Power** — generated by Solar Farms (6 per tick) during daytime. Consumed by Towers (1/4s) and Siege Towers (2/4s). Starting cap: 120 (increased by legacy upgrades). Cap raised from Core menu or Storehouse.
 
 ## Controls
 
@@ -157,7 +183,9 @@ Legacy Point bonuses persist between runs and are stored separately from run sav
 | WASD | Move player |
 | Left click | Shoot toward cursor |
 | Right click | Place wall on nearest tile edge (25 coins); right-click an existing wall to demolish or repair it |
+| Middle click | Set soldier rally point at cursor position |
 | E | Interact — purchase tile / open build menu / manage building |
+| R + Left click | Repair the nearest building (costs coins) |
 | Z | Manual save |
 | U | Toggle developer menu |
 | Escape | Close open menu |
@@ -177,7 +205,7 @@ Left-click fires a bullet toward the mouse cursor with a 0.3-second cooldown. Bu
 
 The game auto-saves every 5 minutes and on manual save (Z). Two save files are used:
 
-- `user://save.json` — current run state (tiles, buildings, workers, soldiers, walls, resources, lab progress)
+- `user://save.json` — current run state (tiles, buildings, workers, soldiers, walls, resources, library research, rally point)
 - `user://legacy.json` — persistent Legacy Point totals and purchased upgrades (survives run resets)
 
 ## Development
@@ -189,7 +217,7 @@ The game auto-saves every 5 minutes and on manual save (Z). Two save files are u
 ### Project Structure
 
 ```
-scenes/      — Main scene
+scenes/      — Main scene and UI scenes
 scripts/     — All GDScript source files
 prefabs/     — Reusable node scenes (buildings, units, bullets, UI)
 assets/      — Sprites and other assets
@@ -200,13 +228,14 @@ addons/      — Godot plugins (AsepriteWizard)
 
 | Script | Role |
 |--------|------|
-| `game_state.gd` | Autoload singleton — economy, workers, soldiers, buildings, research, signals, threat scaling |
+| `game_state.gd` | Autoload singleton — economy, workers, soldiers, buildings, research, signals, threat scaling, rally point |
 | `legacy_state.gd` | Autoload singleton — Legacy Points persistence, upgrade bonuses, between-run shop data |
 | `constants.gd` | Autoload — all game constants and tuning values |
 | `tile_grid.gd` | Grid generation, tile purchasing, building placement, unit spawning, wall management |
-| `building_base.gd` | Shared HP, health bar, regen, fortification, depth sorting, destruction, and upgrade level |
-| `player.gd` | Movement, shooting, wall placement, and E-key interaction routing |
-| `soldier.gd` | Soldier AI — patrol, chase, attack states; secondary targeting of enemy camps |
+| `building_base.gd` | Shared HP, health bar, regen, fortification, repair, destruction, and upgrade level |
+| `player.gd` | Movement, shooting, wall placement, rally point input, and E-key interaction routing |
+| `soldier.gd` | Soldier AI — patrol/rally circuit, chase, attack states; secondary targeting of enemy camps |
+| `rally_marker.gd` | Visual crosshair drawn at the active soldier rally point |
 | `enemy.gd` | Enemy AI — building priority targeting, movement, melee attack, threat-scaled stats |
 | `big_enemy.gd` | Slow heavy enemy with high HP and damage |
 | `flying_enemy.gd` | Ranged flying enemy — orbits and fires projectiles, ignores ground obstacles |
@@ -215,9 +244,12 @@ addons/      — Godot plugins (AsepriteWizard)
 | `tower.gd` | Tower attack loop, power drain, bullet spawning, upgrade-aware fire rate |
 | `siege_tower.gd` | AoE tower — cluster targeting, boulder fire, power drain |
 | `siege_projectile.gd` | Boulder projectile — flies to target position, AoE damage on impact, explosion ring visual |
-| `armory.gd` | Passive buff building — no logic beyond building_base; stats read by soldiers at spawn/attack |
+| `armory.gd` | Passive buff building — stats read by soldiers at spawn and attack time |
+| `storehouse.gd` | Worker-staffed cap expander — adds food/power cap per assigned worker |
+| `market.gd` | Passive economy building — converts excess food and power to coins |
 | `solar_farm.gd` | Power generation during daytime |
-| `wall.gd` | Placeable wall segment with HP, repair mechanic, depth sorting, and save/load support |
+| `library.gd` | Research building — drives the Library research queue and upgrade levels |
+| `wall.gd` | Placeable wall segment with HP, repair mechanic, and save/load support |
 | `day_night_cycle.gd` | Cycle timer, overlay alpha, time-of-day string, night intensity for spawning |
 | `enemy_spawner.gd` | Structured wave system, all enemy type timers, enemy camp spawning |
 | `save_manager.gd` | JSON save/load and game reset; applies Legacy bonuses on new run |
