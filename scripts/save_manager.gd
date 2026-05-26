@@ -109,6 +109,12 @@ func load_game() -> void:
 	GameState.power_changed.emit(GameState.power)
 	GameState.soldiers_changed.emit(GameState.soldiers, GameState.get_soldier_cap())
 	GameState.workers_changed.emit(GameState.worker_count, GameState.get_worker_cap(), GameState.get_free_workers())
+
+	var hud: Node = get_tree().get_first_node_in_group("hud")
+	if hud != null:
+		var step: int = int(data["tutorial_step"]) if data.has("tutorial_step") else _infer_tutorial_step(data)
+		hud.call("restore_tutorial_step", step)
+
 	if GameState.get_building_count("Core") > 0:
 		GameState.building_placed.emit("Core")
 
@@ -179,9 +185,34 @@ func load_game() -> void:
 		var spawn_pos: Vector2 = Vector2(randf_range(-64.0, 64.0), randf_range(-64.0, 64.0))
 		tile_grid.call("spawn_soldier_at", spawn_pos)
 
-	var hud: Node = get_tree().get_first_node_in_group("hud")
-	if hud != null:
-		hud.call("restore_tutorial_step", int(data.get("tutorial_step", 0)))
+func _infer_tutorial_step(data: Dictionary) -> int:
+	var bc: Dictionary = data.get("building_counts", {}) as Dictionary
+	var step: int = 0
+	if int(bc.get("Core", 0)) > 0:
+		step = 1
+	if int(bc.get("SolarFarm", 0)) > 0:
+		step = maxi(step, 2)
+	if int(bc.get("Housing", 0)) > 0:
+		step = maxi(step, 3)
+	for mine: Variant in (data.get("gold_mines", []) as Array):
+		if int((mine as Dictionary).get("assigned_count", 0)) > 0:
+			step = maxi(step, 4)
+			break
+	if int(bc.get("Farm", 0)) > 0:
+		step = maxi(step, 5)
+	for farm: Variant in (data.get("farms", []) as Array):
+		if int((farm as Dictionary).get("assigned_count", 0)) > 0:
+			step = maxi(step, 6)
+			break
+	if int(bc.get("Tower", 0)) > 0:
+		step = maxi(step, 7)
+	if not (data.get("walls", []) as Array).is_empty():
+		step = maxi(step, 8)
+	if int(bc.get("Lab", 0)) > 0:
+		step = maxi(step, 9)
+	if int(bc.get("Tower", 0)) >= 3:
+		step = maxi(step, 10)
+	return step
 
 func reset_game() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
