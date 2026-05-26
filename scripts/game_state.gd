@@ -14,6 +14,8 @@ var food_cap: int = CONSTANTS.FOOD_CAP_BASE
 var power: int = CONSTANTS.STARTING_POWER
 var power_cap: int = CONSTANTS.POWER_CAP_BASE
 var soldiers: int = 0
+var enemies_killed_this_run: int = 0
+var total_coins_earned: int = 0
 
 signal coins_changed(new_amount: int)
 signal building_placed(building_name: String)
@@ -89,8 +91,15 @@ func _process(delta: float) -> void:
 		food = maxi(0, food - worker_count)
 		food_changed.emit(food)
 
+func get_enemy_hp_multiplier() -> float:
+	return 1.0 + (float(total_coins_earned) / CONSTANTS.THREAT_SCALE_COINS) * CONSTANTS.THREAT_HP_SCALE
+
+func get_enemy_damage_multiplier() -> float:
+	return 1.0 + (float(total_coins_earned) / CONSTANTS.THREAT_SCALE_COINS) * CONSTANTS.THREAT_DAMAGE_SCALE
+
 func add_coins(amount: int) -> void:
 	coins += amount
+	total_coins_earned += amount
 	coins_changed.emit(coins)
 
 func spend_coins(amount: int) -> bool:
@@ -151,6 +160,9 @@ func buy_soldier() -> bool:
 	soldiers_changed.emit(soldiers, get_soldier_cap())
 	notify_soldier_bought()
 	return true
+
+func record_enemy_killed() -> void:
+	enemies_killed_this_run += 1
 
 func record_soldier_killed() -> void:
 	soldiers = maxi(0, soldiers - 1)
@@ -240,6 +252,8 @@ func reset() -> void:
 	power_cap = CONSTANTS.POWER_CAP_BASE
 	food_cap = CONSTANTS.FOOD_CAP_BASE
 	soldiers = 0
+	enemies_killed_this_run = 0
+	total_coins_earned = 0
 	_mine_worker_ever_assigned = false
 	_farm_worker_ever_assigned = false
 	_tower_worker_ever_assigned = false

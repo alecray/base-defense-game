@@ -66,8 +66,14 @@ func _draw() -> void:
 		draw_circle(mp, 2.0, Color(0.3, 0.6, 1.0, 0.9))
 
 	for enemy: Node in get_tree().get_nodes_in_group("enemies"):
+		if (enemy as Node2D).is_in_group("enemy_camps"):
+			continue
 		var mp: Vector2 = _world_to_mm((enemy as Node2D).global_position)
 		draw_circle(mp, 2.0, Color(1.0, 0.2, 0.2, 0.9))
+
+	for camp: Node in get_tree().get_nodes_in_group("enemy_camps"):
+		var mp: Vector2 = _world_to_mm((camp as Node2D).global_position)
+		draw_rect(Rect2(mp - Vector2(4.0, 4.0), Vector2(8.0, 8.0)), Color(0.85, 0.15, 0.15, 1.0))
 
 	var player: Node2D = get_tree().get_first_node_in_group("player") as Node2D
 	if player != null:

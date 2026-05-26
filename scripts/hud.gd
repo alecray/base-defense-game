@@ -13,6 +13,8 @@ var _tutorial_step: int = 0
 var _vignette: ColorRect = null
 var _vignette_tween: Tween = null
 var _indicator_cooldown: float = 0.0
+var _lp_total_label: Label = null
+var _shop_container: VBoxContainer = null
 
 const _TUTORIAL_PROMPTS: Array = [
 	"Build a Core to start expanding",
@@ -290,44 +292,156 @@ func _on_game_reset() -> void:
 func _on_game_over() -> void:
 	get_tree().paused = true
 
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	var days: int = int(cycle.call("get_day")) if cycle != null else 1
+	var enemies_killed: int = GameState.enemies_killed_this_run
+	var lp_earned: int = LegacyState.award_points(days)
+
+	_lp_total_label = null
+	_shop_container = null
+
 	_game_over_root = Control.new()
 	_game_over_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_game_over_root.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_game_over_root)
-	var root: Control = _game_over_root
 
 	var overlay: ColorRect = ColorRect.new()
-	overlay.color = Color(0.0, 0.0, 0.0, 0.75)
+	overlay.color = Color(0.0, 0.0, 0.0, 0.82)
 	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	root.add_child(overlay)
+	_game_over_root.add_child(overlay)
+
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	scroll.custom_minimum_size = Vector2(420.0, 560.0)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_game_over_root.add_child(scroll)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
-	vbox.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	vbox.add_theme_constant_override("separation", 16)
-	root.add_child(vbox)
+	vbox.add_theme_constant_override("separation", 10)
+	vbox.custom_minimum_size = Vector2(400.0, 0.0)
+	scroll.add_child(vbox)
 
 	var title: Label = Label.new()
 	title.text = "GAME OVER"
-	title.add_theme_font_size_override("font_size", 52)
+	title.add_theme_font_size_override("font_size", 48)
 	title.add_theme_color_override("font_color", Color(1.0, 0.2, 0.2))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vbox.add_child(title)
 
 	var sub: Label = Label.new()
 	sub.text = "The Core was destroyed"
-	sub.add_theme_font_size_override("font_size", 20)
+	sub.add_theme_font_size_override("font_size", 16)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vbox.add_child(sub)
 
-	var restart_btn: Button = Button.new()
-	restart_btn.text = "Restart"
-	restart_btn.custom_minimum_size = Vector2(160.0, 48.0)
-	restart_btn.pressed.connect(_on_restart_pressed)
-	vbox.add_child(restart_btn)
+	vbox.add_child(HSeparator.new())
+
+	var stats_hbox: HBoxContainer = HBoxContainer.new()
+	stats_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	stats_hbox.add_theme_constant_override("separation", 30)
+	vbox.add_child(stats_hbox)
+	_add_stat_block(stats_hbox, "Days", str(days))
+	_add_stat_block(stats_hbox, "Enemies Killed", str(enemies_killed))
+	_add_stat_block(stats_hbox, "Best Run", "%d days" % LegacyState.best_days)
+
+	var lp_label: Label = Label.new()
+	lp_label.text = "+%d Legacy Points earned" % lp_earned
+	lp_label.add_theme_font_size_override("font_size", 17)
+	lp_label.add_theme_color_override("font_color", Color(0.95, 0.82, 0.2))
+	lp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(lp_label)
+
+	vbox.add_child(HSeparator.new())
+
+	var shop_title: Label = Label.new()
+	shop_title.text = "LEGACY SHOP"
+	shop_title.add_theme_font_size_override("font_size", 18)
+	shop_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(shop_title)
+
+	_lp_total_label = Label.new()
+	_lp_total_label.add_theme_font_size_override("font_size", 14)
+	_lp_total_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(_lp_total_label)
+
+	_shop_container = VBoxContainer.new()
+	_shop_container.add_theme_constant_override("separation", 6)
+	vbox.add_child(_shop_container)
+
+	_rebuild_legacy_shop()
+
+	vbox.add_child(HSeparator.new())
+
+	var play_btn: Button = Button.new()
+	play_btn.text = "Play Again"
+	play_btn.custom_minimum_size = Vector2(180.0, 44.0)
+	play_btn.pressed.connect(_on_restart_pressed)
+	vbox.add_child(play_btn)
+
+func _add_stat_block(parent: HBoxContainer, label_text: String, value_text: String) -> void:
+	var vb: VBoxContainer = VBoxContainer.new()
+	var label: Label = Label.new()
+	label.text = label_text
+	label.add_theme_font_size_override("font_size", 11)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vb.add_child(label)
+	var val: Label = Label.new()
+	val.text = value_text
+	val.add_theme_font_size_override("font_size", 22)
+	val.add_theme_color_override("font_color", Color(1.0, 0.9, 0.5))
+	val.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vb.add_child(val)
+	parent.add_child(vb)
+
+func _rebuild_legacy_shop() -> void:
+	if _shop_container == null or _lp_total_label == null:
+		return
+	_lp_total_label.text = "Available: %d LP" % LegacyState.legacy_points
+	for child: Node in _shop_container.get_children():
+		child.queue_free()
+	for def_variant: Variant in LegacyState.UPGRADE_DEFS:
+		var def: Dictionary = def_variant as Dictionary
+		var id: String = str(def["id"])
+		var level: int = LegacyState.get_upgrade_level(id)
+		var max_level: int = int(def["max"])
+		var cost: int = int(def["cost"])
+		var maxed: bool = LegacyState.is_maxed(id)
+		var row: HBoxContainer = HBoxContainer.new()
+		row.add_theme_constant_override("separation", 8)
+		_shop_container.add_child(row)
+		var info: VBoxContainer = VBoxContainer.new()
+		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.add_child(info)
+		var name_lbl: Label = Label.new()
+		name_lbl.text = str(def["name"])
+		name_lbl.add_theme_font_size_override("font_size", 14)
+		info.add_child(name_lbl)
+		var desc_lbl: Label = Label.new()
+		var level_str: String = "  [MAX]" if maxed else "  (Lv %d/%d)" % [level, max_level]
+		desc_lbl.text = str(def["desc"]) + level_str
+		desc_lbl.add_theme_font_size_override("font_size", 11)
+		desc_lbl.add_theme_color_override("font_color", Color(0.4, 0.9, 0.4) if maxed else Color(0.7, 0.7, 0.7))
+		info.add_child(desc_lbl)
+		var btn: Button = Button.new()
+		btn.custom_minimum_size = Vector2(88.0, 30.0)
+		if maxed:
+			btn.text = "MAXED"
+			btn.disabled = true
+		else:
+			btn.text = "%d LP" % cost
+			btn.disabled = not LegacyState.can_afford(id)
+		btn.pressed.connect(_on_buy_legacy_upgrade.bind(id))
+		row.add_child(btn)
+
+func _on_buy_legacy_upgrade(id: String) -> void:
+	if LegacyState.buy_upgrade(id):
+		_rebuild_legacy_shop()
 
 func _on_restart_pressed() -> void:
 	get_tree().paused = false
+	_lp_total_label = null
+	_shop_container = null
 	var sm: Node = get_tree().get_first_node_in_group("save_manager")
 	if sm != null:
 		sm.call("reset_game")

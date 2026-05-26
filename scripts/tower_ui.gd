@@ -7,6 +7,7 @@ var _rate_label: Label
 var _assign_btn: Button
 var _unassign_btn: Button
 var _fortify_btn: Button
+var _upgrade_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
@@ -95,6 +96,11 @@ func _build_ui() -> void:
 	_fortify_btn.pressed.connect(_on_fortify)
 	vbox.add_child(_fortify_btn)
 
+	_upgrade_btn = Button.new()
+	_upgrade_btn.custom_minimum_size = Vector2(0.0, 40.0)
+	_upgrade_btn.pressed.connect(_on_upgrade)
+	vbox.add_child(_upgrade_btn)
+
 func open_for_tower(tower_node: Node) -> void:
 	_tower = tower_node
 	_refresh()
@@ -121,6 +127,14 @@ func _refresh() -> void:
 	else:
 		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
 		_fortify_btn.disabled = GameState.coins < CONSTANTS.FORTIFY_COST
+	var ulevel: int = int(_tower.get("upgrade_level"))
+	var eff_interval: float = maxf(CONSTANTS.TOWER_INTERVAL - float(ulevel) * CONSTANTS.TOWER_UPGRADE_INTERVAL_REDUCTION, 0.4)
+	if ulevel >= CONSTANTS.TOWER_UPGRADE_MAX:
+		_upgrade_btn.text = "Upgraded  (fires every %.1fs)" % eff_interval
+		_upgrade_btn.disabled = true
+	else:
+		_upgrade_btn.text = "Upgrade Tower  (%d coins) → %.1fs fire rate" % [CONSTANTS.TOWER_UPGRADE_COST, eff_interval - CONSTANTS.TOWER_UPGRADE_INTERVAL_REDUCTION]
+		_upgrade_btn.disabled = GameState.coins < CONSTANTS.TOWER_UPGRADE_COST
 
 func _close() -> void:
 	visible = false
@@ -146,6 +160,14 @@ func _on_fortify() -> void:
 	if _tower == null:
 		return
 	if not bool(_tower.call("fortify")):
+		_show_error("Not enough coins!")
+		return
+	_refresh()
+
+func _on_upgrade() -> void:
+	if _tower == null:
+		return
+	if not bool(_tower.call("do_upgrade", CONSTANTS.TOWER_UPGRADE_COST, CONSTANTS.TOWER_UPGRADE_MAX)):
 		_show_error("Not enough coins!")
 		return
 	_refresh()

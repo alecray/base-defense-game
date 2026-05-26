@@ -16,9 +16,10 @@ var _health_bar: Node2D = null
 func _ready() -> void:
 	add_to_group("enemies")
 	add_to_group("flying_enemies")
+	_hp = int(float(CONSTANTS.FLYING_ENEMY_MAX_HP) * GameState.get_enemy_hp_multiplier())
 	_health_bar = HEALTH_BAR_SCENE.instantiate() as Node2D
 	_health_bar.position = Vector2(0.0, -46.0)
-	_health_bar.call("setup", CONSTANTS.FLYING_ENEMY_MAX_HP, 28.0)
+	_health_bar.call("setup", _hp, 28.0)
 	add_child(_health_bar)
 	_retarget_timer = CONSTANTS.ENEMY_RETARGET_INTERVAL
 	if _sprite != null and _sprite.sprite_frames != null:
@@ -82,7 +83,7 @@ func _fire_projectile() -> void:
 	var proj: Node2D = PROJECTILE_SCENE.instantiate() as Node2D
 	get_parent().add_child(proj)
 	proj.global_position = global_position
-	proj.call("init", _target_node.global_position, CONSTANTS.FLYING_ENEMY_ATTACK_DAMAGE)
+	proj.call("init", _target_node.global_position, int(float(CONSTANTS.FLYING_ENEMY_ATTACK_DAMAGE) * GameState.get_enemy_damage_multiplier()))
 
 func take_damage(amount: int) -> void:
 	if _dying:
@@ -95,6 +96,7 @@ func take_damage(amount: int) -> void:
 
 func _die() -> void:
 	GameState.add_coins(CONSTANTS.FLYING_ENEMY_COIN_REWARD)
+	GameState.record_enemy_killed()
 	remove_from_group("enemies")
 	remove_from_group("flying_enemies")
 	_show_coin_popup()

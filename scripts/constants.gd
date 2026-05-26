@@ -117,6 +117,19 @@ const FLYING_ENEMY_PROJECTILE_SPEED: float = 220.0
 const FLYING_ENEMY_SPAWN_START_DAY: int = 3
 const FLYING_ENEMY_SPAWN_INTERVAL: float = 22.0
 
+## Burrower
+const BURROWER_MAX_HP: int = 80
+const BURROWER_TUNNEL_SPEED: float = 90.0
+const BURROWER_SURFACE_SPEED: float = 55.0
+const BURROWER_ATTACK_RANGE: float = 40.0
+const BURROWER_ATTACK_INTERVAL: float = 1.8
+const BURROWER_ATTACK_DAMAGE: int = 18
+const BURROWER_COIN_REWARD: int = 25
+const BURROWER_EMERGE_WARN_TIME: float = 2.0
+const BURROWER_EMERGE_RADIUS: float = 120.0
+const BURROWER_SPAWN_START_DAY: int = 4
+const BURROWER_SPAWN_INTERVAL: float = 35.0
+
 ## Big Enemy
 const BIG_ENEMY_MAX_HP: int = 350
 const BIG_ENEMY_SPEED: float = 28.0
@@ -152,6 +165,32 @@ const PLAYER_BULLET_DAMAGE: int = 15
 const PLAYER_BULLET_SPEED: float = 400.0
 const PLAYER_SHOOT_COOLDOWN: float = 0.3
 const PLAYER_BULLET_LIFETIME: float = 2.0
+
+## Threat Scaling
+const THREAT_SCALE_COINS: float = 800.0
+const THREAT_HP_SCALE: float = 0.6
+const THREAT_DAMAGE_SCALE: float = 0.3
+
+## Building Upgrades
+const FARM_UPGRADE_COST: int = 100
+const FARM_UPGRADE_MAX: int = 1
+const FARM_UPGRADE_FOOD_BONUS: int = 2
+const TOWER_UPGRADE_COST: int = 120
+const TOWER_UPGRADE_MAX: int = 1
+const TOWER_UPGRADE_INTERVAL_REDUCTION: float = 0.3
+
+## Enemy Camp
+const ENEMY_CAMP_HP: int = 250
+const ENEMY_CAMP_SPAWN_RADIUS: float = 900.0
+const ENEMY_CAMP_REWARD: int = 150
+const ENEMY_CAMP_SPAWN_INTERVAL: float = 40.0
+const ENEMY_CAMP_BURST_SIZE: int = 3
+const ENEMY_CAMP_MAX_COUNT: int = 1
+const ENEMY_CAMP_START_NIGHT: int = 2
+const SOLDIER_CAMP_CHASE_RADIUS: float = 1100.0
+
+## Legacy System
+const LEGACY_POINTS_PER_DAY: int = 10
 
 ## Enemy Spawner
 const ENEMY_SPAWN_RADIUS: float = 1400.0

@@ -14,9 +14,10 @@ var _health_bar: Node2D = null
 
 func _ready() -> void:
 	add_to_group("enemies")
+	_hp = int(float(CONSTANTS.BIG_ENEMY_MAX_HP) * GameState.get_enemy_hp_multiplier())
 	_health_bar = HEALTH_BAR_SCENE.instantiate() as Node2D
 	_health_bar.position = Vector2(0.0, -52.0)
-	_health_bar.call("setup", CONSTANTS.BIG_ENEMY_MAX_HP, 40.0)
+	_health_bar.call("setup", _hp, 40.0)
 	add_child(_health_bar)
 	_retarget_timer = CONSTANTS.ENEMY_RETARGET_INTERVAL
 	_play_anim("Walk")
@@ -47,7 +48,7 @@ func _process(delta: float) -> void:
 		_attack_timer += delta
 		if _attack_timer >= CONSTANTS.BIG_ENEMY_ATTACK_INTERVAL:
 			_attack_timer = 0.0
-			_target_node.call("take_damage", CONSTANTS.BIG_ENEMY_ATTACK_DAMAGE)
+			_target_node.call("take_damage", int(float(CONSTANTS.BIG_ENEMY_ATTACK_DAMAGE) * GameState.get_enemy_damage_multiplier()))
 	else:
 		if _attacking:
 			_attacking = false
@@ -93,6 +94,7 @@ func take_damage(amount: int) -> void:
 
 func _die() -> void:
 	GameState.add_coins(CONSTANTS.BIG_ENEMY_COIN_REWARD)
+	GameState.record_enemy_killed()
 	remove_from_group("enemies")
 	_show_coin_popup()
 	var tween: Tween = create_tween()

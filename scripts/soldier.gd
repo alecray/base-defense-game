@@ -65,13 +65,22 @@ func _find_threat() -> Node2D:
 	var nearest_dist: float = INF
 	for enemy: Node in get_tree().get_nodes_in_group("enemies"):
 		var e: Node2D = enemy as Node2D
-		if e.is_in_group("flying_enemies"):
+		if e.is_in_group("flying_enemies") or e.is_in_group("enemy_camps"):
 			continue
 		if _is_threatening(e):
 			var dist: float = global_position.distance_to(e.global_position)
 			if dist < nearest_dist:
 				nearest_dist = dist
 				nearest = e
+	if nearest != null:
+		return nearest
+	# Secondary: march on enemy camps when no active threats
+	for camp: Node in get_tree().get_nodes_in_group("enemy_camps"):
+		var c: Node2D = camp as Node2D
+		var dist: float = global_position.distance_to(c.global_position)
+		if dist < nearest_dist:
+			nearest_dist = dist
+			nearest = c
 	return nearest
 
 func _is_threatening(enemy: Node2D) -> bool:
@@ -98,7 +107,8 @@ func _do_chase(delta: float) -> void:
 	if _target == null or not is_instance_valid(_target):
 		_state = State.PATROL
 		return
-	if global_position.distance_to(Vector2.ZERO) > CONSTANTS.SOLDIER_CHASE_RADIUS:
+	var chase_radius: float = CONSTANTS.SOLDIER_CAMP_CHASE_RADIUS if _target.is_in_group("enemy_camps") else CONSTANTS.SOLDIER_CHASE_RADIUS
+	if global_position.distance_to(Vector2.ZERO) > chase_radius:
 		_state = State.PATROL
 		return
 	var to_target: Vector2 = _target.global_position - global_position

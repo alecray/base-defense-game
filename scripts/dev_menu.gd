@@ -75,6 +75,12 @@ func _build_ui() -> void:
 	reset_btn.pressed.connect(_on_reset_pressed)
 	vbox.add_child(reset_btn)
 
+	var reset_legacy_btn: Button = Button.new()
+	reset_legacy_btn.text = "Reset Legacy Data"
+	reset_legacy_btn.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4))
+	reset_legacy_btn.pressed.connect(_on_reset_legacy_pressed)
+	vbox.add_child(reset_legacy_btn)
+
 func _on_skip_dusk_pressed() -> void:
 	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
 	if cycle != null:
@@ -85,6 +91,10 @@ func _on_reset_pressed() -> void:
 	var sm: Node = get_tree().get_first_node_in_group("save_manager")
 	if sm != null:
 		sm.call("reset_game")
+	_close()
+
+func _on_reset_legacy_pressed() -> void:
+	LegacyState.reset_all()
 	_close()
 
 func _unhandled_input(event: InputEvent) -> void:

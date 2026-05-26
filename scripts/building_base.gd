@@ -5,6 +5,7 @@ const FORTIFY_SCENE: PackedScene = preload("res://prefabs/fortification.tscn")
 
 var max_hp: int = 100
 var foot_y_offset: float = 32.0
+var upgrade_level: int = 0
 var _hp: int = 0
 var _health_bar: Node2D = null
 var _fortification: Node = null
@@ -90,6 +91,14 @@ func get_shield_hp() -> int:
 	if _fortification == null or not is_instance_valid(_fortification):
 		return 0
 	return int(_fortification.call("get_shield"))
+
+func do_upgrade(cost: int, max_level: int) -> bool:
+	if upgrade_level >= max_level:
+		return false
+	if not GameState.spend_coins(cost):
+		return false
+	upgrade_level += 1
+	return true
 
 func _on_fortification_removed() -> void:
 	_fortification = null

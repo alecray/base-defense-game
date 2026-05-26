@@ -24,7 +24,8 @@ func _process(delta: float) -> void:
 	if GameState.power <= 0:
 		return
 	_attack_timer += delta
-	if _attack_timer >= CONSTANTS.TOWER_INTERVAL:
+	var effective_interval: float = maxf(CONSTANTS.TOWER_INTERVAL - float(upgrade_level) * CONSTANTS.TOWER_UPGRADE_INTERVAL_REDUCTION, 0.4)
+	if _attack_timer >= effective_interval:
 		_attack_timer = 0.0
 		_attack()
 

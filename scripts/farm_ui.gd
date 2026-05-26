@@ -6,6 +6,7 @@ var _free_label: Label
 var _assign_btn: Button
 var _unassign_btn: Button
 var _fortify_btn: Button
+var _upgrade_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
@@ -89,6 +90,11 @@ func _build_ui() -> void:
 	_fortify_btn.pressed.connect(_on_fortify)
 	vbox.add_child(_fortify_btn)
 
+	_upgrade_btn = Button.new()
+	_upgrade_btn.custom_minimum_size = Vector2(0.0, 40.0)
+	_upgrade_btn.pressed.connect(_on_upgrade)
+	vbox.add_child(_upgrade_btn)
+
 func open_for_farm(farm_node: Node) -> void:
 	_farm = farm_node
 	_refresh()
@@ -109,6 +115,13 @@ func _refresh() -> void:
 	else:
 		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
 		_fortify_btn.disabled = GameState.coins < CONSTANTS.FORTIFY_COST
+	var ulevel: int = int(_farm.get("upgrade_level"))
+	if ulevel >= CONSTANTS.FARM_UPGRADE_MAX:
+		_upgrade_btn.text = "Upgraded  (+%d food/worker)" % (ulevel * CONSTANTS.FARM_UPGRADE_FOOD_BONUS)
+		_upgrade_btn.disabled = true
+	else:
+		_upgrade_btn.text = "Upgrade Farm  (%d coins) → +%d food/worker" % [CONSTANTS.FARM_UPGRADE_COST, CONSTANTS.FARM_UPGRADE_FOOD_BONUS]
+		_upgrade_btn.disabled = GameState.coins < CONSTANTS.FARM_UPGRADE_COST
 
 func _close() -> void:
 	visible = false
@@ -134,6 +147,14 @@ func _on_fortify() -> void:
 	if _farm == null:
 		return
 	if not bool(_farm.call("fortify")):
+		_show_error("Not enough coins!")
+		return
+	_refresh()
+
+func _on_upgrade() -> void:
+	if _farm == null:
+		return
+	if not bool(_farm.call("do_upgrade", CONSTANTS.FARM_UPGRADE_COST, CONSTANTS.FARM_UPGRADE_MAX)):
 		_show_error("Not enough coins!")
 		return
 	_refresh()

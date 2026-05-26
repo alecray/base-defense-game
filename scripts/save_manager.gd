@@ -134,7 +134,8 @@ func load_game() -> void:
 		tile_grid.call("unlock_tile_free", gp)
 		if building != "":
 			var shield_hp: int = int(tile_dict.get("shield_hp", 0))
-			tile_grid.call("place_building_from_save", building, gp, shield_hp)
+			var upgrade_lvl: int = int(tile_dict.get("upgrade_level", 0))
+			tile_grid.call("place_building_from_save", building, gp, shield_hp, upgrade_lvl)
 
 	var workers_data: Array = data["workers"] as Array
 	for worker_entry: Variant in workers_data:
@@ -251,6 +252,14 @@ func reset_game() -> void:
 		player.position = Vector2.ZERO
 
 	GameState.reset()
+
+	LegacyState.apply_bonuses()
+
+	var worker_bonus: int = LegacyState.get_worker_bonus()
+	if worker_bonus > 0 and tile_grid != null:
+		for _i: int in range(worker_bonus):
+			tile_grid.call("spawn_worker_at", Vector2(randf_range(-80.0, 80.0), randf_range(-80.0, 80.0)))
+			GameState.record_worker_hired()
 
 func _show_saved_popup() -> void:
 	var canvas: CanvasLayer = CanvasLayer.new()

@@ -3,10 +3,13 @@ extends Node
 const ENEMY_SCENE: PackedScene = preload("res://prefabs/enemy.tscn")
 const BIG_ENEMY_SCENE: PackedScene = preload("res://prefabs/big_enemy.tscn")
 const FLYING_ENEMY_SCENE: PackedScene = preload("res://prefabs/flying_enemy.tscn")
+const BURROWER_SCENE: PackedScene = preload("res://prefabs/burrower.tscn")
+const ENEMY_CAMP_SCENE: PackedScene = preload("res://prefabs/enemy_camp.tscn")
 
 var _elapsed: float = 0.0
 var _big_spawn_timer: float = 0.0
 var _fly_spawn_timer: float = 0.0
+var _burrower_spawn_timer: float = 0.0
 var _in_night: bool = false
 var _wave_number: int = 0
 var _wave_timer: float = 0.0
@@ -36,6 +39,8 @@ func _process(delta: float) -> void:
 		_wave_number = 0
 		_wave_timer = CONSTANTS.WAVE_INITIAL_DELAY
 		_burst_queue = 0
+		if day >= CONSTANTS.ENEMY_CAMP_START_NIGHT and get_tree().get_nodes_in_group("enemy_camps").size() < CONSTANTS.ENEMY_CAMP_MAX_COUNT:
+			_spawn_camp()
 
 	# Big enemy — independent of wave system, starts after first full cycle
 	var first_cycle: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
@@ -53,6 +58,13 @@ func _process(delta: float) -> void:
 		if _fly_spawn_timer >= CONSTANTS.FLYING_ENEMY_SPAWN_INTERVAL:
 			_fly_spawn_timer = 0.0
 			_spawn_flying_enemy()
+
+	# Burrower — starts from night 4, tunnels through walls to the interior
+	if day >= CONSTANTS.BURROWER_SPAWN_START_DAY:
+		_burrower_spawn_timer += delta
+		if _burrower_spawn_timer >= CONSTANTS.BURROWER_SPAWN_INTERVAL:
+			_burrower_spawn_timer = 0.0
+			_spawn_burrower()
 
 	# Drain burst queue — one enemy every WAVE_BURST_INTERVAL
 	if _burst_queue > 0:
@@ -81,6 +93,7 @@ func reset() -> void:
 	_elapsed = 0.0
 	_big_spawn_timer = 0.0
 	_fly_spawn_timer = 0.0
+	_burrower_spawn_timer = 0.0
 	_in_night = false
 	_wave_number = 0
 	_wave_timer = 0.0
@@ -106,5 +119,19 @@ func _spawn_big_enemy() -> void:
 	var angle: float = randf() * TAU
 	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS
 	var instance: Node2D = BIG_ENEMY_SCENE.instantiate() as Node2D
+	instance.position = pos
+	get_parent().add_child(instance)
+
+func _spawn_burrower() -> void:
+	var angle: float = randf() * TAU
+	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS
+	var instance: Node2D = BURROWER_SCENE.instantiate() as Node2D
+	instance.position = pos
+	get_parent().add_child(instance)
+
+func _spawn_camp() -> void:
+	var angle: float = randf() * TAU
+	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_CAMP_SPAWN_RADIUS
+	var instance: Node2D = ENEMY_CAMP_SCENE.instantiate() as Node2D
 	instance.position = pos
 	get_parent().add_child(instance)

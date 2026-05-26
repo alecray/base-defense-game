@@ -1,37 +1,82 @@
 [gd_scene format=4 uid="uid://dsoldier00001"]
 
-[ext_resource type="Script" path="res://scripts/soldier.gd" id="1_soldier"]
+[ext_resource type="Script" uid="uid://bk8n0yb7c65eq" path="res://scripts/soldier.gd" id="1_soldier"]
 
-[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_w0kqu"]
-_data = PackedByteArray("AAADAAUAAAABAAAAYAAAAEAAAACaAAAAUklGRpIAAABXRUJQVlA4TIUAAAAvX8APECdAmG2c228ekziWI9K2zU3R8PgdnEjbZo6GRi/6Cuc/AOmVb/yBUdtIkkJhKITCUhj+pPbePrTzi+g/I7dtw8hAT+3Gd/APN/YzoJWe+t4V3abvXbHxiSs6eO0KTuTlFcwWGVqLTQbjxjEfOGZAKz01u2PT3A6U7A6SO8SGHVUGAA==")
-size_override = Vector2(96, 64)
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_5j5g3"]
+_data = PackedByteArray("AAADAAUAAAABAAAAQAAAAEAAAADEAAAAUklGRrwAAABXRUJQVlA4TK8AAAAvP8APECegkG0EODWWk/hMjkjbNjdFw+NHJ9K2maOh0fu3chfzHwBpl2/2g+NGkiSlHuPALBZsCgfQOLBH+e8USze9nM+I/k+AfkC/Hf9cXQJeisNAl4AzSTBiHJ5KgHgkwXiFOCDOpZRQ/P39xZcytzIVL2VuZSpeqtiuCSDjIqYOKRJzVb8lYGSmkbokBIiI6LMo6k+IM61NNdgtppQ2u4jFrUh21eIWeLJdtbQ7AA==")
+size_override = Vector2(64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ont85"]
-atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3nc5"]
+atlas = SubResource("PortableCompressedTexture2D_5j5g3")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5ji5e"]
-atlas = SubResource("PortableCompressedTexture2D_w0kqu")
+[sub_resource type="AtlasTexture" id="AtlasTexture_31lcb"]
+atlas = SubResource("PortableCompressedTexture2D_5j5g3")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uqjts"]
+atlas = SubResource("PortableCompressedTexture2D_5j5g3")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g6ywy"]
+atlas = SubResource("PortableCompressedTexture2D_5j5g3")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_soldier"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_p7r2y"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ont85")
+"texture": SubResource("AtlasTexture_o3nc5")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5ji5e")
+"texture": SubResource("AtlasTexture_31lcb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uqjts")
+}],
+"loop": true,
+"name": &"Attacking",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3nc5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3nc5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g6ywy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g6ywy")
 }],
 "loop": true,
 "name": &"Idle",
-"speed": 4.0
+"speed": 10.0
 }]
 
-[node name="Soldier" type="Node2D"]
+[node name="Soldier" type="Node2D" unique_id=579572955]
 script = ExtResource("1_soldier")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1237972232]
 texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_soldier")
+sprite_frames = SubResource("SpriteFrames_p7r2y")
 animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/npcs/soldier.aseprite",
+"source_uid": 7999591347573327812
+}
+metadata/_aseprite_wizard_source_file_hash_ = "ba3909c2ee1d6efb6d6d658625536884"
