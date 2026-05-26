@@ -62,13 +62,13 @@ const TOWER_POWER_DRAIN_AMOUNT: int = 1
 ## Solar Farm
 const SOLAR_FARM_MAX_HP: int = 100
 const SOLAR_FARM_POWER_INTERVAL: float = 4.0
-const SOLAR_FARM_POWER_AMOUNT: int = 3
+const SOLAR_FARM_POWER_AMOUNT: int = 6
 
 ## Power
 const STARTING_POWER: int = 0
-const POWER_CAP_BASE: int = 50
+const POWER_CAP_BASE: int = 120
 const POWER_CAP_UPGRADE_COST: int = 150
-const POWER_CAP_UPGRADE_AMOUNT: int = 50
+const POWER_CAP_UPGRADE_AMOUNT: int = 60
 
 ## Food Cap
 const FOOD_CAP_BASE: int = 200
