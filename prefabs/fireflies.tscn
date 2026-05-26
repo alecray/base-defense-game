@@ -1,0 +1,6 @@
+[gd_scene format=4 uid="uid://fireflies0001"]
+
+[ext_resource type="Script" path="res://scripts/fireflies.gd" id="1_ff"]
+
+[node name="Fireflies" type="Node2D"]
+script = ExtResource("1_ff")

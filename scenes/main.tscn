@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" path="res://scenes/storehouse_ui.tscn" id="16_shui"]
 [ext_resource type="PackedScene" path="res://scenes/siege_tower_ui.tscn" id="17_stui"]
 [ext_resource type="PackedScene" path="res://prefabs/rally_marker.tscn" id="18_rally"]
+[ext_resource type="PackedScene" path="res://prefabs/fireflies.tscn" id="19_ff"]
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -46,6 +47,8 @@ script = ExtResource("1_tilgrd")
 [node name="SiegeTowerUI" parent="." instance=ExtResource("17_stui")]
 
 [node name="RallyMarker" parent="." instance=ExtResource("18_rally")]
+
+[node name="Fireflies" parent="." instance=ExtResource("19_ff")]
 
 [node name="DevMenu" parent="." instance=ExtResource("7_devmenu")]
 
