@@ -2,7 +2,7 @@
 
 | Impact | Item |
 |--------|------|
-| ★★☆☆☆ | More enemy variety (fast/fragile runners, armored tanks — 4 types already exist) |
+| ~~★★☆☆☆~~ | ~~More enemy variety~~ ✓ |
 | ~~★★☆☆☆~~ | ~~Soldier rally point~~ ✓ |
 | ★★☆☆☆ | Worker automation (assign workers to a zone and they harvest/build automatically) |
 | ~~★☆☆☆☆~~ | ~~Lights that come on at night~~ ✓ |
