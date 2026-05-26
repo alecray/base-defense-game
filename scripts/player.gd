@@ -64,7 +64,7 @@ func _try_show_prompt_for(area: Area2D) -> bool:
 	var unlocked: bool = area.get_meta("tile_unlocked")
 	var has_building: bool = area.get_meta("tile_has_building")
 	var building_name: String = area.get_meta("tile_building") if area.has_meta("tile_building") else ""
-	var is_managed_building: bool = building_name == "Core" or building_name == "Farm" or building_name == "Tower" or building_name == "Housing" or building_name == "GoldMine" or building_name == "Arcanum" or building_name == "Barracks" or building_name == "Storehouse" or building_name == "SiegeTower"
+	var is_managed_building: bool = building_name == "Core" or building_name == "Farm" or building_name == "Tower" or building_name == "Housing" or building_name == "GoldMine" or building_name == "Library" or building_name == "Barracks" or building_name == "Storehouse" or building_name == "SiegeTower"
 	var is_passive_building: bool = building_name == "Armory" or building_name == "SolarFarm" or building_name == "Market"
 	if unlocked and has_building and not is_managed_building and not is_passive_building:
 		return false
@@ -173,7 +173,7 @@ func _handle_e_for(area: Area2D) -> bool:
 	var unlocked: bool = area.get_meta("tile_unlocked")
 	var has_building: bool = area.get_meta("tile_has_building")
 	var building_name: String = area.get_meta("tile_building") if area.has_meta("tile_building") else ""
-	var _is_managed: bool = building_name == "Core" or building_name == "Farm" or building_name == "Tower" or building_name == "Housing" or building_name == "GoldMine" or building_name == "Arcanum" or building_name == "Barracks" or building_name == "Storehouse" or building_name == "SiegeTower"
+	var _is_managed: bool = building_name == "Core" or building_name == "Farm" or building_name == "Tower" or building_name == "Housing" or building_name == "GoldMine" or building_name == "Library" or building_name == "Barracks" or building_name == "Storehouse" or building_name == "SiegeTower"
 	var _is_passive: bool = building_name == "Armory" or building_name == "SolarFarm" or building_name == "Market"
 	if unlocked and has_building and not _is_managed and not _is_passive:
 		return false
@@ -222,11 +222,11 @@ func _handle_e_for(area: Area2D) -> bool:
 		if gold_mine_ui != null and building_node != null:
 			gold_mine_ui.call("open_for_mine", building_node)
 		return true
-	elif building_name == "Arcanum":
-		var arcanum_ui: Node = get_tree().get_first_node_in_group("arcanum_ui")
+	elif building_name == "Library":
+		var library_ui: Node = get_tree().get_first_node_in_group("library_ui")
 		var building_node: Node = area.get_meta("tile_building_node") if area.has_meta("tile_building_node") else null
-		if arcanum_ui != null and building_node != null:
-			arcanum_ui.call("open_for_arcanum", gp, building_node)
+		if library_ui != null and building_node != null:
+			library_ui.call("open_for_library", gp, building_node)
 		return true
 	elif building_name == "Barracks":
 		var barracks_ui: Node = get_tree().get_first_node_in_group("barracks_ui")

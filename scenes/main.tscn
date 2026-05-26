@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" path="res://scenes/gold_mine_ui.tscn" id="12_goldmineui"]
 [ext_resource type="PackedScene" path="res://scenes/dev_menu.tscn" id="7_devmenu"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="13_daycycle"]
-[ext_resource type="PackedScene" path="res://scenes/arcanum_ui.tscn" id="14_labui"]
+[ext_resource type="PackedScene" path="res://scenes/library_ui.tscn" id="14_labui"]
 [ext_resource type="PackedScene" path="res://scenes/barracks_ui.tscn" id="15_barrui"]
 [ext_resource type="PackedScene" path="res://scenes/storehouse_ui.tscn" id="16_shui"]
 [ext_resource type="PackedScene" path="res://scenes/siege_tower_ui.tscn" id="17_stui"]
@@ -36,7 +36,7 @@ script = ExtResource("1_tilgrd")
 
 [node name="GoldMineUI" parent="." instance=ExtResource("12_goldmineui")]
 
-[node name="LabUI" parent="." instance=ExtResource("14_labui")]
+[node name="LibraryUI" parent="." instance=ExtResource("14_labui")]
 
 [node name="BarracksUI" parent="." instance=ExtResource("15_barrui")]
 

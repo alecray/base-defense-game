@@ -12,7 +12,7 @@ const BUILDING_COSTS: Dictionary = {
 	"Barracks": 75,
 	"Farm": 75,
 	"Tower": 60,
-	"Arcanum": 150,
+	"Library": 150,
 	"SolarFarm": 80,
 	"Armory": 150,
 	"SiegeTower": 120,
@@ -162,11 +162,11 @@ const DAY_DURATION: float = 150.0
 const NIGHT_DURATION: float = 150.0
 const DAY_NIGHT_TRANSITION: float = 15.0
 
-## Arcanum
-const ARCANUM_MAX_HP: int = 200
-const ARCANUM_RESEARCH_TURRET_DAMAGE_COST: int = 100
-const ARCANUM_RESEARCH_TURRET_DAMAGE_DURATION: float = 45.0
-const ARCANUM_TURRET_DAMAGE_UPGRADE_AMOUNT: int = 5
+## Library
+const LIBRARY_MAX_HP: int = 200
+const LIBRARY_RESEARCH_TURRET_DAMAGE_COST: int = 100
+const LIBRARY_RESEARCH_TURRET_DAMAGE_DURATION: float = 45.0
+const LIBRARY_TURRET_DAMAGE_UPGRADE_AMOUNT: int = 5
 
 ## Wall
 const WALL_COST: int = 25
@@ -222,29 +222,29 @@ const ARMORY_MAX_HP: int = 175
 const ARMORY_DAMAGE_BONUS: int = 15
 const ARMORY_HP_BONUS: int = 25
 
-## Arcanum — Armory Blueprint research
-const ARCANUM_RESEARCH_ARMORY_COST: int = 175
-const ARCANUM_RESEARCH_ARMORY_DURATION: float = 75.0
+## Library — Armory Blueprint research
+const LIBRARY_RESEARCH_ARMORY_COST: int = 175
+const LIBRARY_RESEARCH_ARMORY_DURATION: float = 75.0
 
-## Arcanum — Combat Training (soldier damage)
-const ARCANUM_RESEARCH_SOLDIER_DAMAGE_COST: int = 120
-const ARCANUM_RESEARCH_SOLDIER_DAMAGE_DURATION: float = 50.0
-const ARCANUM_SOLDIER_DAMAGE_UPGRADE_AMOUNT: int = 5
+## Library — Combat Training (soldier damage)
+const LIBRARY_RESEARCH_SOLDIER_DAMAGE_COST: int = 120
+const LIBRARY_RESEARCH_SOLDIER_DAMAGE_DURATION: float = 50.0
+const LIBRARY_SOLDIER_DAMAGE_UPGRADE_AMOUNT: int = 5
 
-## Arcanum — Soldier Endurance (soldier HP)
-const ARCANUM_RESEARCH_SOLDIER_HP_COST: int = 130
-const ARCANUM_RESEARCH_SOLDIER_HP_DURATION: float = 55.0
-const ARCANUM_SOLDIER_HP_UPGRADE_AMOUNT: int = 20
+## Library — Soldier Endurance (soldier HP)
+const LIBRARY_RESEARCH_SOLDIER_HP_COST: int = 130
+const LIBRARY_RESEARCH_SOLDIER_HP_DURATION: float = 55.0
+const LIBRARY_SOLDIER_HP_UPGRADE_AMOUNT: int = 20
 
-## Arcanum — Efficient Workers (worker speed)
-const ARCANUM_RESEARCH_WORKER_SPEED_COST: int = 100
-const ARCANUM_RESEARCH_WORKER_SPEED_DURATION: float = 40.0
-const ARCANUM_WORKER_SPEED_UPGRADE_AMOUNT: float = 10.0
+## Library — Efficient Workers (worker speed)
+const LIBRARY_RESEARCH_WORKER_SPEED_COST: int = 100
+const LIBRARY_RESEARCH_WORKER_SPEED_DURATION: float = 40.0
+const LIBRARY_WORKER_SPEED_UPGRADE_AMOUNT: float = 10.0
 
-## Arcanum — Agricultural Methods (farm yield)
-const ARCANUM_RESEARCH_FARM_YIELD_COST: int = 110
-const ARCANUM_RESEARCH_FARM_YIELD_DURATION: float = 45.0
-const ARCANUM_FARM_YIELD_UPGRADE_AMOUNT: int = 1
+## Library — Agricultural Methods (farm yield)
+const LIBRARY_RESEARCH_FARM_YIELD_COST: int = 110
+const LIBRARY_RESEARCH_FARM_YIELD_DURATION: float = 45.0
+const LIBRARY_FARM_YIELD_UPGRADE_AMOUNT: int = 1
 
 ## Legacy System
 const LEGACY_POINTS_PER_DAY: int = 10

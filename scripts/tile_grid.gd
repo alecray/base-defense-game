@@ -26,7 +26,7 @@ const FARM_SCENE: PackedScene = preload("res://prefabs/farm.tscn")
 const TOWER_SCENE: PackedScene = preload("res://prefabs/tower.tscn")
 const WORKER_SCENE: PackedScene = preload("res://prefabs/worker.tscn")
 const GOLD_MINE_SCENE: PackedScene = preload("res://prefabs/gold_mine.tscn")
-const ARCANUM_SCENE: PackedScene = preload("res://prefabs/arcanum.tscn")
+const LIBRARY_SCENE: PackedScene = preload("res://prefabs/library.tscn")
 const SOLAR_FARM_SCENE: PackedScene = preload("res://prefabs/solar_farm.tscn")
 const BARRACKS_SCENE: PackedScene = preload("res://prefabs/barracks.tscn")
 const ARMORY_SCENE: PackedScene = preload("res://prefabs/armory.tscn")
@@ -200,8 +200,8 @@ func place_building(building_name: String, gp: Vector2i) -> void:
 			scene = FARM_SCENE
 		"Tower":
 			scene = TOWER_SCENE
-		"Arcanum":
-			scene = ARCANUM_SCENE
+		"Library":
+			scene = LIBRARY_SCENE
 		"SolarFarm":
 			scene = SOLAR_FARM_SCENE
 		"Barracks":
@@ -350,8 +350,8 @@ func place_building_from_save(building_name: String, gp: Vector2i, shield_hp: in
 			scene = TOWER_SCENE
 		"GoldMine":
 			scene = GOLD_MINE_SCENE
-		"Arcanum":
-			scene = ARCANUM_SCENE
+		"Library":
+			scene = LIBRARY_SCENE
 		"SolarFarm":
 			scene = SOLAR_FARM_SCENE
 		"Barracks":

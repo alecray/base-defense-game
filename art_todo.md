@@ -41,7 +41,7 @@
   - Add PortableCompressedTexture2D frames to `big_enemy.tscn` the same way `enemy.tscn` is structured
 
 ### Flying Ranged Enemy
-- [ ] Sprite sheet — `assets/sprites/npcs/flying_enemy.aseprite`
+- [x] Sprite sheet — `assets/sprites/npcs/flying_enemy.aseprite`
   - Animations: `Idle` (hovering/flapping, 2–4 frames), `Attack` (optional wind-up)
   - ~32×32px, top-down perspective
   - Should read as airborne — wings, glowing, floating silhouette, etc.

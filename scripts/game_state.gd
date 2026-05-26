@@ -2,7 +2,7 @@ extends Node
 
 const BUILDING_MAX_COUNTS: Dictionary = {
 	"Core": 1,
-	"Arcanum": 1
+	"Library": 1
 }
 
 var coins: int = CONSTANTS.STARTING_COINS
@@ -37,9 +37,9 @@ signal building_attacked(world_pos: Vector2)
 signal research_completed(upgrade_id: String)
 signal research_progress_changed(upgrade_id: String, progress: float)
 
-var arcanum_research_id: String = ""
-var arcanum_research_progress: float = 0.0
-var arcanum_upgrade_levels: Dictionary = {}
+var library_research_id: String = ""
+var library_research_progress: float = 0.0
+var library_upgrade_levels: Dictionary = {}
 
 var _food_timer: float = 0.0
 var _mine_worker_ever_assigned: bool = false
@@ -121,16 +121,16 @@ func get_armory_hp_bonus() -> int:
 	return get_building_count("Armory") * CONSTANTS.ARMORY_HP_BONUS
 
 func get_soldier_damage_bonus() -> int:
-	return get_upgrade_level("soldier_damage") * CONSTANTS.ARCANUM_SOLDIER_DAMAGE_UPGRADE_AMOUNT
+	return get_upgrade_level("soldier_damage") * CONSTANTS.LIBRARY_SOLDIER_DAMAGE_UPGRADE_AMOUNT
 
 func get_soldier_hp_bonus() -> int:
-	return get_upgrade_level("soldier_hp") * CONSTANTS.ARCANUM_SOLDIER_HP_UPGRADE_AMOUNT
+	return get_upgrade_level("soldier_hp") * CONSTANTS.LIBRARY_SOLDIER_HP_UPGRADE_AMOUNT
 
 func get_worker_speed_bonus() -> float:
-	return float(get_upgrade_level("worker_speed")) * CONSTANTS.ARCANUM_WORKER_SPEED_UPGRADE_AMOUNT
+	return float(get_upgrade_level("worker_speed")) * CONSTANTS.LIBRARY_WORKER_SPEED_UPGRADE_AMOUNT
 
 func get_farm_yield_bonus() -> int:
-	return get_upgrade_level("farm_yield") * CONSTANTS.ARCANUM_FARM_YIELD_UPGRADE_AMOUNT
+	return get_upgrade_level("farm_yield") * CONSTANTS.LIBRARY_FARM_YIELD_UPGRADE_AMOUNT
 
 func get_enemy_hp_multiplier() -> float:
 	return 1.0 + (float(total_coins_earned) / CONSTANTS.THREAT_SCALE_COINS) * CONSTANTS.THREAT_HP_SCALE
@@ -254,47 +254,47 @@ func record_building_destroyed(building_name: String) -> void:
 		soldiers_changed.emit(soldiers, get_soldier_cap())
 
 func start_research(upgrade_id: String) -> void:
-	arcanum_research_id = upgrade_id
-	arcanum_research_progress = 0.0
+	library_research_id = upgrade_id
+	library_research_progress = 0.0
 
 func advance_research(delta: float) -> void:
-	if arcanum_research_id.is_empty():
+	if library_research_id.is_empty():
 		return
-	var duration: float = _get_research_duration(arcanum_research_id)
-	arcanum_research_progress = minf(arcanum_research_progress + delta, duration)
-	research_progress_changed.emit(arcanum_research_id, arcanum_research_progress / duration)
-	if arcanum_research_progress >= duration:
+	var duration: float = _get_research_duration(library_research_id)
+	library_research_progress = minf(library_research_progress + delta, duration)
+	research_progress_changed.emit(library_research_id, library_research_progress / duration)
+	if library_research_progress >= duration:
 		_complete_research()
 
 func _get_research_duration(id: String) -> float:
 	match id:
 		"turret_damage":
-			return CONSTANTS.ARCANUM_RESEARCH_TURRET_DAMAGE_DURATION
+			return CONSTANTS.LIBRARY_RESEARCH_TURRET_DAMAGE_DURATION
 		"armory_blueprint":
-			return CONSTANTS.ARCANUM_RESEARCH_ARMORY_DURATION
+			return CONSTANTS.LIBRARY_RESEARCH_ARMORY_DURATION
 		"soldier_damage":
-			return CONSTANTS.ARCANUM_RESEARCH_SOLDIER_DAMAGE_DURATION
+			return CONSTANTS.LIBRARY_RESEARCH_SOLDIER_DAMAGE_DURATION
 		"soldier_hp":
-			return CONSTANTS.ARCANUM_RESEARCH_SOLDIER_HP_DURATION
+			return CONSTANTS.LIBRARY_RESEARCH_SOLDIER_HP_DURATION
 		"worker_speed":
-			return CONSTANTS.ARCANUM_RESEARCH_WORKER_SPEED_DURATION
+			return CONSTANTS.LIBRARY_RESEARCH_WORKER_SPEED_DURATION
 		"farm_yield":
-			return CONSTANTS.ARCANUM_RESEARCH_FARM_YIELD_DURATION
+			return CONSTANTS.LIBRARY_RESEARCH_FARM_YIELD_DURATION
 		_:
 			return 60.0
 
 func _complete_research() -> void:
-	arcanum_upgrade_levels[arcanum_research_id] = arcanum_upgrade_levels.get(arcanum_research_id, 0) + 1
-	var completed_id: String = arcanum_research_id
-	arcanum_research_id = ""
-	arcanum_research_progress = 0.0
+	library_upgrade_levels[library_research_id] = library_upgrade_levels.get(library_research_id, 0) + 1
+	var completed_id: String = library_research_id
+	library_research_id = ""
+	library_research_progress = 0.0
 	research_completed.emit(completed_id)
 
 func get_upgrade_level(upgrade_id: String) -> int:
-	return arcanum_upgrade_levels.get(upgrade_id, 0)
+	return library_upgrade_levels.get(upgrade_id, 0)
 
 func get_turret_damage() -> int:
-	return CONSTANTS.TOWER_DAMAGE + get_upgrade_level("turret_damage") * CONSTANTS.ARCANUM_TURRET_DAMAGE_UPGRADE_AMOUNT
+	return CONSTANTS.TOWER_DAMAGE + get_upgrade_level("turret_damage") * CONSTANTS.LIBRARY_TURRET_DAMAGE_UPGRADE_AMOUNT
 
 func reset() -> void:
 	coins = CONSTANTS.STARTING_COINS
@@ -303,9 +303,9 @@ func reset() -> void:
 	assigned_workers = 0
 	food = CONSTANTS.STARTING_FOOD
 	_food_timer = 0.0
-	arcanum_research_id = ""
-	arcanum_research_progress = 0.0
-	arcanum_upgrade_levels = {}
+	library_research_id = ""
+	library_research_progress = 0.0
+	library_upgrade_levels = {}
 	power = CONSTANTS.STARTING_POWER
 	power_cap = CONSTANTS.POWER_CAP_BASE
 	food_cap = CONSTANTS.FOOD_CAP_BASE

@@ -12,7 +12,7 @@ const BUILDING_COLORS: Dictionary = {
 	"Housing":   Color(0.80, 0.70, 0.50),
 	"Farm":      Color(0.25, 0.85, 0.30),
 	"Tower":     Color(1.00, 0.80, 0.20),
-	"Arcanum":   Color(0.75, 0.35, 0.95),
+	"Library":   Color(0.75, 0.35, 0.95),
 	"SolarFarm": Color(1.00, 0.65, 0.15),
 	"Barracks":  Color(0.85, 0.30, 0.30),
 	"GoldMine":  Color(1.00, 0.85, 0.20),

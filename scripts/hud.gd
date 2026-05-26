@@ -30,7 +30,7 @@ const _TUTORIAL_PROMPTS: Array = [
 	"Build a Barracks",
 	"Buy a Soldier",
 	"Build Walls to protect your base",
-	"Build an Arcanum",
+	"Build a Library",
 	"Build 2 more Turrets",
 ]
 
@@ -269,7 +269,7 @@ func _on_building_placed(building_name: String) -> void:
 			if _tutorial_step == 12 and GameState.get_building_count("Tower") >= 3:
 				_advance_tutorial(12)
 		"Barracks":  _advance_tutorial(8)
-		"Arcanum":   _advance_tutorial(11)
+		"Library":   _advance_tutorial(11)
 
 func _on_first_mine_worker_assigned() -> void:
 	_advance_tutorial(3)

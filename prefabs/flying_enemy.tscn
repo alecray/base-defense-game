@@ -1,38 +1,47 @@
 [gd_scene format=4 uid="uid://bqki2cpqgs5aa"]
 
-[ext_resource type="Script" path="res://scripts/flying_enemy.gd" id="1_flyenemy"]
+[ext_resource type="Script" uid="uid://c0bba8yv1soy6" path="res://scripts/flying_enemy.gd" id="1_flyenemy"]
 
-[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_fly01"]
-_data = PackedByteArray("AAADAAUAAAABAAAAQAAAACAAAABwAAAAUklGRmgAAABXRUJQVlA4TFwAAAAvP8AHEB8gJCBTHtihEQiQKStitBAIEGZ0+E9wM/8BqK58YBRJUqT+jMTiUoOcCfyNAmDv/Uf0fwL04w52Sx/A5GC39AFcFHEXrCLugknesHukhbxhq/U56dy/Aw==")
-size_override = Vector2(64, 32)
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_sdfi7"]
+_data = PackedByteArray("AAADAAUAAAABAAAAIAAAACAAAABgAAAAUklGRlgAAABXRUJQVlA4TEwAAAAvH8AHEBcgEEjyF5lhU7FgMtD8JXoEAilOYrPnP+BfAZtGkhx1PBAP3cSN89wbABH9nwAu5qQC7mioWXXmCgzukcLeELqlTFfNyc8D")
+size_override = Vector2(32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fly01"]
-atlas = SubResource("PortableCompressedTexture2D_fly01")
+[sub_resource type="AtlasTexture" id="AtlasTexture_gccoi"]
+atlas = SubResource("PortableCompressedTexture2D_sdfi7")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fly02"]
-atlas = SubResource("PortableCompressedTexture2D_fly01")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_fly01"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_6qexc"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_fly01")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fly02")
+"texture": SubResource("AtlasTexture_gccoi")
 }],
 "loop": true,
 "name": &"Idle",
-"speed": 8.0
+"speed": 10.0
 }]
 
-[node name="FlyingEnemy" type="Node2D"]
+[node name="FlyingEnemy" type="Node2D" unique_id=1152690780]
 script = ExtResource("1_flyenemy")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1478148831]
 texture_filter = 1
-modulate = Color(0.4, 0.9, 1.0, 1.0)
-sprite_frames = SubResource("SpriteFrames_fly01")
+sprite_frames = SubResource("SpriteFrames_6qexc")
 animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/npcs/flying_enemy.aseprite",
+"source_uid": 4246169671690044920
+}
+metadata/_aseprite_wizard_source_file_hash_ = "85fc29c04c6554f1ca85712662aea39e"

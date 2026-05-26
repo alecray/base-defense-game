@@ -41,9 +41,9 @@ func save_game() -> void:
 	data["power_cap"] = GameState.power_cap
 	data["food_cap"] = GameState.food_cap
 	data["soldiers"] = GameState.soldiers
-	data["arcanum_research_id"] = GameState.arcanum_research_id
-	data["arcanum_research_progress"] = GameState.arcanum_research_progress
-	data["arcanum_upgrade_levels"] = GameState.arcanum_upgrade_levels.duplicate()
+	data["library_research_id"] = GameState.library_research_id
+	data["library_research_progress"] = GameState.library_research_progress
+	data["library_upgrade_levels"] = GameState.library_upgrade_levels.duplicate()
 	data["workers"] = _get_worker_save_data()
 	data["farms"] = tile_grid.call("get_farm_save_data")
 	data["towers"] = tile_grid.call("get_tower_save_data")
@@ -96,9 +96,9 @@ func load_game() -> void:
 	GameState.power_cap = maxi(int(data.get("power_cap", CONSTANTS.POWER_CAP_BASE)), CONSTANTS.POWER_CAP_BASE)
 	GameState.food_cap = maxi(int(data.get("food_cap", CONSTANTS.FOOD_CAP_BASE)), CONSTANTS.FOOD_CAP_BASE)
 	GameState.soldiers = int(data.get("soldiers", 0))
-	GameState.arcanum_research_id = str(data.get("arcanum_research_id", ""))
-	GameState.arcanum_research_progress = float(data.get("arcanum_research_progress", 0.0))
-	GameState.arcanum_upgrade_levels = (data.get("arcanum_upgrade_levels", {}) as Dictionary).duplicate()
+	GameState.library_research_id = str(data.get("library_research_id", ""))
+	GameState.library_research_progress = float(data.get("library_research_progress", 0.0))
+	GameState.library_upgrade_levels = (data.get("library_upgrade_levels", {}) as Dictionary).duplicate()
 
 	GameState.coins = int(data["coins"])
 	GameState.food = int(data["food"])
@@ -231,7 +231,7 @@ func _infer_tutorial_step(data: Dictionary) -> int:
 		step = maxi(step, 10)
 	if not (data.get("walls", []) as Array).is_empty():
 		step = maxi(step, 11)
-	if int(bc.get("Arcanum", 0)) > 0:
+	if int(bc.get("Library", 0)) > 0:
 		step = maxi(step, 12)
 	if int(bc.get("Tower", 0)) >= 3:
 		step = maxi(step, 13)
