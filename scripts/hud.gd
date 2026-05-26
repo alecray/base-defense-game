@@ -43,7 +43,7 @@ func _ready() -> void:
 	hbox.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	hbox.offset_bottom = 40.0
 	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	hbox.add_theme_constant_override("separation", 12)
+	hbox.add_theme_constant_override("separation", 8)
 	hbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(hbox)
 
@@ -119,7 +119,7 @@ func _ready() -> void:
 func _make_bar_label(text: String) -> Label:
 	var lbl: Label = Label.new()
 	lbl.text = text
-	lbl.add_theme_font_size_override("font_size", 15)
+	lbl.add_theme_font_size_override("font_size", 13)
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return lbl
@@ -127,7 +127,7 @@ func _make_bar_label(text: String) -> Label:
 func _make_sep() -> Label:
 	var sep: Label = Label.new()
 	sep.text = "|"
-	sep.add_theme_font_size_override("font_size", 15)
+	sep.add_theme_font_size_override("font_size", 13)
 	sep.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 0.55))
 	sep.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	sep.mouse_filter = Control.MOUSE_FILTER_IGNORE
