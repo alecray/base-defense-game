@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" path="res://scenes/barracks_ui.tscn" id="15_barrui"]
 [ext_resource type="PackedScene" path="res://scenes/storehouse_ui.tscn" id="16_shui"]
 [ext_resource type="PackedScene" path="res://scenes/siege_tower_ui.tscn" id="17_stui"]
+[ext_resource type="PackedScene" path="res://prefabs/rally_marker.tscn" id="18_rally"]
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -43,6 +44,8 @@ script = ExtResource("1_tilgrd")
 [node name="StorehouseUI" parent="." instance=ExtResource("16_shui")]
 
 [node name="SiegeTowerUI" parent="." instance=ExtResource("17_stui")]
+
+[node name="RallyMarker" parent="." instance=ExtResource("18_rally")]
 
 [node name="DevMenu" parent="." instance=ExtResource("7_devmenu")]
 

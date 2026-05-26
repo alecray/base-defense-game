@@ -50,6 +50,7 @@ func save_game() -> void:
 	data["gold_mines"] = tile_grid.call("get_gold_mine_save_data")
 	data["walls"] = tile_grid.call("get_wall_save_data")
 	data["storehouses"] = tile_grid.call("get_storehouse_save_data")
+	data["rally_point"] = {"x": GameState.rally_point.x, "y": GameState.rally_point.y, "custom": GameState.has_custom_rally_point}
 	var hud: Node = get_tree().get_first_node_in_group("hud")
 	data["tutorial_step"] = int(hud.call("get_tutorial_step")) if hud != null else 0
 
@@ -193,6 +194,10 @@ func load_game() -> void:
 	for wall_entry: Variant in walls_data:
 		var wall_dict: Dictionary = wall_entry as Dictionary
 		tile_grid.call("place_wall_from_save", str(wall_dict["key"]), int(wall_dict["hp"]))
+
+	var rally_data: Dictionary = data.get("rally_point", {}) as Dictionary
+	if rally_data.get("custom", false):
+		GameState.set_rally_point(Vector2(float(rally_data.get("x", 0.0)), float(rally_data.get("y", 0.0))))
 
 	var soldiers_count: int = int(data.get("soldiers", 0))
 	GameState.soldiers = soldiers_count

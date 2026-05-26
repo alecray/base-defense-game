@@ -111,6 +111,9 @@ func _get_repair_hint(bn: Node) -> String:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_MIDDLE:
+			GameState.set_rally_point(_world_mouse_position())
+			return
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			if Input.is_physical_key_pressed(KEY_R):
 				_try_repair()

@@ -39,6 +39,7 @@ const SOLDIER_THREAT_RANGE: float = 250.0
 const SOLDIER_PATROL_OFFSET: float = 60.0
 const SOLDIER_CHASE_RADIUS: float = 900.0
 const SOLDIER_PATROL_REFRESH: float = 8.0
+const SOLDIER_RALLY_PATROL_RADIUS: float = 80.0
 
 ## Building HP
 const CORE_MAX_HP: int = 500

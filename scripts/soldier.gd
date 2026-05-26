@@ -26,6 +26,7 @@ func _ready() -> void:
 	_health_bar.position = Vector2(0.0, -38.0)
 	_health_bar.call("setup", _max_hp, 28.0)
 	add_child(_health_bar)
+	GameState.rally_point_changed.connect(_on_rally_point_changed)
 	_refresh_patrol_points()
 	_sprite.play("Idle")
 
@@ -111,7 +112,7 @@ func _do_chase(delta: float) -> void:
 		_state = State.PATROL
 		return
 	var chase_radius: float = CONSTANTS.SOLDIER_CAMP_CHASE_RADIUS if _target.is_in_group("enemy_camps") else CONSTANTS.SOLDIER_CHASE_RADIUS
-	if global_position.distance_to(Vector2.ZERO) > chase_radius:
+	if global_position.distance_to(GameState.rally_point) > chase_radius:
 		_state = State.PATROL
 		return
 	var to_target: Vector2 = _target.global_position - global_position
@@ -136,13 +137,15 @@ func _do_attack(delta: float) -> void:
 		_target.call("take_damage", CONSTANTS.SOLDIER_ATTACK_DAMAGE + GameState.get_armory_damage_bonus() + GameState.get_soldier_damage_bonus())
 
 func _refresh_patrol_points() -> void:
-	var grid: Node = get_tree().get_first_node_in_group("tile_grid")
-	if grid == null:
-		return
-	_patrol_points = grid.call("get_patrol_points") as Array
+	if GameState.has_custom_rally_point:
+		_patrol_points = _make_rally_circuit(GameState.rally_point)
+	else:
+		var grid: Node = get_tree().get_first_node_in_group("tile_grid")
+		if grid == null:
+			return
+		_patrol_points = grid.call("get_patrol_points") as Array
 	if _patrol_points.is_empty():
 		return
-	# Start from the patrol point closest to current position
 	var best_idx: int = 0
 	var best_dist: float = INF
 	for i: int in range(_patrol_points.size()):
@@ -151,6 +154,17 @@ func _refresh_patrol_points() -> void:
 			best_dist = d
 			best_idx = i
 	_patrol_index = best_idx
+
+func _make_rally_circuit(center: Vector2) -> Array:
+	var points: Array = []
+	var count: int = 8
+	for i: int in range(count):
+		var angle: float = float(i) / float(count) * TAU
+		points.append(center + Vector2(cos(angle), sin(angle)) * CONSTANTS.SOLDIER_RALLY_PATROL_RADIUS)
+	return points
+
+func _on_rally_point_changed(_pos: Vector2) -> void:
+	_refresh_patrol_points()
 
 func take_damage(amount: int) -> void:
 	if _dying:

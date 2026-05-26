@@ -4,7 +4,7 @@ const HEALTH_BAR_SCENE: PackedScene = preload("res://prefabs/health_bar.tscn")
 const FORTIFY_SCENE: PackedScene = preload("res://prefabs/fortification.tscn")
 
 var max_hp: int = 100
-var foot_y_offset: float = 32.0
+var foot_y_offset: float = 64.0
 var upgrade_level: int = 0
 var _hp: int = 0
 var _health_bar: Node2D = null
@@ -14,28 +14,18 @@ var _building_name: String = ""
 var _dying: bool = false
 var _damage_cooldown: float = 0.0
 var _regen_timer: float = 0.0
-var _player_ref: Node2D = null
 
 func _ready() -> void:
 	_hp = max_hp
-	z_as_relative = false
 	add_to_group("buildings")
+	offset = Vector2(0.0, -foot_y_offset)
 	_health_bar = HEALTH_BAR_SCENE.instantiate() as Node2D
-	_health_bar.position = Vector2(0.0, -38.0)
+	_health_bar.position = Vector2(0.0, -38.0 - foot_y_offset)
 	_health_bar.call("setup", max_hp, 60.0)
 	add_child(_health_bar)
 
 func _process(delta: float) -> void:
 	_tick_regen(delta)
-	_update_depth()
-
-func _update_depth() -> void:
-	if _player_ref == null or not is_instance_valid(_player_ref):
-		_player_ref = get_tree().get_first_node_in_group("player") as Node2D
-	if _player_ref == null:
-		return
-	var foot_y: float = global_position.y + foot_y_offset
-	z_index = 0 if _player_ref.global_position.y >= foot_y else 1
 
 func _tick_regen(delta: float) -> void:
 	if _dying or _hp >= max_hp:

@@ -36,6 +36,10 @@ signal first_building_repaired
 signal building_attacked(world_pos: Vector2)
 signal research_completed(upgrade_id: String)
 signal research_progress_changed(upgrade_id: String, progress: float)
+signal rally_point_changed(pos: Vector2)
+
+var rally_point: Vector2 = Vector2.ZERO
+var has_custom_rally_point: bool = false
 
 var library_research_id: String = ""
 var library_research_progress: float = 0.0
@@ -48,6 +52,11 @@ var _tower_worker_ever_assigned: bool = false
 var _soldier_ever_bought: bool = false
 var _wall_ever_placed: bool = false
 var _building_ever_repaired: bool = false
+
+func set_rally_point(pos: Vector2) -> void:
+	rally_point = pos
+	has_custom_rally_point = true
+	rally_point_changed.emit(pos)
 
 func notify_mine_worker_assigned() -> void:
 	if _mine_worker_ever_assigned:
@@ -303,6 +312,8 @@ func reset() -> void:
 	assigned_workers = 0
 	food = CONSTANTS.STARTING_FOOD
 	_food_timer = 0.0
+	rally_point = Vector2.ZERO
+	has_custom_rally_point = false
 	library_research_id = ""
 	library_research_progress = 0.0
 	library_upgrade_levels = {}
