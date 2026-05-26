@@ -2,9 +2,6 @@
 
 | Impact | Item |
 |--------|------|
-| ★★★★★ | Threat scaling tied to economy (enemies scale with total coins earned, not just time) |
-| ★★★★☆ | Building upgrades (spend coins to level up existing buildings) |
-| ★★★★☆ | Enemy camp (visible target on the map soldiers can destroy for a big reward) |
 | ★★★☆☆ | More Lab research (soldier damage/HP, worker speed, farm yield) |
 | ★★★☆☆ | Catapult/Mortar (AoE damage tower, no worker needed, uses power, slow fire rate) |
 | ★★★☆☆ | Market building (convert excess food/power into coins) |
