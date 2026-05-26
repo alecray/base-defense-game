@@ -90,6 +90,8 @@ func _on_coins_changed(new_amount: int) -> void:
 
 func _on_building_placed(building_name: String) -> void:
 	if building_name == "Core":
+		_core_prompt.text = "Build a Solar Farm for power"
+	elif building_name == "SolarFarm" and GameState.get_building_count("SolarFarm") == 1:
 		_core_prompt.visible = false
 
 func _on_workers_changed(count: int, cap: int, free: int) -> void:
@@ -111,6 +113,7 @@ func _on_game_reset() -> void:
 	_day_label.text = "Day 1"
 	_power_label.text = "Power: 0 / %d" % GameState.power_cap
 	_soldiers_label.text = "Soldiers: 0 / 0"
+	_core_prompt.text = "Build a Core to start expanding"
 	_core_prompt.visible = true
 	if _game_over_root != null:
 		_game_over_root.queue_free()
