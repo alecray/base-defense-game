@@ -62,7 +62,7 @@ const TOWER_POWER_DRAIN_AMOUNT: int = 1
 ## Solar Farm
 const SOLAR_FARM_MAX_HP: int = 100
 const SOLAR_FARM_POWER_INTERVAL: float = 4.0
-const SOLAR_FARM_POWER_AMOUNT: int = 1
+const SOLAR_FARM_POWER_AMOUNT: int = 3
 
 ## Power
 const STARTING_POWER: int = 0

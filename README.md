@@ -18,7 +18,7 @@ Enemies only spawn during the night, ramping up as darkness deepens and stopping
 | Tower | 60 | 200 | Attacks enemies within 600px. Requires 1 assigned worker and available power. |
 | Barracks | 75 | 150 | Increases soldier cap by 5 per building. Allows purchasing soldiers. |
 | Lab | 150 | 200 | Research upgrades using coins. Currently: Turret Damage. |
-| Solar Farm | 80 | 100 | Generates 1 power every 4 seconds during daytime only. |
+| Solar Farm | 80 | 100 | Generates 3 power every 4 seconds during daytime only (enough to run 3 Towers). |
 | Gold Mine | — | — | Spawns automatically on map generation. Staff with workers to earn coins (5 per worker every 5s). Depletes over time. |
 
 All buildings regenerate HP at 2% of max per tick (every 3 seconds) after 30 seconds without taking damage. Health bars appear automatically when a building takes damage and hide at full HP.
