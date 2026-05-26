@@ -3,9 +3,9 @@
 | Impact | Item |
 |--------|------|
 | ★★☆☆☆ | More enemy variety (fast/fragile runners, armored tanks — 4 types already exist) |
-| ★★☆☆☆ | Soldier rally point (set a location soldiers default to when not fighting) |
+| ~~★★☆☆☆~~ | ~~Soldier rally point~~ ✓ |
 | ★★☆☆☆ | Worker automation (assign workers to a zone and they harvest/build automatically) |
-| ★☆☆☆☆ | Lights that come on at night (buildings/torches emit a glow when darkness falls) |
+| ~~★☆☆☆☆~~ | ~~Lights that come on at night~~ ✓ |
 
 ---
 

@@ -19,6 +19,20 @@
 
 ## Enemies
 
+### Runner
+- [ ] Sprite sheet — `assets/sprites/npcs/runner.aseprite`
+  - Animations: `Walk` (2–4 frames), `Attack` (optional), `Idle` (fallback)
+  - ~24×24px — small, wiry, agile creature; reads as fast and fragile
+  - Currently a yellow-tinted version of the ground enemy as placeholder
+  - Swap in by updating `prefabs/runner.tscn` to point to the new sprite
+
+### Armored Enemy
+- [ ] Sprite sheet — `assets/sprites/npcs/armored_enemy.aseprite`
+  - Animations: `Walk` (2–4 frames), `Attack` (optional wind-up), `Idle` (fallback)
+  - ~48×48px — hulking, heavily plated unit; reads as slow and near-unkillable
+  - Currently a blue-tinted, 1.4× scaled version of the ground enemy as placeholder
+  - Swap in by updating `prefabs/armored_enemy.tscn` to point to the new sprite
+
 ### Burrower
 - [x] Sprite sheet — `assets/sprites/npcs/burrower.aseprite`
   - Animations: `Idle` (surfaced idle, 2–4 frames)

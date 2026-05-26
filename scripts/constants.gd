@@ -158,6 +158,27 @@ const BIG_ENEMY_COIN_REWARD: int = 30
 const BIG_ENEMY_SPAWN_INTERVAL: float = 35.0
 const BIG_ENEMY_SPAWN_MIN_INTERVAL: float = 12.0
 
+## Runner
+const RUNNER_MAX_HP: int = 35
+const RUNNER_SPEED: float = 105.0
+const RUNNER_ATTACK_RANGE: float = 45.0
+const RUNNER_ATTACK_INTERVAL: float = 0.9
+const RUNNER_ATTACK_DAMAGE: int = 6
+const RUNNER_COIN_REWARD: int = 6
+const RUNNER_SPAWN_START_DAY: int = 5
+const RUNNER_SPAWN_INTERVAL: float = 22.0
+const RUNNER_BURST_SIZE: int = 4
+
+## Armored Enemy
+const ARMORED_MAX_HP: int = 450
+const ARMORED_SPEED: float = 18.0
+const ARMORED_ATTACK_RANGE: float = 80.0
+const ARMORED_ATTACK_INTERVAL: float = 3.0
+const ARMORED_ATTACK_DAMAGE: int = 50
+const ARMORED_COIN_REWARD: int = 45
+const ARMORED_SPAWN_START_DAY: int = 4
+const ARMORED_SPAWN_INTERVAL: float = 55.0
+
 ## Day/Night Cycle
 const DAY_DURATION: float = 150.0
 const NIGHT_DURATION: float = 150.0

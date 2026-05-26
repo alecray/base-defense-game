@@ -4,12 +4,16 @@ const ENEMY_SCENE: PackedScene = preload("res://prefabs/enemy.tscn")
 const BIG_ENEMY_SCENE: PackedScene = preload("res://prefabs/big_enemy.tscn")
 const FLYING_ENEMY_SCENE: PackedScene = preload("res://prefabs/flying_enemy.tscn")
 const BURROWER_SCENE: PackedScene = preload("res://prefabs/burrower.tscn")
+const RUNNER_SCENE: PackedScene = preload("res://prefabs/runner.tscn")
+const ARMORED_SCENE: PackedScene = preload("res://prefabs/armored_enemy.tscn")
 const ENEMY_CAMP_SCENE: PackedScene = preload("res://prefabs/enemy_camp.tscn")
 
 var _elapsed: float = 0.0
 var _big_spawn_timer: float = 0.0
 var _fly_spawn_timer: float = 0.0
 var _burrower_spawn_timer: float = 0.0
+var _runner_spawn_timer: float = 0.0
+var _armored_spawn_timer: float = 0.0
 var _in_night: bool = false
 var _wave_number: int = 0
 var _wave_timer: float = 0.0
@@ -66,6 +70,20 @@ func _process(delta: float) -> void:
 			_burrower_spawn_timer = 0.0
 			_spawn_burrower()
 
+	# Armored — starts from night 4, slow and very tanky
+	if day >= CONSTANTS.ARMORED_SPAWN_START_DAY:
+		_armored_spawn_timer += delta
+		if _armored_spawn_timer >= CONSTANTS.ARMORED_SPAWN_INTERVAL:
+			_armored_spawn_timer = 0.0
+			_spawn_armored_enemy()
+
+	# Runners — start from night 5, spawn in fast packs
+	if day >= CONSTANTS.RUNNER_SPAWN_START_DAY:
+		_runner_spawn_timer += delta
+		if _runner_spawn_timer >= CONSTANTS.RUNNER_SPAWN_INTERVAL:
+			_runner_spawn_timer = 0.0
+			_spawn_runner_burst()
+
 	# Drain burst queue — one enemy every WAVE_BURST_INTERVAL
 	if _burst_queue > 0:
 		_burst_timer -= delta
@@ -94,6 +112,8 @@ func reset() -> void:
 	_big_spawn_timer = 0.0
 	_fly_spawn_timer = 0.0
 	_burrower_spawn_timer = 0.0
+	_runner_spawn_timer = 0.0
+	_armored_spawn_timer = 0.0
 	_in_night = false
 	_wave_number = 0
 	_wave_timer = 0.0
@@ -126,6 +146,23 @@ func _spawn_burrower() -> void:
 	var angle: float = randf() * TAU
 	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS
 	var instance: Node2D = BURROWER_SCENE.instantiate() as Node2D
+	instance.position = pos
+	get_parent().add_child(instance)
+
+func _spawn_runner_burst() -> void:
+	var angle: float = randf() * TAU
+	for _i: int in range(CONSTANTS.RUNNER_BURST_SIZE):
+		var scatter: float = 40.0
+		var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS
+		pos += Vector2(randf_range(-scatter, scatter), randf_range(-scatter, scatter))
+		var instance: Node2D = RUNNER_SCENE.instantiate() as Node2D
+		instance.position = pos
+		get_parent().add_child(instance)
+
+func _spawn_armored_enemy() -> void:
+	var angle: float = randf() * TAU
+	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS
+	var instance: Node2D = ARMORED_SCENE.instantiate() as Node2D
 	instance.position = pos
 	get_parent().add_child(instance)
 
