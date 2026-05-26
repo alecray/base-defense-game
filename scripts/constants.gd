@@ -13,7 +13,8 @@ const BUILDING_COSTS: Dictionary = {
 	"Farm": 75,
 	"Tower": 60,
 	"Lab": 150,
-	"SolarFarm": 80
+	"SolarFarm": 80,
+	"Armory": 150,
 }
 
 ## Housing
@@ -188,6 +189,15 @@ const ENEMY_CAMP_BURST_SIZE: int = 3
 const ENEMY_CAMP_MAX_COUNT: int = 1
 const ENEMY_CAMP_START_NIGHT: int = 2
 const SOLDIER_CAMP_CHASE_RADIUS: float = 1100.0
+
+## Armory
+const ARMORY_MAX_HP: int = 175
+const ARMORY_DAMAGE_BONUS: int = 15
+const ARMORY_HP_BONUS: int = 25
+
+## Lab — Armory Blueprint research
+const LAB_RESEARCH_ARMORY_COST: int = 175
+const LAB_RESEARCH_ARMORY_DURATION: float = 75.0
 
 ## Legacy System
 const LEGACY_POINTS_PER_DAY: int = 10

@@ -91,6 +91,12 @@ func _process(delta: float) -> void:
 		food = maxi(0, food - worker_count)
 		food_changed.emit(food)
 
+func get_armory_damage_bonus() -> int:
+	return get_building_count("Armory") * CONSTANTS.ARMORY_DAMAGE_BONUS
+
+func get_armory_hp_bonus() -> int:
+	return get_building_count("Armory") * CONSTANTS.ARMORY_HP_BONUS
+
 func get_enemy_hp_multiplier() -> float:
 	return 1.0 + (float(total_coins_earned) / CONSTANTS.THREAT_SCALE_COINS) * CONSTANTS.THREAT_HP_SCALE
 
@@ -191,6 +197,8 @@ func is_at_building_limit(building_name: String) -> bool:
 func has_prerequisite(building_name: String) -> bool:
 	if building_name == "Core":
 		return true
+	if building_name == "Armory":
+		return get_upgrade_level("armory_blueprint") > 0
 	return get_building_count("Core") > 0
 
 func record_building_destroyed(building_name: String) -> void:
@@ -222,6 +230,8 @@ func _get_research_duration(id: String) -> float:
 	match id:
 		"turret_damage":
 			return CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_DURATION
+		"armory_blueprint":
+			return CONSTANTS.LAB_RESEARCH_ARMORY_DURATION
 		_:
 			return 60.0
 

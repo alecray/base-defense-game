@@ -13,15 +13,18 @@ var _patrol_index: int = 0
 var _retarget_timer: float = 0.0
 var _attack_timer: float = 0.0
 var _patrol_refresh_timer: float = 0.0
-var _hp: int = CONSTANTS.SOLDIER_HP
+var _hp: int = 0
+var _max_hp: int = 0
 var _health_bar: Node2D = null
 var _dying: bool = false
 
 func _ready() -> void:
 	add_to_group("soldiers")
+	_max_hp = CONSTANTS.SOLDIER_HP + GameState.get_armory_hp_bonus()
+	_hp = _max_hp
 	_health_bar = HEALTH_BAR_SCENE.instantiate() as Node2D
 	_health_bar.position = Vector2(0.0, -38.0)
-	_health_bar.call("setup", CONSTANTS.SOLDIER_HP, 28.0)
+	_health_bar.call("setup", _max_hp, 28.0)
 	add_child(_health_bar)
 	_refresh_patrol_points()
 	_sprite.play("Idle")
@@ -130,7 +133,7 @@ func _do_attack(delta: float) -> void:
 	_attack_timer += delta
 	if _attack_timer >= CONSTANTS.SOLDIER_ATTACK_INTERVAL:
 		_attack_timer = 0.0
-		_target.call("take_damage", CONSTANTS.SOLDIER_ATTACK_DAMAGE)
+		_target.call("take_damage", CONSTANTS.SOLDIER_ATTACK_DAMAGE + GameState.get_armory_damage_bonus())
 
 func _refresh_patrol_points() -> void:
 	var grid: Node = get_tree().get_first_node_in_group("tile_grid")

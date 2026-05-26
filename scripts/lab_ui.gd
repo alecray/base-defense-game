@@ -5,6 +5,9 @@ var _progress_bar: ProgressBar
 var _research_btn: Button
 var _level_label: Label
 var _status_label: Label
+var _armory_progress_bar: ProgressBar
+var _armory_research_btn: Button
+var _armory_status_label: Label
 
 func _ready() -> void:
 	add_to_group("lab_ui")
@@ -30,7 +33,7 @@ func _build_ui() -> void:
 
 	var panel: PanelContainer = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(380.0, 280.0)
+	panel.custom_minimum_size = Vector2(380.0, 460.0)
 	root.add_child(panel)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
@@ -96,6 +99,47 @@ func _build_ui() -> void:
 	_research_btn.pressed.connect(_on_research_pressed)
 	upgrade_vbox.add_child(_research_btn)
 
+	var sep2: HSeparator = HSeparator.new()
+	vbox.add_child(sep2)
+
+	var armory_vbox: VBoxContainer = VBoxContainer.new()
+	armory_vbox.add_theme_constant_override("separation", 8)
+	vbox.add_child(armory_vbox)
+
+	var armory_name_row: HBoxContainer = HBoxContainer.new()
+	armory_vbox.add_child(armory_name_row)
+
+	var armory_name_lbl: Label = Label.new()
+	armory_name_lbl.text = "Armory Blueprint"
+	armory_name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	armory_name_lbl.add_theme_font_size_override("font_size", 16)
+	armory_name_row.add_child(armory_name_lbl)
+
+	var armory_desc_lbl: Label = Label.new()
+	armory_desc_lbl.text = "Unlocks the Armory building. Each Armory gives soldiers +%d attack damage and new soldiers spawn with +%d HP." % [CONSTANTS.ARMORY_DAMAGE_BONUS, CONSTANTS.ARMORY_HP_BONUS]
+	armory_desc_lbl.add_theme_font_size_override("font_size", 12)
+	armory_desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
+	armory_vbox.add_child(armory_desc_lbl)
+
+	_armory_status_label = Label.new()
+	_armory_status_label.add_theme_font_size_override("font_size", 12)
+	_armory_status_label.add_theme_color_override("font_color", Color(0.6, 0.9, 1.0))
+	armory_vbox.add_child(_armory_status_label)
+
+	_armory_progress_bar = ProgressBar.new()
+	_armory_progress_bar.min_value = 0.0
+	_armory_progress_bar.max_value = 1.0
+	_armory_progress_bar.value = 0.0
+	_armory_progress_bar.custom_minimum_size = Vector2(0.0, 18.0)
+	_armory_progress_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_armory_progress_bar.show_percentage = false
+	armory_vbox.add_child(_armory_progress_bar)
+
+	_armory_research_btn = Button.new()
+	_armory_research_btn.custom_minimum_size = Vector2(0.0, 40.0)
+	_armory_research_btn.pressed.connect(_on_armory_research_pressed)
+	armory_vbox.add_child(_armory_research_btn)
+
 func open_for_lab(_gp: Vector2i, _building_node: Node) -> void:
 	_refresh()
 	visible = true
@@ -124,6 +168,33 @@ func _refresh() -> void:
 		_status_label.text = ""
 		_progress_bar.value = 0.0
 
+	# Armory Blueprint section
+	var armory_done: bool = GameState.get_upgrade_level("armory_blueprint") > 0
+	var armory_researching: bool = GameState.lab_research_id == "armory_blueprint"
+
+	if armory_done:
+		_armory_status_label.text = "Unlocked!"
+		_armory_status_label.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4))
+		_armory_progress_bar.value = 1.0
+		_armory_research_btn.disabled = true
+		_armory_research_btn.text = "Already Researched"
+	else:
+		_armory_status_label.add_theme_color_override("font_color", Color(0.6, 0.9, 1.0))
+		_armory_research_btn.disabled = busy
+		_armory_research_btn.text = "Research  (%d coins / %ds)" % [
+			CONSTANTS.LAB_RESEARCH_ARMORY_COST,
+			int(CONSTANTS.LAB_RESEARCH_ARMORY_DURATION)
+		]
+		if armory_researching:
+			_armory_status_label.text = "Researching..."
+			_armory_progress_bar.value = GameState.lab_research_progress / CONSTANTS.LAB_RESEARCH_ARMORY_DURATION
+		elif busy:
+			_armory_status_label.text = "Another research in progress"
+			_armory_progress_bar.value = 0.0
+		else:
+			_armory_status_label.text = ""
+			_armory_progress_bar.value = 0.0
+
 func _on_research_pressed() -> void:
 	if not GameState.spend_coins(CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_COST):
 		_show_error("Not enough coins!")
@@ -131,11 +202,22 @@ func _on_research_pressed() -> void:
 	GameState.start_research("turret_damage")
 	_refresh()
 
-func _on_research_progress(id: String, progress: float) -> void:
-	if not visible or id != "turret_damage":
+func _on_armory_research_pressed() -> void:
+	if not GameState.spend_coins(CONSTANTS.LAB_RESEARCH_ARMORY_COST):
+		_show_error("Not enough coins!")
 		return
-	_progress_bar.value = progress
-	_status_label.text = "Researching... %d%%" % int(progress * 100.0)
+	GameState.start_research("armory_blueprint")
+	_refresh()
+
+func _on_research_progress(id: String, progress: float) -> void:
+	if not visible:
+		return
+	if id == "turret_damage":
+		_progress_bar.value = progress
+		_status_label.text = "Researching... %d%%" % int(progress * 100.0)
+	elif id == "armory_blueprint":
+		_armory_progress_bar.value = progress
+		_armory_status_label.text = "Researching... %d%%" % int(progress * 100.0)
 
 func _on_research_completed(_id: String) -> void:
 	if visible:
