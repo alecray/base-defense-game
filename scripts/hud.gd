@@ -22,6 +22,7 @@ const _TUTORIAL_PROMPTS: Array = [
 	"Buy a Farm",
 	"Assign workers to the farm",
 	"Build a Turret",
+	"Build a Barracks",
 	"Build Walls to protect your base",
 	"Build a Lab",
 	"Build 2 more Turrets",
@@ -236,9 +237,10 @@ func _on_building_placed(building_name: String) -> void:
 		"Farm":      _advance_tutorial(4)
 		"Tower":
 			_advance_tutorial(6)
-			if _tutorial_step == 9 and GameState.get_building_count("Tower") >= 3:
-				_advance_tutorial(9)
-		"Lab":       _advance_tutorial(8)
+			if _tutorial_step == 10 and GameState.get_building_count("Tower") >= 3:
+				_advance_tutorial(10)
+		"Barracks":  _advance_tutorial(7)
+		"Lab":       _advance_tutorial(9)
 
 func _on_first_mine_worker_assigned() -> void:
 	_advance_tutorial(3)
@@ -247,7 +249,7 @@ func _on_first_farm_worker_assigned() -> void:
 	_advance_tutorial(5)
 
 func _on_first_wall_placed() -> void:
-	_advance_tutorial(7)
+	_advance_tutorial(8)
 
 func _on_workers_changed(count: int, cap: int, _free: int) -> void:
 	_workers_label.text = "Workers: %d/%d" % [count, cap]

@@ -60,7 +60,7 @@ func notify_wall_placed() -> void:
 func restore_tutorial_flags(step: int) -> void:
 	_mine_worker_ever_assigned = step >= 4
 	_farm_worker_ever_assigned = step >= 6
-	_wall_ever_placed = step >= 8
+	_wall_ever_placed = step >= 9
 
 func _process(delta: float) -> void:
 	if worker_count <= 0:

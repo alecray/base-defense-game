@@ -209,12 +209,14 @@ func _infer_tutorial_step(data: Dictionary) -> int:
 			break
 	if int(bc.get("Tower", 0)) > 0:
 		step = maxi(step, 7)
-	if not (data.get("walls", []) as Array).is_empty():
+	if int(bc.get("Barracks", 0)) > 0:
 		step = maxi(step, 8)
-	if int(bc.get("Lab", 0)) > 0:
+	if not (data.get("walls", []) as Array).is_empty():
 		step = maxi(step, 9)
-	if int(bc.get("Tower", 0)) >= 3:
+	if int(bc.get("Lab", 0)) > 0:
 		step = maxi(step, 10)
+	if int(bc.get("Tower", 0)) >= 3:
+		step = maxi(step, 11)
 	return step
 
 func reset_game() -> void:
