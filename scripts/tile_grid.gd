@@ -482,7 +482,7 @@ func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> String:
 	if _walls.has(key):
 		var wall: Node2D = _walls[key] as Node2D
 		if int(wall.get("_hp")) < CONSTANTS.WALL_MAX_HP:
-			return "Wall is damaged — repair it first."
+			return str(wall.call("start_repair"))
 		_walls.erase(key)
 		wall.remove_from_group("buildings")
 		GameState.add_coins(CONSTANTS.WALL_COST)
