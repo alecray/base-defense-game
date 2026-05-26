@@ -112,7 +112,8 @@ func load_game() -> void:
 
 	var hud: Node = get_tree().get_first_node_in_group("hud")
 	if hud != null:
-		var step: int = int(data["tutorial_step"]) if data.has("tutorial_step") else _infer_tutorial_step(data)
+		var saved_step: int = int(data.get("tutorial_step", 0))
+		var step: int = maxi(saved_step, _infer_tutorial_step(data))
 		hud.call("restore_tutorial_step", step)
 
 	if GameState.get_building_count("Core") > 0:
