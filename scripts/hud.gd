@@ -4,6 +4,7 @@ var _coins_label: Label
 var _core_prompt: Label
 var _workers_label: Label
 var _food_label: Label
+var _food_rate_label: Label
 var _power_label: Label
 var _soldiers_label: Label
 var _day_label: Label
@@ -58,6 +59,9 @@ func _ready() -> void:
 
 	_food_label = _make_bar_label("Food: %d / %d" % [GameState.food, GameState.food_cap])
 	hbox.add_child(_food_label)
+	_food_rate_label = _make_bar_label("")
+	_food_rate_label.add_theme_font_size_override("font_size", 11)
+	hbox.add_child(_food_rate_label)
 	hbox.add_child(_make_sep())
 
 	_power_label = _make_bar_label("Power: %d / %d" % [GameState.power, GameState.power_cap])
@@ -112,6 +116,7 @@ func _ready() -> void:
 	GameState.building_placed.connect(_on_building_placed)
 	GameState.workers_changed.connect(_on_workers_changed)
 	GameState.food_changed.connect(_on_food_changed)
+	GameState.food_rate_changed.connect(_on_food_rate_changed)
 	GameState.power_changed.connect(_on_power_changed)
 	GameState.soldiers_changed.connect(_on_soldiers_changed)
 	GameState.game_reset.connect(_on_game_reset)
@@ -268,6 +273,16 @@ func _on_workers_changed(count: int, cap: int, _free: int) -> void:
 
 func _on_food_changed(new_amount: int) -> void:
 	_food_label.text = "Food: %d / %d" % [new_amount, GameState.food_cap]
+
+func _on_food_rate_changed(net_per_5s: int) -> void:
+	if net_per_5s > 0:
+		_food_rate_label.text = "(+%d/5s)" % net_per_5s
+		_food_rate_label.add_theme_color_override("font_color", Color(0.4, 0.9, 0.3))
+	elif net_per_5s < 0:
+		_food_rate_label.text = "(%d/5s)" % net_per_5s
+		_food_rate_label.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
+	else:
+		_food_rate_label.text = ""
 
 func _on_power_changed(new_amount: int) -> void:
 	_power_label.text = "Power: %d / %d" % [new_amount, GameState.power_cap]

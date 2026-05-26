@@ -22,10 +22,13 @@ func _process(delta: float) -> void:
 		_show_food_popup(amount)
 
 func _on_destroyed() -> void:
+	var count: int = _assigned_workers.size()
 	for worker: Node in _assigned_workers:
 		worker.call("unassign")
 		GameState.record_worker_assigned(-1)
 	_assigned_workers.clear()
+	if count > 0:
+		GameState.record_farm_worker_delta(-count)
 	super._on_destroyed()
 
 func assign_worker() -> bool:
@@ -42,6 +45,7 @@ func assign_worker() -> bool:
 	free_worker.call("assign_to", _work_point.global_position)
 	GameState.record_worker_assigned(1)
 	GameState.notify_farm_worker_assigned()
+	GameState.record_farm_worker_delta(1)
 	return true
 
 func unassign_worker() -> bool:
@@ -50,6 +54,7 @@ func unassign_worker() -> bool:
 	var worker: Node = _assigned_workers.pop_back()
 	worker.call("unassign")
 	GameState.record_worker_assigned(-1)
+	GameState.record_farm_worker_delta(-1)
 	return true
 
 func get_assigned_workers() -> int:

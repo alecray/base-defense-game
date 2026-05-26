@@ -16,11 +16,13 @@ var power_cap: int = CONSTANTS.POWER_CAP_BASE
 var soldiers: int = 0
 var enemies_killed_this_run: int = 0
 var total_coins_earned: int = 0
+var farm_workers_assigned: int = 0
 
 signal coins_changed(new_amount: int)
 signal building_placed(building_name: String)
 signal workers_changed(count: int, cap: int, free: int)
 signal food_changed(new_amount: int)
+signal food_rate_changed(net_per_5s: int)
 signal power_changed(new_amount: int)
 signal soldiers_changed(count: int, cap: int)
 signal game_reset
@@ -90,6 +92,13 @@ func _process(delta: float) -> void:
 		_food_timer -= CONSTANTS.FOOD_DRAIN_INTERVAL
 		food = maxi(0, food - worker_count)
 		food_changed.emit(food)
+
+func get_food_net_per_tick() -> int:
+	return farm_workers_assigned * CONSTANTS.FARM_FOOD_PER_WORKER - worker_count
+
+func record_farm_worker_delta(delta: int) -> void:
+	farm_workers_assigned = maxi(0, farm_workers_assigned + delta)
+	food_rate_changed.emit(get_food_net_per_tick())
 
 func get_armory_damage_bonus() -> int:
 	return get_building_count("Armory") * CONSTANTS.ARMORY_DAMAGE_BONUS
@@ -185,6 +194,7 @@ func record_building_placed(building_name: String) -> void:
 func record_worker_hired() -> void:
 	worker_count += 1
 	workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())
+	food_rate_changed.emit(get_food_net_per_tick())
 
 func get_building_count(building_name: String) -> int:
 	return building_counts.get(building_name, 0)
@@ -264,6 +274,7 @@ func reset() -> void:
 	soldiers = 0
 	enemies_killed_this_run = 0
 	total_coins_earned = 0
+	farm_workers_assigned = 0
 	_mine_worker_ever_assigned = false
 	_farm_worker_ever_assigned = false
 	_tower_worker_ever_assigned = false
@@ -275,3 +286,4 @@ func reset() -> void:
 	power_changed.emit(power)
 	soldiers_changed.emit(soldiers, get_soldier_cap())
 	workers_changed.emit(worker_count, get_worker_cap(), get_free_workers())
+	food_rate_changed.emit(get_food_net_per_tick())

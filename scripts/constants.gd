@@ -2,7 +2,7 @@ extends Node
 
 ## Economy
 const STARTING_COINS: int = 200
-const STARTING_FOOD: int = 50
+const STARTING_FOOD: int = 100
 const WORKER_COST: int = 20
 const FORTIFY_COST: int = 75
 const FOOD_DRAIN_INTERVAL: float = 5.0
