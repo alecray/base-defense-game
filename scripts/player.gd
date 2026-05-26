@@ -8,6 +8,7 @@ const BULLET_SCENE: PackedScene = preload("res://prefabs/player_bullet.tscn")
 @onready var _purchase_prompt: Label = $PurchasePrompt
 
 var _shoot_cooldown: float = 0.0
+var _last_wall_key: String = ""
 
 func _ready() -> void:
 	add_to_group("player")
@@ -15,6 +16,24 @@ func _ready() -> void:
 	_purchase_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_purchase_prompt.add_theme_font_size_override("font_size", 14)
 	_purchase_prompt.position = Vector2(-80.0, -72.0)
+
+func _process(_delta: float) -> void:
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		_last_wall_key = ""
+		return
+	var grid: Node = get_tree().get_first_node_in_group("tile_grid")
+	if grid == null:
+		return
+	var world_pos: Vector2 = _world_mouse_position()
+	var edge: Dictionary = grid.call("get_nearest_wall_edge", world_pos) as Dictionary
+	if edge.is_empty():
+		_last_wall_key = ""
+		return
+	var key: String = str(edge.get("key", ""))
+	if key == _last_wall_key:
+		return
+	_last_wall_key = key
+	_try_place_wall(world_pos)
 
 func _physics_process(delta: float) -> void:
 	_shoot_cooldown = maxf(0.0, _shoot_cooldown - delta)
@@ -67,8 +86,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT and _shoot_cooldown <= 0.0:
 			_shoot(_world_mouse_position())
-		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
-			_try_place_wall(_world_mouse_position())
 		return
 	if not event is InputEventKey:
 		return
@@ -83,8 +100,9 @@ func _try_place_wall(world_pos: Vector2) -> void:
 	var grid: Node = get_tree().get_first_node_in_group("tile_grid")
 	if grid == null:
 		return
-	if not bool(grid.call("try_place_wall", world_pos, global_position)):
-		_show_error("Can't build wall here!")
+	var err: String = str(grid.call("try_place_wall", world_pos, global_position))
+	if not err.is_empty():
+		_show_error(err)
 
 func _shoot(target: Vector2) -> void:
 	_shoot_cooldown = CONSTANTS.PLAYER_SHOOT_COOLDOWN

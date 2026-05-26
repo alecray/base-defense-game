@@ -457,10 +457,10 @@ func get_nearest_wall_edge(world_pos: Vector2) -> Dictionary:
 				best = {"key": "H,%d,%d" % [tgp.x, tgp.y], "vertical": false, "world_pos": origin + Vector2(ts * 0.5, ts), "gp": tgp}
 	return best
 
-func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> bool:
+func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> String:
 	var edge: Dictionary = get_nearest_wall_edge(world_pos)
 	if edge.is_empty():
-		return false
+		return "No wall edge nearby."
 	var gp_check: Vector2i = edge["gp"] as Vector2i
 	var origin_check: Vector2 = _tile_origin(gp_check)
 	var ts: float = CONSTANTS.TILE_SIZE
@@ -470,32 +470,34 @@ func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> bool:
 	else:
 		near_player = Vector2(clampf(player_pos.x, origin_check.x, origin_check.x + ts), origin_check.y + ts)
 	if player_pos.distance_to(near_player) > CONSTANTS.WALL_PLAYER_RANGE:
-		return false
+		return "Too far away."
 	var gp: Vector2i = edge["gp"] as Vector2i
 	var is_vert: bool = edge["vertical"] as bool
 	var neighbor: Vector2i = gp + (Vector2i(1, 0) if is_vert else Vector2i(0, 1))
 	var gp_owned: bool = _tiles.has(gp) and _tiles[gp].unlocked
 	var neighbor_owned: bool = _tiles.has(neighbor) and _tiles[neighbor].unlocked
 	if not gp_owned and not neighbor_owned:
-		return false
+		return "Must be on owned tile."
 	var key: String = edge["key"] as String
 	if _walls.has(key):
 		var wall: Node2D = _walls[key] as Node2D
+		if int(wall.get("_hp")) < CONSTANTS.WALL_MAX_HP:
+			return "Wall is damaged — repair it first."
 		_walls.erase(key)
 		wall.remove_from_group("buildings")
 		GameState.add_coins(CONSTANTS.WALL_COST)
 		var remove_tween: Tween = wall.create_tween()
 		remove_tween.tween_property(wall, "scale", Vector2.ZERO, 0.15)
 		remove_tween.tween_callback(wall.queue_free)
-		return true
+		return ""
 	if not GameState.spend_coins(CONSTANTS.WALL_COST):
-		return false
+		return "Not enough coins!"
 	var instance: Node2D = WALL_SCENE.instantiate() as Node2D
-	instance.position = edge_world
+	instance.position = edge["world_pos"] as Vector2
 	add_child(instance)
 	instance.call("init", edge["vertical"], key)
 	_walls[key] = instance
-	return true
+	return ""
 
 func on_wall_destroyed(edge_key: String) -> void:
 	_walls.erase(edge_key)
