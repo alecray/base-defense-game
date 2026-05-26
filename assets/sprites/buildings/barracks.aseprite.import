@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://ipf183bhvr2u"
+path="res://.godot/imported/barracks.aseprite-635e1c83d43a6efa5b68f92c48a7fe36.res"
+
+[deps]
+
+source_file="res://assets/sprites/buildings/barracks.aseprite"
+dest_files=["res://.godot/imported/barracks.aseprite-635e1c83d43a6efa5b68f92c48a7fe36.res"]
+
+[params]
+
