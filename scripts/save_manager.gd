@@ -123,6 +123,8 @@ func load_game() -> void:
 	if tile_grid == null:
 		return
 
+	tile_grid.call("clear_for_load")
+
 	var tiles_data: Array = data["tiles"] as Array
 	for tile_entry: Variant in tiles_data:
 		var tile_dict: Dictionary = tile_entry as Dictionary
