@@ -460,7 +460,11 @@ func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> bool:
 	if player_pos.distance_to(edge_world) > CONSTANTS.WALL_PLAYER_RANGE:
 		return false
 	var gp: Vector2i = edge["gp"] as Vector2i
-	if not _tiles.has(gp) or not _tiles[gp].unlocked:
+	var is_vert: bool = edge["vertical"] as bool
+	var neighbor: Vector2i = gp + (Vector2i(1, 0) if is_vert else Vector2i(0, 1))
+	var gp_owned: bool = _tiles.has(gp) and _tiles[gp].unlocked
+	var neighbor_owned: bool = _tiles.has(neighbor) and _tiles[neighbor].unlocked
+	if not gp_owned and not neighbor_owned:
 		return false
 	var key: String = edge["key"] as String
 	if _walls.has(key):

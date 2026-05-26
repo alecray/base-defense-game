@@ -129,7 +129,7 @@ const LAB_TURRET_DAMAGE_UPGRADE_AMOUNT: int = 5
 const WALL_COST: int = 25
 const WALL_MAX_HP: int = 200
 const WALL_THICKNESS: float = 20.0
-const WALL_SNAP_DISTANCE: float = 40.0
+const WALL_SNAP_DISTANCE: float = 56.0
 const WALL_PLAYER_RANGE: float = 200.0
 
 ## Player
