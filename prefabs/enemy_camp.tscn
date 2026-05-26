@@ -1,6 +1,47 @@
-[gd_scene format=4 uid="uid://enemycamp000001"]
+[gd_scene format=4 uid="uid://do5dwmorlwlki"]
 
 [ext_resource type="Script" path="res://scripts/enemy_camp.gd" id="1_camp"]
 
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_camp1"]
+_data = PackedByteArray("AAADAAUAAAABAAAAIAAAACAAAAB6AAAAUklGRnIAAABXRUJQVlA4TGYAAAAvH8AHECdAkG2bm8VAJnWKK2QbATqE82f6jYi0beZobOxqb3T+A2Belaj/oBiSJKkUVqEURmH8pfa+/hH9nwA+GJsCYg+hI7lCFbVKVvXXoJZWsgbVsiUdXEQ2Kxe197GPMPYErAA=")
+size_override = Vector2(48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_camp1"]
+atlas = SubResource("PortableCompressedTexture2D_camp1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_camp1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_camp1")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}]
+
 [node name="EnemyCamp" type="Node2D"]
 script = ExtResource("1_camp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2037461523]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_camp1")
+animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/structures/enemy-camp.aseprite",
+"source_uid": 0
+}
+metadata/_aseprite_wizard_source_file_hash_ = "00000000000000000000000000000000"

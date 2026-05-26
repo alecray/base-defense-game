@@ -12,10 +12,12 @@ const BUILDING_COSTS: Dictionary = {
 	"Barracks": 75,
 	"Farm": 75,
 	"Tower": 60,
-	"Lab": 150,
+	"Arcanum": 150,
 	"SolarFarm": 80,
 	"Armory": 150,
 	"SiegeTower": 120,
+	"Market": 100,
+	"Storehouse": 110,
 }
 
 ## Housing
@@ -63,6 +65,19 @@ const TOWER_RANGE: float = 600.0
 const TOWER_INTERVAL: float = 1.0
 const TOWER_POWER_DRAIN_INTERVAL: float = 4.0
 const TOWER_POWER_DRAIN_AMOUNT: int = 1
+
+## Storehouse
+const STOREHOUSE_MAX_HP: int = 175
+const STOREHOUSE_MAX_WORKERS: int = 5
+const STOREHOUSE_FOOD_CAP_PER_WORKER: int = 50
+const STOREHOUSE_POWER_CAP_PER_WORKER: int = 30
+
+## Market
+const MARKET_MAX_HP: int = 175
+const MARKET_FOOD_THRESHOLD_FRACTION: float = 0.6
+const MARKET_POWER_THRESHOLD_FRACTION: float = 0.6
+const MARKET_FOOD_PER_COIN: int = 8
+const MARKET_POWER_PER_COIN: int = 5
 
 ## Solar Farm
 const SOLAR_FARM_MAX_HP: int = 100
@@ -147,11 +162,11 @@ const DAY_DURATION: float = 150.0
 const NIGHT_DURATION: float = 150.0
 const DAY_NIGHT_TRANSITION: float = 15.0
 
-## Lab
-const LAB_MAX_HP: int = 200
-const LAB_RESEARCH_TURRET_DAMAGE_COST: int = 100
-const LAB_RESEARCH_TURRET_DAMAGE_DURATION: float = 45.0
-const LAB_TURRET_DAMAGE_UPGRADE_AMOUNT: int = 5
+## Arcanum
+const ARCANUM_MAX_HP: int = 200
+const ARCANUM_RESEARCH_TURRET_DAMAGE_COST: int = 100
+const ARCANUM_RESEARCH_TURRET_DAMAGE_DURATION: float = 45.0
+const ARCANUM_TURRET_DAMAGE_UPGRADE_AMOUNT: int = 5
 
 ## Wall
 const WALL_COST: int = 25
@@ -161,6 +176,7 @@ const WALL_SNAP_DISTANCE: float = 96.0
 const WALL_PLAYER_RANGE: float = 400.0
 const WALL_REPAIR_COST: int = 15
 const WALL_REPAIR_RATE: float = 20.0
+const BUILDING_REPAIR_HP_PER_COIN: int = 5
 
 ## Player
 const PLAYER_BULLET_DAMAGE: int = 15
@@ -206,29 +222,29 @@ const ARMORY_MAX_HP: int = 175
 const ARMORY_DAMAGE_BONUS: int = 15
 const ARMORY_HP_BONUS: int = 25
 
-## Lab — Armory Blueprint research
-const LAB_RESEARCH_ARMORY_COST: int = 175
-const LAB_RESEARCH_ARMORY_DURATION: float = 75.0
+## Arcanum — Armory Blueprint research
+const ARCANUM_RESEARCH_ARMORY_COST: int = 175
+const ARCANUM_RESEARCH_ARMORY_DURATION: float = 75.0
 
-## Lab — Combat Training (soldier damage)
-const LAB_RESEARCH_SOLDIER_DAMAGE_COST: int = 120
-const LAB_RESEARCH_SOLDIER_DAMAGE_DURATION: float = 50.0
-const LAB_SOLDIER_DAMAGE_UPGRADE_AMOUNT: int = 5
+## Arcanum — Combat Training (soldier damage)
+const ARCANUM_RESEARCH_SOLDIER_DAMAGE_COST: int = 120
+const ARCANUM_RESEARCH_SOLDIER_DAMAGE_DURATION: float = 50.0
+const ARCANUM_SOLDIER_DAMAGE_UPGRADE_AMOUNT: int = 5
 
-## Lab — Soldier Endurance (soldier HP)
-const LAB_RESEARCH_SOLDIER_HP_COST: int = 130
-const LAB_RESEARCH_SOLDIER_HP_DURATION: float = 55.0
-const LAB_SOLDIER_HP_UPGRADE_AMOUNT: int = 20
+## Arcanum — Soldier Endurance (soldier HP)
+const ARCANUM_RESEARCH_SOLDIER_HP_COST: int = 130
+const ARCANUM_RESEARCH_SOLDIER_HP_DURATION: float = 55.0
+const ARCANUM_SOLDIER_HP_UPGRADE_AMOUNT: int = 20
 
-## Lab — Efficient Workers (worker speed)
-const LAB_RESEARCH_WORKER_SPEED_COST: int = 100
-const LAB_RESEARCH_WORKER_SPEED_DURATION: float = 40.0
-const LAB_WORKER_SPEED_UPGRADE_AMOUNT: float = 10.0
+## Arcanum — Efficient Workers (worker speed)
+const ARCANUM_RESEARCH_WORKER_SPEED_COST: int = 100
+const ARCANUM_RESEARCH_WORKER_SPEED_DURATION: float = 40.0
+const ARCANUM_WORKER_SPEED_UPGRADE_AMOUNT: float = 10.0
 
-## Lab — Agricultural Methods (farm yield)
-const LAB_RESEARCH_FARM_YIELD_COST: int = 110
-const LAB_RESEARCH_FARM_YIELD_DURATION: float = 45.0
-const LAB_FARM_YIELD_UPGRADE_AMOUNT: int = 1
+## Arcanum — Agricultural Methods (farm yield)
+const ARCANUM_RESEARCH_FARM_YIELD_COST: int = 110
+const ARCANUM_RESEARCH_FARM_YIELD_DURATION: float = 45.0
+const ARCANUM_FARM_YIELD_UPGRADE_AMOUNT: int = 1
 
 ## Legacy System
 const LEGACY_POINTS_PER_DAY: int = 10

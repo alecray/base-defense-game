@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://flyenemy00001"]
+[gd_scene format=4 uid="uid://bqki2cpqgs5aa"]
 
 [ext_resource type="Script" path="res://scripts/flying_enemy.gd" id="1_flyenemy"]
 

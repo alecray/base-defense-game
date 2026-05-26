@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://u1co7u10ajxw"
+path="res://.godot/imported/armory.aseprite-91e02d7a5981edb90f5d736adca0ec31.res"
+
+[deps]
+
+source_file="res://assets/sprites/buildings/armory.aseprite"
+dest_files=["res://.godot/imported/armory.aseprite-91e02d7a5981edb90f5d736adca0ec31.res"]
+
+[params]
+

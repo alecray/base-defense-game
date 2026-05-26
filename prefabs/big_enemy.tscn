@@ -1,19 +1,47 @@
 [gd_scene format=4 uid="uid://bigenemy0001"]
 
-[ext_resource type="Script" path="res://scripts/big_enemy.gd" id="1_bigenemy"]
+[ext_resource type="Script" uid="uid://dipiwah7lbbsb" path="res://scripts/big_enemy.gd" id="1_bigenemy"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_bigenemy"]
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_jndqj"]
+_data = PackedByteArray("AAADAAUAAAABAAAAMAAAADAAAACGAAAAUklGRn4AAABXRUJQVlA4THEAAAAvL8ALEBcgEEhimXh8gUAS0YLLC0hS7KPGNf8B1R9cRZKkWP3T/o7qHvhjmwu9ewoi+j8BmruAB1B3tCw1ItN0srRImPV6Jgu8ij+J4PUEXtFCZ6BxywUcqEOJhtF0soAlgRJAkhZ8lQUNAhfKNIGKEwA=")
+size_override = Vector2(48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0val"]
+atlas = SubResource("PortableCompressedTexture2D_jndqj")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tse3t"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0val")
+}],
 "loop": true,
 "name": &"Idle",
-"speed": 5.0
+"speed": 10.0
 }]
 
-[node name="BigEnemy" type="Node2D"]
+[node name="BigEnemy" type="Node2D" unique_id=921484984]
 script = ExtResource("1_bigenemy")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1592102583]
 texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_bigenemy")
+sprite_frames = SubResource("SpriteFrames_tse3t")
 animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/npcs/big_enemy.aseprite",
+"source_uid": 3699634302311220643
+}
+metadata/_aseprite_wizard_source_file_hash_ = "941135ae022b067341f98b96adabb8c5"

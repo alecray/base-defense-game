@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://lh87t7myiuaw" path="res://scripts/barracks.gd" id="1_barracks"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_nk1w6"]
-_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAADaAAAAUklGRtIAAABXRUJQVlA4TMYAAAAvf8AfEB8gECD8zyhxIkhIQKj+PzPFAoEA4V+ZFBfzH4B3xgbHke22DZxtVeeEQTV/2ArP6AfDahSdSND5FNH/CaD/4KiXNdGVe+u76irmaV6JZnYUq9NXF7Ppy9D8zYuIBdSJPrPGRSyi9TUetLCHPZd9BfTZrN4pPIA6WgEAC9wGmLTirA3MaKUVtiQMmLAzmLQBDLY+CbfCcLO/lQQXsCQMsImzNnAbLqyXNsBSYGeZ66Nv38oHfX32JcgHMRHlWZGXLz8=")
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAAAsAQAAUklGRiQBAABXRUJQVlA4TBcBAAAvf8AfEDdgJgAZKQRwqsG29OtHJmAZ3asALYTQgUJGkpgrj9AoPu+P8FbzHwDUS4/7clIWXg+watutG4mCKIiCKIiCKBz+HPx25Jn5mhXR/wmQ/1nyNtpnMVkY3T3M18W1ZfE6bJRHC8OavLAsrMkrK7N8GBYRP6X8lWDRvs+eF782LG4C3sbj6D+LcTXEeB/rtXCKzZUAnMnMLZRBN/RQJuQiUANIN4JTe0sYx/BxepvUExpxk1QUV9nrrJiY5BYrJqaAc9atJFqbGdtZr0Qiwgbes3XfWIqEmQ4csK6frkVMJxxfVO2putKoUpBMTaPeVXxjNSIzirur+ul6ZOJSKUjkKqlJDsmN3xPZIZd/Tybkq9/7WwcA")
 size_override = Vector2(128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ydotb"]
@@ -17,13 +17,14 @@ animations = [{
 "texture": SubResource("AtlasTexture_ydotb")
 }],
 "loop": true,
-"name": &"default",
+"name": &"Idle",
 "speed": 10.0
 }]
 
 [node name="Barracks" type="AnimatedSprite2D" unique_id=176253684]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_fkwsd")
+animation = &"Idle"
 script = ExtResource("1_barracks")
 metadata/_aseprite_wizard_interface_config_ = {
 "pending_changes": {}
@@ -41,4 +42,4 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/buildings/barracks.aseprite",
 "source_uid": 592828207601229478
 }
-metadata/_aseprite_wizard_source_file_hash_ = "8c4f60816867f30a1059410b39fab0df"
+metadata/_aseprite_wizard_source_file_hash_ = "937da35f4045c5fe5e2bfef83f061cde"

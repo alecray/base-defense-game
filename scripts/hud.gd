@@ -11,6 +11,7 @@ var _day_label: Label
 var _time_label: Label
 var _game_over_root: Control = null
 var _tutorial_step: int = 0
+var _repair_hint_label: Label = null
 var _vignette: ColorRect = null
 var _vignette_tween: Tween = null
 var _indicator_cooldown: float = 0.0
@@ -29,7 +30,7 @@ const _TUTORIAL_PROMPTS: Array = [
 	"Build a Barracks",
 	"Buy a Soldier",
 	"Build Walls to protect your base",
-	"Build a Lab",
+	"Build an Arcanum",
 	"Build 2 more Turrets",
 ]
 
@@ -107,6 +108,16 @@ func _ready() -> void:
 	_core_prompt.visible = GameState.get_building_count("Core") == 0
 	add_child(_core_prompt)
 
+	_repair_hint_label = Label.new()
+	_repair_hint_label.text = "Hold [R] + [LMB] to repair damaged buildings"
+	_repair_hint_label.add_theme_font_size_override("font_size", 14)
+	_repair_hint_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))
+	_repair_hint_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	_repair_hint_label.offset_top = 108.0
+	_repair_hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_repair_hint_label.visible = false
+	add_child(_repair_hint_label)
+
 	# --- Minimap (bottom-left) ---
 	var minimap: Control = load("res://scripts/minimap.gd").new()
 	add_child(minimap)
@@ -126,6 +137,7 @@ func _ready() -> void:
 	GameState.first_tower_worker_assigned.connect(_on_first_tower_worker_assigned)
 	GameState.first_soldier_bought.connect(_on_first_soldier_bought)
 	GameState.first_wall_placed.connect(_on_first_wall_placed)
+	GameState.first_building_repaired.connect(_on_first_building_repaired)
 	GameState.building_attacked.connect(_on_building_attacked)
 
 func _make_bar_label(text: String) -> Label:
@@ -159,6 +171,12 @@ func _on_building_attacked(world_pos: Vector2) -> void:
 	if _indicator_cooldown <= 0.0 and _is_world_pos_off_screen(world_pos):
 		_indicator_cooldown = 1.5
 		_show_direction_indicator(world_pos)
+	if _repair_hint_label != null and not _repair_hint_label.visible and not GameState._building_ever_repaired:
+		_repair_hint_label.visible = true
+
+func _on_first_building_repaired() -> void:
+	if _repair_hint_label != null:
+		_repair_hint_label.visible = false
 
 func _flash_vignette() -> void:
 	if _vignette == null:
@@ -251,7 +269,7 @@ func _on_building_placed(building_name: String) -> void:
 			if _tutorial_step == 12 and GameState.get_building_count("Tower") >= 3:
 				_advance_tutorial(12)
 		"Barracks":  _advance_tutorial(8)
-		"Lab":       _advance_tutorial(11)
+		"Arcanum":   _advance_tutorial(11)
 
 func _on_first_mine_worker_assigned() -> void:
 	_advance_tutorial(3)
@@ -300,6 +318,8 @@ func _on_game_reset() -> void:
 	_tutorial_step = 0
 	_core_prompt.text = "Build a Core to start expanding"
 	_core_prompt.visible = true
+	if _repair_hint_label != null:
+		_repair_hint_label.visible = false
 	if _game_over_root != null:
 		_game_over_root.queue_free()
 		_game_over_root = null

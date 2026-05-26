@@ -6,7 +6,7 @@ var _progress_bars: Dictionary = {}
 var _buttons: Dictionary = {}
 
 func _ready() -> void:
-	add_to_group("lab_ui")
+	add_to_group("arcanum_ui")
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 10
 	visible = false
@@ -19,50 +19,50 @@ func _get_research_defs() -> Array:
 		{
 			"id": "turret_damage",
 			"name": "Turret Damage",
-			"cost": CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_COST,
-			"duration": CONSTANTS.LAB_RESEARCH_TURRET_DAMAGE_DURATION,
+			"cost": CONSTANTS.ARCANUM_RESEARCH_TURRET_DAMAGE_COST,
+			"duration": CONSTANTS.ARCANUM_RESEARCH_TURRET_DAMAGE_DURATION,
 			"one_time": false,
-			"desc": "+%d tower damage per level. No cap." % CONSTANTS.LAB_TURRET_DAMAGE_UPGRADE_AMOUNT,
+			"desc": "+%d tower damage per level. No cap." % CONSTANTS.ARCANUM_TURRET_DAMAGE_UPGRADE_AMOUNT,
 		},
 		{
 			"id": "armory_blueprint",
 			"name": "Armory Blueprint",
-			"cost": CONSTANTS.LAB_RESEARCH_ARMORY_COST,
-			"duration": CONSTANTS.LAB_RESEARCH_ARMORY_DURATION,
+			"cost": CONSTANTS.ARCANUM_RESEARCH_ARMORY_COST,
+			"duration": CONSTANTS.ARCANUM_RESEARCH_ARMORY_DURATION,
 			"one_time": true,
 			"desc": "Unlocks the Armory building. Each Armory gives soldiers +%d attack and new soldiers spawn with +%d HP." % [CONSTANTS.ARMORY_DAMAGE_BONUS, CONSTANTS.ARMORY_HP_BONUS],
 		},
 		{
 			"id": "soldier_damage",
 			"name": "Combat Training",
-			"cost": CONSTANTS.LAB_RESEARCH_SOLDIER_DAMAGE_COST,
-			"duration": CONSTANTS.LAB_RESEARCH_SOLDIER_DAMAGE_DURATION,
+			"cost": CONSTANTS.ARCANUM_RESEARCH_SOLDIER_DAMAGE_COST,
+			"duration": CONSTANTS.ARCANUM_RESEARCH_SOLDIER_DAMAGE_DURATION,
 			"one_time": false,
-			"desc": "+%d soldier attack damage per level. No cap." % CONSTANTS.LAB_SOLDIER_DAMAGE_UPGRADE_AMOUNT,
+			"desc": "+%d soldier attack damage per level. No cap." % CONSTANTS.ARCANUM_SOLDIER_DAMAGE_UPGRADE_AMOUNT,
 		},
 		{
 			"id": "soldier_hp",
 			"name": "Soldier Endurance",
-			"cost": CONSTANTS.LAB_RESEARCH_SOLDIER_HP_COST,
-			"duration": CONSTANTS.LAB_RESEARCH_SOLDIER_HP_DURATION,
+			"cost": CONSTANTS.ARCANUM_RESEARCH_SOLDIER_HP_COST,
+			"duration": CONSTANTS.ARCANUM_RESEARCH_SOLDIER_HP_DURATION,
 			"one_time": false,
-			"desc": "+%d soldier max HP per level (applies to newly spawned soldiers)." % CONSTANTS.LAB_SOLDIER_HP_UPGRADE_AMOUNT,
+			"desc": "+%d soldier max HP per level (applies to newly spawned soldiers)." % CONSTANTS.ARCANUM_SOLDIER_HP_UPGRADE_AMOUNT,
 		},
 		{
 			"id": "worker_speed",
 			"name": "Efficient Workers",
-			"cost": CONSTANTS.LAB_RESEARCH_WORKER_SPEED_COST,
-			"duration": CONSTANTS.LAB_RESEARCH_WORKER_SPEED_DURATION,
+			"cost": CONSTANTS.ARCANUM_RESEARCH_WORKER_SPEED_COST,
+			"duration": CONSTANTS.ARCANUM_RESEARCH_WORKER_SPEED_DURATION,
 			"one_time": false,
-			"desc": "+%d worker travel speed per level. No cap." % int(CONSTANTS.LAB_WORKER_SPEED_UPGRADE_AMOUNT),
+			"desc": "+%d worker travel speed per level. No cap." % int(CONSTANTS.ARCANUM_WORKER_SPEED_UPGRADE_AMOUNT),
 		},
 		{
 			"id": "farm_yield",
 			"name": "Agricultural Methods",
-			"cost": CONSTANTS.LAB_RESEARCH_FARM_YIELD_COST,
-			"duration": CONSTANTS.LAB_RESEARCH_FARM_YIELD_DURATION,
+			"cost": CONSTANTS.ARCANUM_RESEARCH_FARM_YIELD_COST,
+			"duration": CONSTANTS.ARCANUM_RESEARCH_FARM_YIELD_DURATION,
 			"one_time": false,
-			"desc": "+%d food per farm worker per harvest tick per level." % CONSTANTS.LAB_FARM_YIELD_UPGRADE_AMOUNT,
+			"desc": "+%d food per farm worker per harvest tick per level." % CONSTANTS.ARCANUM_FARM_YIELD_UPGRADE_AMOUNT,
 		},
 	]
 
@@ -92,7 +92,7 @@ func _build_ui() -> void:
 	outer_vbox.add_child(title_row)
 
 	var title: Label = Label.new()
-	title.text = "Lab Research"
+	title.text = "Arcanum Research"
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.add_theme_font_size_override("font_size", 20)
 	title_row.add_child(title)
@@ -178,13 +178,13 @@ func _build_research_row(parent: VBoxContainer, def: Dictionary) -> void:
 	row.add_child(btn)
 	_buttons[id] = btn
 
-func open_for_lab(_gp: Vector2i, _building_node: Node) -> void:
+func open_for_arcanum(_gp: Vector2i, _building_node: Node) -> void:
 	_refresh()
 	visible = true
 
 func _refresh() -> void:
-	var busy: bool = not GameState.lab_research_id.is_empty()
-	var active_id: String = GameState.lab_research_id
+	var busy: bool = not GameState.arcanum_research_id.is_empty()
+	var active_id: String = GameState.arcanum_research_id
 
 	for def: Variant in _get_research_defs():
 		var d: Dictionary = def as Dictionary
@@ -219,7 +219,7 @@ func _refresh() -> void:
 			btn.text = "Research  (%d coins / %ds)" % [cost, int(duration)]
 
 			if is_active:
-				var progress: float = GameState.lab_research_progress / duration
+				var progress: float = GameState.arcanum_research_progress / duration
 				status_lbl.text = "Researching... %d%%" % int(progress * 100.0)
 				pb.value = progress
 			elif busy:

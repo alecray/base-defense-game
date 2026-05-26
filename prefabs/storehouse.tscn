@@ -1,0 +1,48 @@
+[gd_scene format=4 uid="uid://storehse0001"]
+
+[ext_resource type="Script" uid="uid://cylx0752cekjd" path="res://scripts/storehouse.gd" id="1_sh"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_7e8m3"]
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAAB+AQAAUklGRnYBAABXRUJQVlA4TGoBAAAvf8AfEF+gJgAIxjtf74rhVFYafUQx0wAJLwV4acDprGAHu5vDTyEkSc5B5DuI5C/wKO+Q5j8AoJJN4utTH4PBh7wBfujZjssuAaRIkuQwotAURGEpDAVTEIWmIApLQRQa3l6z8ozPT0T/J+D49yglJ1KJSSJJKSmJYykfSZyXlIvoqUQk+kpZiP5KQeJOKT5xt6IT90uhia9UYOJLFZb4WgUlvlghia9WPBJfrmjE9ysWHZ/gUChH73zOfef5DA4F9O4kMOmyGBGWk4FrKnBOBO5pYPmjbZAElskPkmwQFzd1O8gAi2Y2sH58WDazjo3TgZmRtDTMAbYanJk5AAuWEfKw1gVz1hyRmXkgCRvPlW4SpcC1Mx8RR6V4II/S9cDE8zwJFA8M7ue+71JKdKU4YNAGVmYdgKbc912iw8ZmHBTmr+u6VpBKba+6gg7amOBRV2bjQ1MrEkOtFTsz2B7T4ZjI7vxm8/uNBg==")
+size_override = Vector2(128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5qauh"]
+atlas = SubResource("PortableCompressedTexture2D_7e8m3")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i0oha"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5qauh")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}]
+
+[node name="Storehouse" type="AnimatedSprite2D" unique_id=1742831659]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_i0oha")
+animation = &"Idle"
+script = ExtResource("1_sh")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/storehouse.aseprite",
+"source_uid": 7130114142255476681
+}
+metadata/_aseprite_wizard_source_file_hash_ = "e6a9b521522c623449d4c0a417d0ae17"
+
+[node name="WorkPoint" type="Marker2D" parent="." unique_id=1742831660]
+position = Vector2(0, 52)

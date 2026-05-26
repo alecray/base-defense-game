@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://bjatjjmchtus3"
+path="res://.godot/imported/siege-tower.aseprite-e970eb8ce6ebbb8ffea7bdace6c0b48c.res"
+
+[deps]
+
+source_file="res://assets/sprites/buildings/siege-tower.aseprite"
+dest_files=["res://.godot/imported/siege-tower.aseprite-e970eb8ce6ebbb8ffea7bdace6c0b48c.res"]
+
+[params]
+

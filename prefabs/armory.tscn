@@ -1,29 +1,44 @@
-[gd_scene format=4 uid="uid://armory000001"]
+[gd_scene format=4 uid="uid://rmory000001"]
 
-[ext_resource type="Script" path="res://scripts/armory.gd" id="1_armory"]
+[ext_resource type="Script" uid="uid://cylhmjq47u0qb" path="res://scripts/armory.gd" id="1_armory"]
 
-[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_arm01"]
-_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAADaAAAAUklGRtIAAABXRUJQVlA4TMYAAAAvf8AfEB8gECD8zyhxIkhIQKj+PzPFAoEA4V+ZFBfzH4B3xgbHke22DZxtVeeEQTV/2ArP6AfDahSdSND5FNH/CaD/4KiXNdGVe+u76irmaV6JZnYUq9NXF7Ppy9D8zYuIBdSJPrPGRSyi9TUetLCHPZd9BfTZrN4pPIA6WgEAC9wGmLTirA3MaKUVtiQMmLAzmLQBDLY+CbfCcLO/lQQXsCQMsImzNnAbLqyXNsBSYGeZ66Nv38oHfX32JcgHMRHlWZGXLz8=")
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_ykrx1"]
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAABqAQAAUklGRmIBAABXRUJQVlA4TFYBAAAvf8AfEE+gNJIU5i3JolBIHP3XlUpR00gKdBrueEqCAUr8G0AQnZoAIBghNqcA+ncSYc1/ACCneojfZzXiUjNNt0pEHyChtt04kkRBFEJBFELhU/gUQuFTMN54K7fUs8+J6P8E2H+NqluXxjVpsRjtLUT7a9CH09ORmencrIBzJCWFkySlhLMkJYTTJKWD8yQmg8+Q5BrTAfaRpJMEsgP20El6cwLADHMC1pzeSLI5iW52WKA72YsYAJDEvDAiSWd7RUSQM0BqQMfp9OYtIoJsXEFuAOiNzRkRJFtJbBERja2sCDayMjZyNM4Kp11XFd3G+Ze7++UFAb378su9HnQ79+uq442+ZJ37LgZ9STKzTkTUgb669p6y/B50NVyyLPCR5wE0tv593wGAVsSjoc1XYTO2DFh+ZhO2MxPbZO+effzrme0zex478uuNd5z+9fr1vev7XRY=")
 size_override = Vector2(128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_arm01"]
-atlas = SubResource("PortableCompressedTexture2D_arm01")
+[sub_resource type="AtlasTexture" id="AtlasTexture_pn58n"]
+atlas = SubResource("PortableCompressedTexture2D_ykrx1")
 region = Rect2(0, 0, 128, 128)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_arm01"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_kwv82"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_arm01")
+"texture": SubResource("AtlasTexture_pn58n")
 }],
 "loop": true,
 "name": &"default",
 "speed": 10.0
 }]
 
-[node name="Armory" type="AnimatedSprite2D"]
-modulate = Color(1.0, 0.55, 0.1, 1.0)
+[node name="Armory" type="AnimatedSprite2D" unique_id=1150695973]
 texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_arm01")
-animation = &"default"
+sprite_frames = SubResource("SpriteFrames_kwv82")
 script = ExtResource("1_armory")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/armory.aseprite",
+"source_uid": 1457598842324436888
+}
+metadata/_aseprite_wizard_source_file_hash_ = "6466ee633caaae326f8e561dd9a24241"

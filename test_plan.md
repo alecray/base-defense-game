@@ -50,8 +50,8 @@ Covers all features built to date. Each case lists steps and the expected result
 | 3.9 | Assign worker to Turret | → "Build a Barracks" |
 | 3.10 | Place Barracks | → "Buy a Soldier" |
 | 3.11 | Buy a Soldier | → "Build Walls to protect your base" |
-| 3.12 | Place a Wall segment | → "Build a Lab" |
-| 3.13 | Place Lab | → "Build 2 more Turrets" |
+| 3.12 | Place a Wall segment | → "Build a Arcanum" |
+| 3.13 | Place Arcanum | → "Build 2 more Turrets" |
 | 3.14 | Place 2 more Turrets (3 total) | Tutorial prompt disappears |
 | 3.15 | Load a save with tutorial_step = 13 | No tutorial prompt shown |
 
@@ -79,7 +79,7 @@ Covers all features built to date. Each case lists steps and the expected result
 | # | Steps | Expected |
 |---|-------|----------|
 | 5.1 | Place each building type | Costs correct coins; placed on tile; HUD building count updates |
-| 5.2 | Try placing a second Core or Lab | Blocked; error message shown |
+| 5.2 | Try placing a second Core or Arcanum | Blocked; error message shown |
 | 5.3 | Try placing building without Core first | Blocked |
 | 5.4 | Fortify a building (75 coins) | Shield bar appears; first damage hits shield |
 | 5.5 | Shield depleted | Shield bar gone; subsequent damage hits HP |
@@ -168,11 +168,11 @@ Covers all features built to date. Each case lists steps and the expected result
 
 ---
 
-## 11. Lab / Research
+## 11. Arcanum / Research
 
 | # | Steps | Expected |
 |---|-------|----------|
-| 11.1 | Open Lab UI | Research option shown; progress bar at 0 |
+| 11.1 | Open Arcanum UI | Research option shown; progress bar at 0 |
 | 11.2 | Start Turret Damage research (100 coins) | Progress bar fills over 45 seconds |
 | 11.3 | Research completes | Turret damage increases by 5; toast/signal fires |
 | 11.4 | Research again | Level increments; damage increases by another 5 |

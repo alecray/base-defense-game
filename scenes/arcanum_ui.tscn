@@ -1,0 +1,6 @@
+[gd_scene format=4 uid="uid://dlab000000002"]
+
+[ext_resource type="Script" path="res://scripts/arcanum_ui.gd" id="1_arcui"]
+
+[node name="ArcanumUI" type="CanvasLayer"]
+script = ExtResource("1_arcui")

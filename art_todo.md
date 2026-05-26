@@ -2,22 +2,25 @@
 
 ## Buildings
 
+### Storehouse
+- [x] Sprite — `assets/sprites/buildings/storehouse.aseprite`
+  - Static or 1–2 frame idle, ~64×64px — a large barrel/crate structure, warm brown/wood tones
+  - Workers idle at the WorkPoint (offset y+44 from center)
+  - Swap in by replacing placeholder data in `prefabs/storehouse.tscn`
+
+### Market
+- [x] Sprite — `assets/sprites/structures/market.aseprite`
+
 ### Siege Tower
-- [ ] Sprite — `assets/sprites/structures/siege_tower.aseprite`
-  - Static or simple animation (~128×128px), top-down perspective — heavy stone tower with a mounted catapult arm, medieval aesthetic
-  - Currently uses a barracks-shape sprite with purple tint as placeholder
-  - Swap in by updating `prefabs/siege_tower.tscn`: replace PackedByteArray texture and remove `modulate = Color(0.55, 0.40, 0.75, 1.0)`
+- [x] Sprite — `assets/sprites/structures/siege_tower.aseprite`
 
 ### Armory
-- [ ] Sprite — `assets/sprites/structures/armory.aseprite`
-  - Static or simple animation (~128×128px), top-down perspective — forge/smithy aesthetic, warm orange/iron tones
-  - Currently uses a barracks-shape sprite with orange tint as placeholder
-  - Swap in by updating `prefabs/armory.tscn`: replace the PackedByteArray texture and remove `modulate = Color(1.0, 0.55, 0.1, 1.0)`
+- [x] Sprite — `assets/sprites/structures/armory.aseprite`
 
 ## Enemies
 
 ### Burrower
-- [ ] Sprite sheet — `assets/sprites/npcs/burrower.aseprite`
+- [x] Sprite sheet — `assets/sprites/npcs/burrower.aseprite`
   - Animations: `Idle` (surfaced idle, 2–4 frames)
   - ~32×32px, top-down perspective — compact, dirt-covered creature with visible claws
   - Tunneling phase is code-drawn (dirt ripple); only the surfaced form needs a sprite
@@ -25,13 +28,13 @@
   - Swap in by updating `prefabs/burrower.tscn` to point to the new sprite
 
 ### Enemy Camp
-- [ ] Sprite — `assets/sprites/structures/enemy_camp.aseprite`
+- [x] Sprite — `assets/sprites/structures/enemy-camp.aseprite`
   - Static (no animation needed), ~48×48px — fortified structure, dark red/bone aesthetic
   - Currently code-drawn (dark red circle with X pattern)
   - Swap in by removing `_draw()` from `scripts/enemy_camp.gd` and adding an AnimatedSprite2D
 
-### Big Enemy ⚠️ CURRENTLY INVISIBLE
-- [ ] Sprite sheet — `assets/sprites/npcs/big_enemy.aseprite`
+### Big Enemy
+- [x] Sprite sheet — `assets/sprites/npcs/big_enemy.aseprite`
   - Animations: `Walk` (2–4 frames), `Attack` (optional wind-up), `Idle` (fallback)
   - ~48×48px, top-down perspective — large, hulking ground unit
   - `prefabs/big_enemy.tscn` has an empty SpriteFrames with no texture data — enemy is invisible in-game

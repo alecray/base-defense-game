@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://storehseui01"]
+
+[ext_resource type="Script" path="res://scripts/storehouse_ui.gd" id="1_shui"]
+
+[node name="StorehouseUI" type="CanvasLayer"]
+script = ExtResource("1_shui")

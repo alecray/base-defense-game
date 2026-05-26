@@ -61,7 +61,7 @@ func take_damage(amount: int) -> void:
 		return
 	_hp = maxi(0, _hp - remaining)
 	_health_bar.call("set_hp", _hp)
-	GameState.building_attacked.emit(global_position)
+	GameState.notify_building_attacked(global_position)
 	if _hp <= 0:
 		_dying = true
 		_on_destroyed()
@@ -102,6 +102,23 @@ func do_upgrade(cost: int, max_level: int) -> bool:
 
 func _on_fortification_removed() -> void:
 	_fortification = null
+
+func get_hp_info() -> Array:
+	return [_hp, max_hp]
+
+func repair() -> String:
+	if _dying:
+		return ""
+	if _hp >= max_hp:
+		return "Already at full HP."
+	var missing: int = max_hp - _hp
+	var cost: int = ceili(float(missing) / float(CONSTANTS.BUILDING_REPAIR_HP_PER_COIN))
+	if not GameState.spend_coins(cost):
+		return "Not enough coins! (%d needed)" % cost
+	_hp = max_hp
+	_health_bar.call("set_hp", _hp)
+	GameState.notify_building_repaired()
+	return ""
 
 func _on_destroyed() -> void:
 	GameState.record_building_destroyed(_building_name)

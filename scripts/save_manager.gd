@@ -41,14 +41,15 @@ func save_game() -> void:
 	data["power_cap"] = GameState.power_cap
 	data["food_cap"] = GameState.food_cap
 	data["soldiers"] = GameState.soldiers
-	data["lab_research_id"] = GameState.lab_research_id
-	data["lab_research_progress"] = GameState.lab_research_progress
-	data["lab_upgrade_levels"] = GameState.lab_upgrade_levels.duplicate()
+	data["arcanum_research_id"] = GameState.arcanum_research_id
+	data["arcanum_research_progress"] = GameState.arcanum_research_progress
+	data["arcanum_upgrade_levels"] = GameState.arcanum_upgrade_levels.duplicate()
 	data["workers"] = _get_worker_save_data()
 	data["farms"] = tile_grid.call("get_farm_save_data")
 	data["towers"] = tile_grid.call("get_tower_save_data")
 	data["gold_mines"] = tile_grid.call("get_gold_mine_save_data")
 	data["walls"] = tile_grid.call("get_wall_save_data")
+	data["storehouses"] = tile_grid.call("get_storehouse_save_data")
 	var hud: Node = get_tree().get_first_node_in_group("hud")
 	data["tutorial_step"] = int(hud.call("get_tutorial_step")) if hud != null else 0
 
@@ -95,9 +96,9 @@ func load_game() -> void:
 	GameState.power_cap = maxi(int(data.get("power_cap", CONSTANTS.POWER_CAP_BASE)), CONSTANTS.POWER_CAP_BASE)
 	GameState.food_cap = maxi(int(data.get("food_cap", CONSTANTS.FOOD_CAP_BASE)), CONSTANTS.FOOD_CAP_BASE)
 	GameState.soldiers = int(data.get("soldiers", 0))
-	GameState.lab_research_id = str(data.get("lab_research_id", ""))
-	GameState.lab_research_progress = float(data.get("lab_research_progress", 0.0))
-	GameState.lab_upgrade_levels = (data.get("lab_upgrade_levels", {}) as Dictionary).duplicate()
+	GameState.arcanum_research_id = str(data.get("arcanum_research_id", ""))
+	GameState.arcanum_research_progress = float(data.get("arcanum_research_progress", 0.0))
+	GameState.arcanum_upgrade_levels = (data.get("arcanum_upgrade_levels", {}) as Dictionary).duplicate()
 
 	GameState.coins = int(data["coins"])
 	GameState.food = int(data["food"])
@@ -177,6 +178,17 @@ func load_game() -> void:
 			for _i: int in range(assigned_count):
 				mine_node.call("assign_worker")
 
+	var storehouses_data: Array = data.get("storehouses", []) as Array
+	for sh_entry: Variant in storehouses_data:
+		var sh_dict: Dictionary = sh_entry as Dictionary
+		var sh_gp_arr: Array = sh_dict["gp"] as Array
+		var sh_gp: Vector2i = Vector2i(int(sh_gp_arr[0]), int(sh_gp_arr[1]))
+		var assigned_count: int = int(sh_dict["assigned_count"])
+		var sh_node: Node = tile_grid.call("get_storehouse_at", sh_gp) as Node
+		if sh_node != null:
+			for _i: int in range(assigned_count):
+				sh_node.call("assign_worker")
+
 	var walls_data: Array = data.get("walls", []) as Array
 	for wall_entry: Variant in walls_data:
 		var wall_dict: Dictionary = wall_entry as Dictionary
@@ -219,7 +231,7 @@ func _infer_tutorial_step(data: Dictionary) -> int:
 		step = maxi(step, 10)
 	if not (data.get("walls", []) as Array).is_empty():
 		step = maxi(step, 11)
-	if int(bc.get("Lab", 0)) > 0:
+	if int(bc.get("Arcanum", 0)) > 0:
 		step = maxi(step, 12)
 	if int(bc.get("Tower", 0)) >= 3:
 		step = maxi(step, 13)

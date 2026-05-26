@@ -24,15 +24,6 @@ func _process(delta: float) -> void:
 	if _spawn_timer >= CONSTANTS.ENEMY_CAMP_SPAWN_INTERVAL:
 		_spawn_timer = 0.0
 		_spawn_burst()
-	queue_redraw()
-
-func _draw() -> void:
-	draw_circle(Vector2.ZERO, 24.0, Color(0.45, 0.08, 0.08))
-	draw_arc(Vector2.ZERO, 24.0, 0.0, TAU, 32, Color(0.85, 0.2, 0.2), 2.5)
-	draw_circle(Vector2.ZERO, 10.0, Color(0.7, 0.15, 0.15))
-	# Skull-like crossed lines
-	draw_line(Vector2(-7.0, -7.0), Vector2(7.0, 7.0), Color(1.0, 0.3, 0.3), 2.0)
-	draw_line(Vector2(7.0, -7.0), Vector2(-7.0, 7.0), Color(1.0, 0.3, 0.3), 2.0)
 
 func _spawn_burst() -> void:
 	for _i: int in range(CONSTANTS.ENEMY_CAMP_BURST_SIZE):

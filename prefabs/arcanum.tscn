@@ -1,6 +1,6 @@
-[gd_scene format=4 uid="uid://mdndvj06ncnf"]
+[gd_scene format=4 uid="uid://dlab000000001"]
 
-[ext_resource type="Script" path="res://scripts/lab.gd" id="1_lab"]
+[ext_resource type="Script" uid="uid://c7mekf8it0d8l" path="res://scripts/arcanum.gd" id="1_arc"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_ct6ur"]
 _data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAAC0AAAAUklGRqwAAABXRUJQVlA4TKAAAAAvf8AfEB8gECBTWoT4oCBtA2Z2vuoJFRIQHun+v3Fi/gPAOeYPbmvbbRtIcuR0Tr/maqixH2pnG0G5iuj/BNA6mOU9E334Nd/HUGxThkSMA3E6GTo2k8EQ+zIQ7CBBpM9KCHaRfCWCOEc4wXcIqEf0nkiBOxQ1k6LqHf9vg2mue1XUPLgrqt6RyHwcnSYNzX3bGDT7nDwoBoGIbLYUZeYH")
@@ -21,10 +21,10 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="Lab" type="AnimatedSprite2D" unique_id=1694222283]
+[node name="Arcanum" type="AnimatedSprite2D" unique_id=1694222283]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_jogaf")
-script = ExtResource("1_lab")
+script = ExtResource("1_arc")
 metadata/_aseprite_wizard_interface_config_ = {
 "pending_changes": {}
 }
@@ -38,7 +38,7 @@ metadata/_aseprite_wizard_config_ = {
 "scale": "1.0",
 "should_round_fps": true,
 "slice": "",
-"source": "res://assets/sprites/buildings/lab.aseprite",
+"source": "res://assets/sprites/buildings/arcanum.aseprite",
 "source_uid": 259270214241610245
 }
 metadata/_aseprite_wizard_source_file_hash_ = "371f966fa479b3a7c8296dbb2583a01e"

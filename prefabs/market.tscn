@@ -1,0 +1,45 @@
+[gd_scene format=4 uid="uid://cmarket00001"]
+
+[ext_resource type="Script" uid="uid://b64r26052bpkg" path="res://scripts/market.gd" id="1_mkt"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_3gnqb"]
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAACWAQAAUklGRo4BAABXRUJQVlA4TIIBAAAvf8AfEE+gqJEkZX9MDkjKmT3LRgIg4QWRBzTUD17wu1eUNJLEHDr8VUfzb+EdPZj/AMC5IgWGXO9h6YceqD3/EmTVth030qEgCqLwKIjCoyAKl4IoGK+e5UmvqoefiP5PAD/cHtN7z6lfzqccx4WeDuU48jvWes/ouNB7OgAXei4lIC8Kd/SM+FmQ0jwBjFQoF5hLLqFmKBElHzPNpXckKSmTVLok94TALJC7OylhZlJxd766BfPifPd7YOZeUgP79UF++28xtJZTu5pOu1xbKu26WbVM2nXLpV0GSKRd5zQNKmssVi6PcEus1IXK9RKMwRjbgRMeUjTvB3iFFsYY+6E1ZukJLY2dSNJUQeED2pNiWkWh+22wJzObpIpJcp/uLAJYGVuxMzN3d24iXBljDwQmd6/+urEJJgvA3Ln7hG1ZhJMQLD14xpbAcCqvPWMn8yskKQIYCZlJgjKYS1bSrt5pZpEkpUQkSe5ZmVR8JifMzCfIioAvfw/zwu8O8vt/FA==")
+size_override = Vector2(128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjor6"]
+atlas = SubResource("PortableCompressedTexture2D_3gnqb")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ghwg2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjor6")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}]
+
+[node name="Market" type="AnimatedSprite2D" unique_id=1389066009]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_ghwg2")
+animation = &"Idle"
+script = ExtResource("1_mkt")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/market.aseprite",
+"source_uid": 6117307256563458658
+}
+metadata/_aseprite_wizard_source_file_hash_ = "52c88339dcf09efa01451de5da7d7d65"

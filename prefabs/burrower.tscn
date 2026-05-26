@@ -1,38 +1,47 @@
-[gd_scene format=4 uid="uid://burrower000001"]
+[gd_scene format=4 uid="uid://n2inlwh36rfc"]
 
-[ext_resource type="Script" path="res://scripts/burrower.gd" id="1_burrower"]
+[ext_resource type="Script" uid="uid://dtpsh541ueg84" path="res://scripts/burrower.gd" id="1_burrower"]
 
-[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_bur01"]
-_data = PackedByteArray("AAADAAUAAAABAAAAQAAAACAAAABwAAAAUklGRmgAAABXRUJQVlA4TFwAAAAvP8AHEB8gJCBTHtihEQiQKStitBAIEGZ0+E9wM/8BqK58YBRJUqT+jMTiUoOcCfyNAmDv/Uf0fwL04w52Sx/A5GC39AFcFHEXrCLugknesHukhbxhq/U56dy/Aw==")
-size_override = Vector2(64, 32)
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_nku2u"]
+_data = PackedByteArray("AAADAAUAAAABAAAAIAAAACAAAAB6AAAAUklGRnIAAABXRUJQVlA4TGYAAAAvH8AHECdAkG2bm8VAJnWKK2QbATqE82f6jYi0beZobOxqb3T+A2Belaj/oBiSJKkUVqEURmH8pfa+/hH9nwA+GJsCYg+hI7lCFbVKVvXXoJZWsgbVsiUdXEQ2Kxe197GPMPYErAA=")
+size_override = Vector2(32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bur01"]
-atlas = SubResource("PortableCompressedTexture2D_bur01")
+[sub_resource type="AtlasTexture" id="AtlasTexture_mmsl1"]
+atlas = SubResource("PortableCompressedTexture2D_nku2u")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bur02"]
-atlas = SubResource("PortableCompressedTexture2D_bur01")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_bur01"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_jwvlv"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_bur01")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bur02")
+"texture": SubResource("AtlasTexture_mmsl1")
 }],
 "loop": true,
 "name": &"Idle",
-"speed": 8.0
+"speed": 10.0
 }]
 
-[node name="Burrower" type="Node2D"]
+[node name="Burrower" type="Node2D" unique_id=1391985928]
 script = ExtResource("1_burrower")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1906076258]
 texture_filter = 1
-modulate = Color(0.72, 0.48, 0.22, 1.0)
-sprite_frames = SubResource("SpriteFrames_bur01")
+sprite_frames = SubResource("SpriteFrames_jwvlv")
 animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/npcs/burrower.aseprite",
+"source_uid": 7720560339037515595
+}
+metadata/_aseprite_wizard_source_file_hash_ = "48ab6e3e3947f2849fc56fcb46109bec"

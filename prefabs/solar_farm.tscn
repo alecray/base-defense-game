@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bid6gea4r3ulc" path="res://scripts/solar_farm.gd" id="1_solar"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_t6vkn"]
-_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAAD4AAAAUklGRvAAAABXRUJQVlA4TOMAAAAvf8AfECcgJCBTmh8WIMw2msUs9jt/knMh0rbNDQ1PxPnnPwD1Gqc/gNRIkiQpKQSFpuAUgj+pPKp2J/feR0T/JyD+E/b0g4rJ3Y+B8tZ0Ldso097zehlJXN3MNhJ1MURDkldy1SegEhK12MoVdSWJXPTbDZsWiVbs5IzEUAwT6pO9Vo8O0ZiNnNEB08TYthdiWszRfCEXGidyJSTGtr2JMzoBZVodslIeHXMgbO/hKa0uXvFGPfNiSJ28hN+eQ893iOeVvwjxgxN/ReLHJn77xSLx6+d5zdgknifKdxSnr/ebHwA=")
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAABCAQAAUklGRjoBAABXRUJQVlA4TC4BAAAvf8AfEB8gECBTdhT4IBAgUxo8GSAkIFP2eCCZ/wDYUx9Asm1JkRI4tG5NA1ud25vE1nCJSTdkZkkUOovo/wTI//Ud0ItB6mSN1AEcIMZJU1gsLOMZ7OvohZDGvCO+rD6OsaxuAE5qQICJKqmTNer02pPuTfSyASxxgACSwzLehUkDx1pRIkhJy1tSs72J5qXx9v4yezFOSJ3USR3AgW9CMlgVrEA8rALWrWW+F2pZHTAgyN0yS2qkToEIqpekXs+jTGp4rV4AaQQLNdEMVkdTkQhS0ppSsb2J5qXx9v78TwADnLTXOQcwwIFeHAewrkgNDHAAA74Zb6IXBiv5svo4wET1eVnZHMAAB3oBZKKXgAEYQA0iSPcmiTfWiyBa8gQDHMC+BEJMtMUtCfHLBw==")
 size_override = Vector2(128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_87345"]
@@ -17,13 +17,14 @@ animations = [{
 "texture": SubResource("AtlasTexture_87345")
 }],
 "loop": true,
-"name": &"default",
+"name": &"Idle",
 "speed": 10.0
 }]
 
 [node name="SolarFarm" type="AnimatedSprite2D" unique_id=1927594154]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_csap5")
+animation = &"Idle"
 script = ExtResource("1_solar")
 metadata/_aseprite_wizard_interface_config_ = {
 "pending_changes": {}
@@ -41,4 +42,4 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/buildings/solar.aseprite",
 "source_uid": 9018490231506962819
 }
-metadata/_aseprite_wizard_source_file_hash_ = "cd73b88e08e20e2a401b87edaf89d253"
+metadata/_aseprite_wizard_source_file_hash_ = "3ccf679b8c9453a84e41ed35b1c62131"

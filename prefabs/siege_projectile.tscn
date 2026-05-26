@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://siegeproj0001"]
+[gd_scene format=4 uid="uid://c1qx1h3oa7iyy"]
 
 [ext_resource type="Script" path="res://scripts/siege_projectile.gd" id="1_sproj"]
 

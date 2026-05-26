@@ -17,7 +17,7 @@ The game is endless survival — enemies only spawn during the night, but they g
 | Farm | 75 | 100 | Produces food with assigned workers (3 food per worker every 5s). Right-click to upgrade. |
 | Tower | 60 | 200 | Attacks nearest enemy within 600px. Requires 1 worker and power. Right-click to upgrade. |
 | Barracks | 75 | 150 | Increases soldier cap by 5 per building. Allows purchasing soldiers. |
-| Lab | 150 | 200 | Research permanent upgrades using coins. Six research options available. |
+| Arcanum | 150 | 200 | Research permanent upgrades using coins. Six research options available. |
 | Solar Farm | 80 | 100 | Generates 6 power every 4 seconds during daytime only. |
 | Gold Mine | — | — | Spawns automatically on map generation. Staff with workers to earn coins (5 per worker every 5s). Depletes over time. |
 | Armory | 150 | 175 | Passively buffs all soldiers (+15 attack, new soldiers +25 HP per Armory built). Requires Armory Blueprint research. |
@@ -36,7 +36,7 @@ Right-click a Farm or Tower to open its upgrade option (max 1 upgrade each).
 
 ## Towers
 
-Towers require exactly 1 assigned worker and available power to fire. Each shot deals 25 base damage (upgradable via the Lab) to the nearest enemy within 600px range every 1 second. Towers drain 1 power every 4 seconds while staffed. If power reaches 0, towers stop firing even if staffed.
+Towers require exactly 1 assigned worker and available power to fire. Each shot deals 25 base damage (upgradable via the Arcanum) to the nearest enemy within 600px range every 1 second. Towers drain 1 power every 4 seconds while staffed. If power reaches 0, towers stop firing even if staffed.
 
 ## Siege Towers
 
@@ -56,7 +56,7 @@ Soldiers are combat units purchased from the Barracks menu (press E on a Barrack
 
 Soldiers automatically hunt enemies that come within range of any player building. When no threats are nearby they patrol the perimeter of your unlocked territory. If an enemy camp is on the map and no regular enemies are threatening your base, soldiers will march to destroy it.
 
-Each soldier has 80 HP (base) and deals 20 damage per second (base) in melee range. Both stats increase with Armory buildings and Lab research.
+Each soldier has 80 HP (base) and deals 20 damage per second (base) in melee range. Both stats increase with Armory buildings and Arcanum research.
 
 ## Enemies
 
@@ -105,9 +105,9 @@ Food is produced by Farms with assigned workers. All workers consume food over t
 
 Each day and night lasts 150 seconds with a 15-second dusk/dawn transition. The current in-game time is displayed under the day counter (6:00 AM → 6:00 PM during the day, 6:00 PM → 6:00 AM during the night). Enemies only spawn at night, with spawn rate and clump size scaling with darkness intensity. Solar Farms produce no power at night.
 
-## Lab Research
+## Arcanum Research
 
-Open the Lab menu (press E on the Lab) to start research. Only one research can run at a time. The UI scrolls to show all available options.
+Open the Arcanum menu (press E on the Arcanum) to start research. Only one research can run at a time. The UI scrolls to show all available options.
 
 | Research | Cost | Time | Effect |
 |----------|------|------|--------|

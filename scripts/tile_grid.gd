@@ -26,11 +26,13 @@ const FARM_SCENE: PackedScene = preload("res://prefabs/farm.tscn")
 const TOWER_SCENE: PackedScene = preload("res://prefabs/tower.tscn")
 const WORKER_SCENE: PackedScene = preload("res://prefabs/worker.tscn")
 const GOLD_MINE_SCENE: PackedScene = preload("res://prefabs/gold_mine.tscn")
-const LAB_SCENE: PackedScene = preload("res://prefabs/lab.tscn")
+const ARCANUM_SCENE: PackedScene = preload("res://prefabs/arcanum.tscn")
 const SOLAR_FARM_SCENE: PackedScene = preload("res://prefabs/solar_farm.tscn")
 const BARRACKS_SCENE: PackedScene = preload("res://prefabs/barracks.tscn")
 const ARMORY_SCENE: PackedScene = preload("res://prefabs/armory.tscn")
 const SIEGE_TOWER_SCENE: PackedScene = preload("res://prefabs/siege_tower.tscn")
+const MARKET_SCENE: PackedScene = preload("res://prefabs/market.tscn")
+const STOREHOUSE_SCENE: PackedScene = preload("res://prefabs/storehouse.tscn")
 const SOLDIER_SCENE: PackedScene = preload("res://prefabs/soldier.tscn")
 const WALL_SCENE: PackedScene = preload("res://prefabs/wall.tscn")
 
@@ -198,8 +200,8 @@ func place_building(building_name: String, gp: Vector2i) -> void:
 			scene = FARM_SCENE
 		"Tower":
 			scene = TOWER_SCENE
-		"Lab":
-			scene = LAB_SCENE
+		"Arcanum":
+			scene = ARCANUM_SCENE
 		"SolarFarm":
 			scene = SOLAR_FARM_SCENE
 		"Barracks":
@@ -208,6 +210,10 @@ func place_building(building_name: String, gp: Vector2i) -> void:
 			scene = ARMORY_SCENE
 		"SiegeTower":
 			scene = SIEGE_TOWER_SCENE
+		"Market":
+			scene = MARKET_SCENE
+		"Storehouse":
+			scene = STOREHOUSE_SCENE
 		_:
 			return
 
@@ -277,7 +283,8 @@ func get_save_data() -> Array:
 			var bnode: Node = tile.area.get_meta("tile_building_node") as Node
 			if bool(bnode.call("is_fortified")):
 				entry["shield_hp"] = int(bnode.call("get_shield_hp"))
-			var ulevel: int = int(bnode.get("upgrade_level"))
+			var ulevel_raw: Variant = bnode.get("upgrade_level")
+			var ulevel: int = int(ulevel_raw) if ulevel_raw != null else 0
 			if ulevel > 0:
 				entry["upgrade_level"] = ulevel
 		result.append(entry)
@@ -343,8 +350,8 @@ func place_building_from_save(building_name: String, gp: Vector2i, shield_hp: in
 			scene = TOWER_SCENE
 		"GoldMine":
 			scene = GOLD_MINE_SCENE
-		"Lab":
-			scene = LAB_SCENE
+		"Arcanum":
+			scene = ARCANUM_SCENE
 		"SolarFarm":
 			scene = SOLAR_FARM_SCENE
 		"Barracks":
@@ -353,6 +360,10 @@ func place_building_from_save(building_name: String, gp: Vector2i, shield_hp: in
 			scene = ARMORY_SCENE
 		"SiegeTower":
 			scene = SIEGE_TOWER_SCENE
+		"Market":
+			scene = MARKET_SCENE
+		"Storehouse":
+			scene = STOREHOUSE_SCENE
 		_:
 			return
 	tile.building = building_name
@@ -432,6 +443,29 @@ func get_farm_at(gp: Vector2i) -> Node:
 	if not tile.area.has_meta("tile_building_node"):
 		return null
 	return tile.area.get_meta("tile_building_node") as Node
+
+func get_storehouse_at(gp: Vector2i) -> Node:
+	if not _tiles.has(gp):
+		return null
+	var tile: TileEntry = _tiles[gp]
+	if not tile.area.has_meta("tile_building_node"):
+		return null
+	return tile.area.get_meta("tile_building_node") as Node
+
+func get_storehouse_save_data() -> Array:
+	var result: Array = []
+	for gp: Vector2i in _tiles:
+		var tile: TileEntry = _tiles[gp]
+		if tile.building != "Storehouse":
+			continue
+		if not tile.area.has_meta("tile_building_node"):
+			continue
+		var sh_node: Node = tile.area.get_meta("tile_building_node") as Node
+		var entry: Dictionary = {}
+		entry["gp"] = [gp.x, gp.y]
+		entry["assigned_count"] = int(sh_node.call("get_assigned_workers"))
+		result.append(entry)
+	return result
 
 func spawn_soldier_at(pos: Vector2) -> void:
 	var instance: Node2D = SOLDIER_SCENE.instantiate() as Node2D
