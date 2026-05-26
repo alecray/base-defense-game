@@ -1,5 +1,22 @@
 # Art To Do
 
+## Buildings
+
+### Siege Tower
+- [ ] Sprite — `assets/sprites/structures/siege_tower.aseprite`
+  - Static or simple animation (~128×128px), top-down perspective — heavy stone tower with a mounted catapult arm, medieval aesthetic
+  - Currently uses a barracks-shape sprite with purple tint as placeholder
+  - Swap in by updating `prefabs/siege_tower.tscn`: replace PackedByteArray texture and remove `modulate = Color(0.55, 0.40, 0.75, 1.0)`
+- [ ] Projectile — `assets/sprites/fx/siege_projectile.aseprite`
+  - Small dark boulder (~12–14px) — currently drawn as a brown circle in code
+  - Explosion ring is code-drawn (orange arc) — can remain code-drawn or be replaced with a particle effect
+
+### Armory
+- [ ] Sprite — `assets/sprites/structures/armory.aseprite`
+  - Static or simple animation (~128×128px), top-down perspective — forge/smithy aesthetic, warm orange/iron tones
+  - Currently uses a barracks-shape sprite with orange tint as placeholder
+  - Swap in by updating `prefabs/armory.tscn`: replace the PackedByteArray texture and remove `modulate = Color(1.0, 0.55, 0.1, 1.0)`
+
 ## Enemies
 
 ### Burrower

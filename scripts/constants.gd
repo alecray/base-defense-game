@@ -15,6 +15,7 @@ const BUILDING_COSTS: Dictionary = {
 	"Lab": 150,
 	"SolarFarm": 80,
 	"Armory": 150,
+	"SiegeTower": 120,
 }
 
 ## Housing
@@ -189,6 +190,16 @@ const ENEMY_CAMP_BURST_SIZE: int = 3
 const ENEMY_CAMP_MAX_COUNT: int = 1
 const ENEMY_CAMP_START_NIGHT: int = 2
 const SOLDIER_CAMP_CHASE_RADIUS: float = 1100.0
+
+## Siege Tower
+const SIEGE_TOWER_MAX_HP: int = 250
+const SIEGE_TOWER_DAMAGE: int = 60
+const SIEGE_TOWER_RANGE: float = 750.0
+const SIEGE_TOWER_INTERVAL: float = 4.5
+const SIEGE_TOWER_AOE_RADIUS: float = 90.0
+const SIEGE_TOWER_POWER_DRAIN_INTERVAL: float = 4.0
+const SIEGE_TOWER_POWER_DRAIN_AMOUNT: int = 2
+const SIEGE_PROJECTILE_SPEED: float = 280.0
 
 ## Armory
 const ARMORY_MAX_HP: int = 175

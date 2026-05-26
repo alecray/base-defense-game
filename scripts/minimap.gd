@@ -17,6 +17,7 @@ const BUILDING_COLORS: Dictionary = {
 	"Barracks":  Color(0.85, 0.30, 0.30),
 	"GoldMine":  Color(1.00, 0.85, 0.20),
 	"Armory":    Color(1.00, 0.55, 0.10),
+	"SiegeTower": Color(0.55, 0.40, 0.75),
 }
 
 var _grid_cols: int = 15

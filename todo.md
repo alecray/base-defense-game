@@ -2,8 +2,7 @@
 
 | Impact | Item |
 |--------|------|
-| ★★★☆☆ | More Lab research (soldier damage/HP, worker speed, farm yield) |
-| ★★★☆☆ | Catapult/Mortar (AoE damage tower, no worker needed, uses power, slow fire rate) |
+| ★★★☆☆ | Siege Tower (AoE damage tower, no worker needed, uses power, slow fire rate) |
 | ★★★☆☆ | Market building (convert excess food/power into coins) |
 | ★★★☆☆ | Repair (spend coins to restore building HP manually) |
 | ★★☆☆☆ | More enemy variety (fast/fragile runners, armored tanks — 4 types already exist) |
@@ -29,3 +28,4 @@
 - [x] Enemy camp (spawns night 2+, periodically releases enemy bursts, soldiers march to destroy it, 150 coin reward)
 - [x] Balance the food drain (starting food 50→100, real-time net rate indicator in HUD)
 - [x] Tech gates (Armory Blueprint research in Lab unlocks Armory building)
+- [x] More Lab research (Combat Training, Soldier Endurance, Efficient Workers, Agricultural Methods)

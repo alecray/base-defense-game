@@ -190,6 +190,8 @@ func _handle_e_for(area: Area2D) -> bool:
 		if barracks_ui != null and building_node != null:
 			barracks_ui.call("open_for_barracks", building_node)
 		return true
+	elif building_name == "SiegeTower" or building_name == "Armory":
+		return true
 	else:
 		var shop: Node = get_tree().get_first_node_in_group("shop_ui")
 		if shop != null:

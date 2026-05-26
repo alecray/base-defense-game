@@ -1,0 +1,29 @@
+[gd_scene format=4 uid="uid://siegetower0001"]
+
+[ext_resource type="Script" path="res://scripts/siege_tower.gd" id="1_st"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_st01"]
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAADaAAAAUklGRtIAAABXRUJQVlA4TMYAAAAvf8AfEB8gECD8zyhxIkhIQKj+PzPFAoEA4V+ZFBfzH4B3xgbHke22DZxtVeeEQTV/2ArP6AfDahSdSND5FNH/CaD/4KiXNdGVe+u76irmaV6JZnYUq9NXF7Ppy9D8zYuIBdSJPrPGRSyi9TUetLCHPZd9BfTZrN4pPIA6WgEAC9wGmLTirA3MaKUVtiQMmLAzmLQBDLY+CbfCcLO/lQQXsCQMsImzNnAbLqyXNsBSYGeZ66Nv38oHfX32JcgHMRHlWZGXLz8=")
+size_override = Vector2(128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_st01"]
+atlas = SubResource("PortableCompressedTexture2D_st01")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_st01"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_st01")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="SiegeTower" type="AnimatedSprite2D"]
+modulate = Color(0.55, 0.40, 0.75, 1.0)
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_st01")
+animation = &"default"
+script = ExtResource("1_st")
