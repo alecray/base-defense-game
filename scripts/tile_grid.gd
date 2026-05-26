@@ -461,8 +461,15 @@ func try_place_wall(world_pos: Vector2, player_pos: Vector2) -> bool:
 	var edge: Dictionary = get_nearest_wall_edge(world_pos)
 	if edge.is_empty():
 		return false
-	var edge_world: Vector2 = edge["world_pos"] as Vector2
-	if player_pos.distance_to(edge_world) > CONSTANTS.WALL_PLAYER_RANGE:
+	var gp_check: Vector2i = edge["gp"] as Vector2i
+	var origin_check: Vector2 = _tile_origin(gp_check)
+	var ts: float = CONSTANTS.TILE_SIZE
+	var near_player: Vector2
+	if bool(edge["vertical"]):
+		near_player = Vector2(origin_check.x + ts, clampf(player_pos.y, origin_check.y, origin_check.y + ts))
+	else:
+		near_player = Vector2(clampf(player_pos.x, origin_check.x, origin_check.x + ts), origin_check.y + ts)
+	if player_pos.distance_to(near_player) > CONSTANTS.WALL_PLAYER_RANGE:
 		return false
 	var gp: Vector2i = edge["gp"] as Vector2i
 	var is_vert: bool = edge["vertical"] as bool
