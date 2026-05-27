@@ -271,6 +271,17 @@ const LIBRARY_FARM_YIELD_UPGRADE_AMOUNT: int = 1
 ## Legacy System
 const LEGACY_POINTS_PER_DAY: int = 10
 
+## Boss Enemy
+const BOSS_SHIELD_HP: int = 400
+const BOSS_MAX_HP: int = 1200
+const BOSS_SPEED: float = 22.0
+const BOSS_ATTACK_RANGE: float = 90.0
+const BOSS_ATTACK_INTERVAL: float = 2.0
+const BOSS_ATTACK_DAMAGE: int = 40
+const BOSS_COIN_REWARD: int = 150
+const BOSS_SPLIT_COUNT: int = 4
+const BOSS_SPAWN_EVERY_N_NIGHTS: int = 5
+
 ## Enemy Spawner
 const ENEMY_SPAWN_RADIUS: float = 1400.0
 const ENEMY_SPAWN_SCATTER: float = 48.0

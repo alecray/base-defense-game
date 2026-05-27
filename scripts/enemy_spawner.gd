@@ -6,6 +6,7 @@ const FLYING_ENEMY_SCENE: PackedScene = preload("res://prefabs/flying_enemy.tscn
 const BURROWER_SCENE: PackedScene = preload("res://prefabs/burrower.tscn")
 const RUNNER_SCENE: PackedScene = preload("res://prefabs/runner.tscn")
 const ARMORED_SCENE: PackedScene = preload("res://prefabs/armored_enemy.tscn")
+const BOSS_SCENE: PackedScene = preload("res://prefabs/boss.tscn")
 const ENEMY_CAMP_SCENE: PackedScene = preload("res://prefabs/enemy_camp.tscn")
 
 var _elapsed: float = 0.0
@@ -45,6 +46,8 @@ func _process(delta: float) -> void:
 		_burst_queue = 0
 		if day >= CONSTANTS.ENEMY_CAMP_START_NIGHT and get_tree().get_nodes_in_group("enemy_camps").size() < CONSTANTS.ENEMY_CAMP_MAX_COUNT:
 			_spawn_camp()
+		if day > 1 and day % CONSTANTS.BOSS_SPAWN_EVERY_N_NIGHTS == 0 and get_tree().get_nodes_in_group("boss").size() == 0:
+			_spawn_boss()
 
 	# Big enemy — independent of wave system, starts after first full cycle
 	var first_cycle: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
@@ -170,5 +173,12 @@ func _spawn_camp() -> void:
 	var angle: float = randf() * TAU
 	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_CAMP_SPAWN_RADIUS
 	var instance: Node2D = ENEMY_CAMP_SCENE.instantiate() as Node2D
+	instance.position = pos
+	get_parent().add_child(instance)
+
+func _spawn_boss() -> void:
+	var angle: float = randf() * TAU
+	var pos: Vector2 = Vector2(cos(angle), sin(angle)) * CONSTANTS.ENEMY_SPAWN_RADIUS
+	var instance: Node2D = BOSS_SCENE.instantiate() as Node2D
 	instance.position = pos
 	get_parent().add_child(instance)

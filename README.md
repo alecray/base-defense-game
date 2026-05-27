@@ -90,8 +90,20 @@ Enemies spawn from outside the map during nighttime only. They arrive in structu
 | Burrower | 80 | Fast (surface) | 18 / 1.8s | 25 coins | Tunnels underground through walls and surfaces inside your base. Immune to damage while tunneling. Starts night 4. |
 | Armored | 450 | Very slow | 50 / 3.0s | 45 coins | Heavily plated, extremely tanky. Spawns solo every 55s. Starts night 4. |
 | Runner | 35 | Very fast | 6 / 0.9s | 6 coins | Fragile and lightning-quick. Spawns in packs of 4 every 22s. Starts night 5. |
+| Boss | 400 shield + 1200 HP | Slow | 40 / 2.0s | 150 coins | Unique boss every 5 nights. Phase shield must be destroyed first (blue bar). After shield breaks, main HP is exposed. Splits into 4 Runners on death. |
 
 Enemies attack any building they can reach, prioritising structures over the Core. When the Core falls the run ends.
+
+### Boss
+
+A Boss spawns at the start of every 5th night (night 5, 10, 15, …). Only one Boss can exist at a time.
+
+The Boss has two phases:
+
+1. **Shield phase** — A 400 HP arcane shield (displayed as a blue bar above the health bar) absorbs all incoming damage. Break it with sustained fire.
+2. **Exposed phase** — Once the shield is gone the Boss takes normal damage to its 1200 HP pool. It turns from blue to red to signal the phase change.
+
+On death the Boss bursts into 4 Runners that immediately scatter and attack nearby buildings. Kill them quickly before they spread.
 
 ### Threat Scaling
 
@@ -246,6 +258,7 @@ addons/      — Godot plugins (AsepriteWizard)
 | `burrower.gd` | Tunneling enemy — underground phase → emerge warning → surfaces and attacks |
 | `runner.gd` | Fast/fragile enemy — rushes buildings in packs, dies quickly |
 | `armored_enemy.gd` | Slow/tanky enemy — absorbs massive damage before going down |
+| `boss.gd` | Boss enemy — phase shield, exposed HP after shield break, splits into runners on death |
 | `enemy_camp.gd` | Destroyable enemy structure — periodically spawns enemy bursts |
 | `fireflies.gd` | GPU particle firefly effect — fades in at night, additive-blended glow |
 | `tower.gd` | Tower attack loop, power drain, bullet spawning, upgrade-aware fire rate |

@@ -19,6 +19,15 @@
 
 ## Enemies
 
+### Boss
+- [ ] Sprite sheet — `assets/sprites/npcs/boss.aseprite`
+  - Animations: `Idle` (2–4 frames, imposing idle cycle), `Walk` (optional), `Attack` (optional wind-up)
+  - ~64×64px or larger — massive, hulking creature; reads as a boss; distinct silhouette from all other enemies
+  - Two visual phases: **shielded** (icy blue/arcane glow overlay, see notes below) and **unshielded** (dark red/blood tones after shield breaks)
+  - The shield phase tint is applied in code (`modulate = Color(0.5, 0.6, 1.0)`), so the base sprite can be neutral/dark — it will shift blue while shielded and red while exposed
+  - Currently uses a 2× scaled version of the big_enemy sprite as placeholder
+  - Swap in by updating `prefabs/boss.tscn` to point to the new sprite
+
 ### Runner
 - [ ] Sprite sheet — `assets/sprites/npcs/runner.aseprite`
   - Animations: `Walk` (2–4 frames), `Attack` (optional), `Idle` (fallback)

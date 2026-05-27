@@ -1,8 +1,5 @@
 # Todo
 
-| Impact | Item |
-|--------|------|
-
 ---
 
 ## Completed
@@ -28,3 +25,4 @@
 - [x] Soldier rally point (middle-click to direct soldiers to patrol a location)
 - [x] More enemy variety — Runner (fast/fragile, packs of 4, night 5+), Armored (tanky, solo, night 4+)
 - [x] Lights that come on at night (firefly GPU particles, additive blend, fade with day/night cycle)
+- [x] Boss enemy — unique boss every 5 nights; phase shield that must be broken first, splits into runners on death, large coin reward
