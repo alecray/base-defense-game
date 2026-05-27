@@ -2,10 +2,7 @@
 
 | Impact | Item |
 |--------|------|
-| ~~★★☆☆☆~~ | ~~More enemy variety~~ ✓ |
-| ~~★★☆☆☆~~ | ~~Soldier rally point~~ ✓ |
 | ★★☆☆☆ | Worker automation (assign workers to a zone and they harvest/build automatically) |
-| ~~★☆☆☆☆~~ | ~~Lights that come on at night~~ ✓ |
 
 ---
 
@@ -29,3 +26,6 @@
 - [x] Repair (hold R + LMB on any damaged building to restore full HP; 1 coin per 5 HP missing)
 - [x] Market (passive, no worker — instantly sells food/power when they exceed 60% cap; 8:1 food, 5:1 power; shows floating +N coins)
 - [x] Storehouse (worker-staffed; each worker adds +50 food cap and +30 power cap; up to 5 workers; 110 coins)
+- [x] Soldier rally point (middle-click to direct soldiers to patrol a location)
+- [x] More enemy variety — Runner (fast/fragile, packs of 4, night 5+), Armored (tanky, solo, night 4+)
+- [x] Lights that come on at night (firefly GPU particles, additive blend, fade with day/night cycle)
