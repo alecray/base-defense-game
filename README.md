@@ -88,6 +88,8 @@ Enemies spawn from outside the map during nighttime only. They arrive in structu
 | Big | 350 | Slow | 35 / 2.5s | 30 coins | Spawns after the first full day/night cycle |
 | Flying Ranged | 60 | Moderate | 12 / 2.5s | 20 coins | Ranged projectile attacker; ignores ground obstacles. Starts night 3. |
 | Burrower | 80 | Fast (surface) | 18 / 1.8s | 25 coins | Tunnels underground through walls and surfaces inside your base. Immune to damage while tunneling. Starts night 4. |
+| Armored | 450 | Very slow | 50 / 3.0s | 45 coins | Heavily plated, extremely tanky. Spawns solo every 55s. Starts night 4. |
+| Runner | 35 | Very fast | 6 / 0.9s | 6 coins | Fragile and lightning-quick. Spawns in packs of 4 every 22s. Starts night 5. |
 
 Enemies attack any building they can reach, prioritising structures over the Core. When the Core falls the run ends.
 
@@ -124,6 +126,8 @@ Food is produced by Farms with assigned workers. All workers consume food over t
 ## Day / Night Cycle
 
 Each day and night lasts 150 seconds with a 15-second dusk/dawn transition. The current in-game time is displayed under the day counter (6:00 AM → 6:00 PM during the day, 6:00 PM → 6:00 AM during the night). Enemies only spawn at night, with spawn rate and clump size scaling with darkness intensity. Solar Farms produce no power at night.
+
+As darkness falls, firefly particles scatter across the built area and drift gently using GPU turbulence noise. They fade in at dusk and out at dawn.
 
 ## Library Research
 
@@ -240,7 +244,10 @@ addons/      — Godot plugins (AsepriteWizard)
 | `big_enemy.gd` | Slow heavy enemy with high HP and damage |
 | `flying_enemy.gd` | Ranged flying enemy — orbits and fires projectiles, ignores ground obstacles |
 | `burrower.gd` | Tunneling enemy — underground phase → emerge warning → surfaces and attacks |
+| `runner.gd` | Fast/fragile enemy — rushes buildings in packs, dies quickly |
+| `armored_enemy.gd` | Slow/tanky enemy — absorbs massive damage before going down |
 | `enemy_camp.gd` | Destroyable enemy structure — periodically spawns enemy bursts |
+| `fireflies.gd` | GPU particle firefly effect — fades in at night, additive-blended glow |
 | `tower.gd` | Tower attack loop, power drain, bullet spawning, upgrade-aware fire rate |
 | `siege_tower.gd` | AoE tower — cluster targeting, boulder fire, power drain |
 | `siege_projectile.gd` | Boulder projectile — flies to target position, AoE damage on impact, explosion ring visual |
