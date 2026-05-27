@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://armored00001"]
+[gd_scene format=4 uid="uid://rmored00001"]
 
 [ext_resource type="Script" path="res://scripts/armored_enemy.gd" id="1_armored"]
 
