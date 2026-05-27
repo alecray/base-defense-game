@@ -2,7 +2,6 @@
 
 | Impact | Item |
 |--------|------|
-| ★★☆☆☆ | Worker automation (assign workers to a zone and they harvest/build automatically) |
 
 ---
 
