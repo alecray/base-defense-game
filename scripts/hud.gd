@@ -20,18 +20,18 @@ var _shop_container: VBoxContainer = null
 
 const _TUTORIAL_PROMPTS: Array = [
 	"Build a Core to start expanding",
-	"Build a Solar Farm for power",
+	"Build a Solar Farm for power — towers need power to fire",
 	"Build Housing to expand worker cap",
-	"Buy workers and assign them to Gold",
-	"Buy a Farm",
-	"Assign workers to the farm",
-	"Build a Turret",
-	"Assign a worker to the Turret",
+	"Press [E] on Core to buy workers, then [E] on a Gold Mine to assign one",
+	"Buy a Farm — farms produce food, which workers consume over time",
+	"Press [E] on the Farm to assign workers to it",
+	"Build a Tower",
+	"Press [E] on the Tower to assign a worker — towers need both a worker and power to fire",
 	"Build a Barracks",
-	"Buy a Soldier",
-	"Build Walls to protect your base",
-	"Build a Library",
-	"Build 2 more Turrets",
+	"Buy a Soldier — soldiers patrol and attack enemies automatically",
+	"Build Walls to protect your base — right-click near a tile edge to place one",
+	"Build a Library to research permanent upgrades",
+	"Night is coming — enemies spawn from outside the map. Towers and soldiers defend automatically.",
 ]
 
 func _ready() -> void:
@@ -163,6 +163,8 @@ func _process(delta: float) -> void:
 	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
 	if cycle != null:
 		_time_label.text = cycle.call("get_time_string") as String
+		if _tutorial_step == 12 and float(cycle.call("get_night_intensity")) > 0.0:
+			_advance_tutorial(12)
 	if _indicator_cooldown > 0.0:
 		_indicator_cooldown -= delta
 
@@ -253,7 +255,14 @@ func _advance_tutorial(required_step: int) -> void:
 		return
 	_tutorial_step += 1
 	if _tutorial_step >= _TUTORIAL_PROMPTS.size():
-		_core_prompt.visible = false
+		_core_prompt.text = "You're ready — survive as long as you can!"
+		_core_prompt.add_theme_color_override("font_color", Color(0.4, 0.9, 0.4))
+		_core_prompt.modulate = Color.WHITE
+		_core_prompt.visible = true
+		var tween: Tween = create_tween()
+		tween.tween_interval(3.5)
+		tween.tween_property(_core_prompt, "modulate:a", 0.0, 1.5)
+		tween.tween_callback(func() -> void: _core_prompt.visible = false)
 	else:
 		_core_prompt.text = _TUTORIAL_PROMPTS[_tutorial_step]
 		_core_prompt.visible = true
@@ -266,8 +275,6 @@ func _on_building_placed(building_name: String) -> void:
 		"Farm":      _advance_tutorial(4)
 		"Tower":
 			_advance_tutorial(6)
-			if _tutorial_step == 12 and GameState.get_building_count("Tower") >= 3:
-				_advance_tutorial(12)
 		"Barracks":  _advance_tutorial(8)
 		"Library":   _advance_tutorial(11)
 
@@ -317,6 +324,8 @@ func _on_game_reset() -> void:
 	_soldiers_label.text = "Soldiers: 0 / 0"
 	_tutorial_step = 0
 	_core_prompt.text = "Build a Core to start expanding"
+	_core_prompt.modulate = Color.WHITE
+	_core_prompt.remove_theme_color_override("font_color")
 	_core_prompt.visible = true
 	if _repair_hint_label != null:
 		_repair_hint_label.visible = false

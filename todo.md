@@ -1,5 +1,15 @@
 # Todo
 
+| Impact | Item |
+|--------|------|
+| ★★★★★ | **Tutorial polish** — add visual highlights/arrows pointing at the target building for each step; skip button; cover food drain, fortification, and the rally point in prompts |
+| ★★★★★ | **Enemy pathfinding** — replace straight-line movement with NavigationAgent2D so enemies route around walls instead of stopping against them |
+| ★★★★★ | **Night modifiers** — each night rolls a random event: "Cursed Night" (enemies +30% speed), "Treasure Night" (2× coin drops), "Siege Night" (massive ground wave), "Peaceful Night" (double resource production) |
+| ★★★★☆ | **Main menu + pause** — title screen with Play/Continue/Legacy Shop; in-run pause menu |
+| ★★★★☆ | **Player dash** — tap Shift to roll in movement direction with a short invincibility window and cooldown; adds skill expression and a reason to play aggressively |
+| ★★★☆☆ | **Deeper legacy shop** — 2–3 more upgrades that change *how you play*, not just starting numbers (e.g. unlock a building type, start with a relic slot) |
+| ★★★☆☆ | **Boss announcement** — screen message and visual warning when a boss night begins so it lands as a moment rather than a surprise |
+
 ---
 
 ## Completed
