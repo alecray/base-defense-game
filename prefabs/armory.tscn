@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cylhmjq47u0qb" path="res://scripts/armory.gd" id="1_armory"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_ykrx1"]
-_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAABqAQAAUklGRmIBAABXRUJQVlA4TFYBAAAvf8AfEE+gNJIU5i3JolBIHP3XlUpR00gKdBrueEqCAUr8G0AQnZoAIBghNqcA+ncSYc1/ACCneojfZzXiUjNNt0pEHyChtt04kkRBFEJBFELhU/gUQuFTMN54K7fUs8+J6P8E2H+NqluXxjVpsRjtLUT7a9CH09ORmencrIBzJCWFkySlhLMkJYTTJKWD8yQmg8+Q5BrTAfaRpJMEsgP20El6cwLADHMC1pzeSLI5iW52WKA72YsYAJDEvDAiSWd7RUSQM0BqQMfp9OYtIoJsXEFuAOiNzRkRJFtJbBERja2sCDayMjZyNM4Kp11XFd3G+Ze7++UFAb378su9HnQ79+uq442+ZJ37LgZ9STKzTkTUgb669p6y/B50NVyyLPCR5wE0tv593wGAVsSjoc1XYTO2DFh+ZhO2MxPbZO+effzrme0zex478uuNd5z+9fr1vev7XRY=")
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAACKAQAAUklGRoIBAABXRUJQVlA4THUBAAAvf8AfEE+gJpIkNXgRhnxPMt5oADK6B3SR6v+Xtg/UBEDCcHNTgQImMLyR5jn/AYC/rHr1glt4Zm6b4ZVuCiRFkiRJUlAICkEhKRgFp+AUgkJSGLyVdXVn/1ZWIvo/AfH/4d0hhRRSSCGFFFIopJ/Qend/3XqxuyVtriWNV7ulrbWkka+O0ZL21ZJGvj26pV21pJHvj9HSlroljfzI0ZL205I08kPH6NZuQJDUR0AymtrNrOnyh8yaLu/Hx4KEhISEhISEhISEBKaPu5qzpsuz7LLLs+yyy7Ps8ix7d/7An8SPYAW24doa2BtnBvw0ZsG2mMbn2HDHK7b2gbvy8vfVijpQtuc8UAdq4eV25lNQT8wtsWJxEbKmb4KXv+HPZOK/O6xqU1wzmVnTVznawH44OZ5xyOKMy1XshAJj111yVdevsBnABcQpl+Mq1OlOqHOIi0/FCiD2EUBEAAScxVk8CcTl7wviUWIRPHH/+54H4ru/71+4AA==")
 size_override = Vector2(128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pn58n"]
@@ -17,13 +17,14 @@ animations = [{
 "texture": SubResource("AtlasTexture_pn58n")
 }],
 "loop": true,
-"name": &"default",
+"name": &"Idle",
 "speed": 10.0
 }]
 
 [node name="Armory" type="AnimatedSprite2D" unique_id=1150695973]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_kwv82")
+animation = &"Idle"
 script = ExtResource("1_armory")
 metadata/_aseprite_wizard_interface_config_ = {
 "pending_changes": {}
@@ -41,4 +42,4 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/buildings/armory.aseprite",
 "source_uid": 1457598842324436888
 }
-metadata/_aseprite_wizard_source_file_hash_ = "6466ee633caaae326f8e561dd9a24241"
+metadata/_aseprite_wizard_source_file_hash_ = "d3422ceb3111cd2fffbe75f9bf0b0095"
