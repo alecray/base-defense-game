@@ -73,8 +73,3 @@ func start_repair() -> String:
 	_repair_accum = 0.0
 	return ""
 
-func is_fortified() -> bool:
-	return false
-
-func get_shield_hp() -> int:
-	return 0

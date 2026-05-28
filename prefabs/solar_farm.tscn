@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bid6gea4r3ulc" path="res://scripts/solar_farm.gd" id="1_solar"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_t6vkn"]
-_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAABCAQAAUklGRjoBAABXRUJQVlA4TC4BAAAvf8AfEB8gECBTdhT4IBAgUxo8GSAkIFP2eCCZ/wDYUx9Asm1JkRI4tG5NA1ud25vE1nCJSTdkZkkUOovo/wTI//Ud0ItB6mSN1AEcIMZJU1gsLOMZ7OvohZDGvCO+rD6OsaxuAE5qQICJKqmTNer02pPuTfSyASxxgACSwzLehUkDx1pRIkhJy1tSs72J5qXx9v4yezFOSJ3USR3AgW9CMlgVrEA8rALWrWW+F2pZHTAgyN0yS2qkToEIqpekXs+jTGp4rV4AaQQLNdEMVkdTkQhS0ppSsb2J5qXx9v78TwADnLTXOQcwwIFeHAewrkgNDHAAA74Zb6IXBiv5svo4wET1eVnZHMAAB3oBZKKXgAEYQA0iSPcmiTfWiyBa8gQDHMC+BEJMtMUtCfHLBw==")
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAABaAQAAUklGRlIBAABXRUJQVlA4TEUBAAAvf8AfEE9gpgESbkYAUD8z2L+XSZRGksK8xGeFo4HUfyuUYiYAi224F0EVCfTPIIFz/gOAu8l44jJpIqtfW+n72BsgRZIkyUldAJqCKCyFQCBTURAFUWgKRXfvnczenWdE/x24jaRITi8e4yO00yILlm0WcVLbFuB2tX1J6v/vdts8kz1puOb1646B77BDMI1X7AhMGJakEEAd+zb0U18J3P8bu9FwzRPQrbW1YkzjFTtCTRYHMCyVjnWAqoI667BldSrAxRWvt9llgQ7bd5oYrm/t+bIy6XWw/m2srVuLU45pnOWdD7hNGJaqKgTX+63DRlVVDuG6dpCykV4G289mfaclQvnQCjExToRidRIwLAEXd5UADlsHSHKz/2/sA+oMwzitpV0sYlndygDTNqSY+EAEAcMSxBDG5PfUYnXA2gAIsIcSAA==")
 size_override = Vector2(128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_87345"]
@@ -42,4 +42,4 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/buildings/solar.aseprite",
 "source_uid": 9018490231506962819
 }
-metadata/_aseprite_wizard_source_file_hash_ = "3ccf679b8c9453a84e41ed35b1c62131"
+metadata/_aseprite_wizard_source_file_hash_ = "89117bcab6548fd1144c28dcd6eaeb88"

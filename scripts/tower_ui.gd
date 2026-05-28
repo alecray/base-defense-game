@@ -6,7 +6,6 @@ var _free_label: Label
 var _rate_label: Label
 var _assign_btn: Button
 var _unassign_btn: Button
-var _fortify_btn: Button
 var _upgrade_btn: Button
 var _ui_root: Control
 
@@ -88,14 +87,6 @@ func _build_ui() -> void:
 	_assign_btn.pressed.connect(_on_assign)
 	btn_row.add_child(_assign_btn)
 
-	var sep3: HSeparator = HSeparator.new()
-	vbox.add_child(sep3)
-
-	_fortify_btn = Button.new()
-	_fortify_btn.custom_minimum_size = Vector2(0.0, 40.0)
-	_fortify_btn.pressed.connect(_on_fortify)
-	vbox.add_child(_fortify_btn)
-
 	_upgrade_btn = Button.new()
 	_upgrade_btn.custom_minimum_size = Vector2(0.0, 40.0)
 	_upgrade_btn.pressed.connect(_on_upgrade)
@@ -121,12 +112,6 @@ func _refresh() -> void:
 		_rate_label.text = "No Power — offline"
 	_assign_btn.disabled = assigned >= CONSTANTS.TOWER_MAX_WORKERS or free <= 0
 	_unassign_btn.disabled = assigned <= 0
-	if bool(_tower.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_tower.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
-		_fortify_btn.disabled = true
-	else:
-		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
-		_fortify_btn.disabled = GameState.coins < CONSTANTS.FORTIFY_COST
 	var ulevel: int = int(_tower.get("upgrade_level"))
 	var eff_interval: float = maxf(CONSTANTS.TOWER_INTERVAL - float(ulevel) * CONSTANTS.TOWER_UPGRADE_INTERVAL_REDUCTION, 0.4)
 	if ulevel >= CONSTANTS.TOWER_UPGRADE_MAX:
@@ -154,14 +139,6 @@ func _on_unassign() -> void:
 	if _tower == null:
 		return
 	_tower.call("unassign_worker")
-	_refresh()
-
-func _on_fortify() -> void:
-	if _tower == null:
-		return
-	if not bool(_tower.call("fortify")):
-		_show_error("Not enough coins!")
-		return
 	_refresh()
 
 func _on_upgrade() -> void:

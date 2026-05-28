@@ -5,7 +5,6 @@ signal worker_purchased(gp: Vector2i)
 var _target_tile: Vector2i = Vector2i(-1, -1)
 var _core_node: Node = null
 var _buy_btn: Button
-var _fortify_btn: Button
 var _food_cap_btn: Button
 var _power_cap_btn: Button
 var _ui_root: Control
@@ -64,14 +63,6 @@ func _build_ui() -> void:
 	var sep2: HSeparator = HSeparator.new()
 	vbox.add_child(sep2)
 
-	_fortify_btn = Button.new()
-	_fortify_btn.custom_minimum_size = Vector2(0.0, 40.0)
-	_fortify_btn.pressed.connect(_on_fortify)
-	vbox.add_child(_fortify_btn)
-
-	var sep3: HSeparator = HSeparator.new()
-	vbox.add_child(sep3)
-
 	_food_cap_btn = Button.new()
 	_food_cap_btn.custom_minimum_size = Vector2(0.0, 40.0)
 	_food_cap_btn.pressed.connect(_on_upgrade_food_cap)
@@ -91,12 +82,6 @@ func open_for_core(gp: Vector2i, core_node: Node) -> void:
 func _refresh() -> void:
 	_buy_btn.text = "Buy Worker\n%d coins" % CONSTANTS.WORKER_COST
 	_buy_btn.disabled = GameState.coins < CONSTANTS.WORKER_COST
-	if _core_node != null and bool(_core_node.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_core_node.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
-		_fortify_btn.disabled = true
-	else:
-		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
-		_fortify_btn.disabled = _core_node == null or GameState.coins < CONSTANTS.FORTIFY_COST
 	_food_cap_btn.text = "Upgrade Food Cap  +%d  (%d coins)\n[Current: %d]" % [CONSTANTS.FOOD_CAP_UPGRADE_AMOUNT, CONSTANTS.FOOD_CAP_UPGRADE_COST, GameState.food_cap]
 	_food_cap_btn.disabled = GameState.coins < CONSTANTS.FOOD_CAP_UPGRADE_COST
 	_power_cap_btn.text = "Upgrade Power Cap  +%d  (%d coins)\n[Current: %d]" % [CONSTANTS.POWER_CAP_UPGRADE_AMOUNT, CONSTANTS.POWER_CAP_UPGRADE_COST, GameState.power_cap]
@@ -121,14 +106,6 @@ func _on_buy_worker() -> void:
 		_show_error("Not enough coins!")
 		return
 	worker_purchased.emit(_target_tile)
-	_refresh()
-
-func _on_fortify() -> void:
-	if _core_node == null:
-		return
-	if not bool(_core_node.call("fortify")):
-		_show_error("Not enough coins!")
-		return
 	_refresh()
 
 func _on_upgrade_food_cap() -> void:

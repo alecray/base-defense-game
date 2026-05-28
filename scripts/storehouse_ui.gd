@@ -6,7 +6,6 @@ var _caps_label: Label
 var _free_label: Label
 var _assign_btn: Button
 var _unassign_btn: Button
-var _fortify_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
@@ -87,14 +86,6 @@ func _build_ui() -> void:
 	_assign_btn.pressed.connect(_on_assign)
 	btn_row.add_child(_assign_btn)
 
-	var sep3: HSeparator = HSeparator.new()
-	vbox.add_child(sep3)
-
-	_fortify_btn = Button.new()
-	_fortify_btn.custom_minimum_size = Vector2(0.0, 40.0)
-	_fortify_btn.pressed.connect(_on_fortify)
-	vbox.add_child(_fortify_btn)
-
 func open_for_storehouse(storehouse_node: Node) -> void:
 	_storehouse = storehouse_node
 	_refresh()
@@ -110,12 +101,6 @@ func _refresh() -> void:
 	_free_label.text = "Free Workers: %d" % free
 	_assign_btn.disabled = free <= 0 or assigned >= CONSTANTS.STOREHOUSE_MAX_WORKERS
 	_unassign_btn.disabled = assigned <= 0
-	if bool(_storehouse.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_storehouse.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
-		_fortify_btn.disabled = true
-	else:
-		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
-		_fortify_btn.disabled = GameState.coins < CONSTANTS.FORTIFY_COST
 
 func _close() -> void:
 	visible = false
@@ -135,14 +120,6 @@ func _on_unassign() -> void:
 	if _storehouse == null:
 		return
 	_storehouse.call("unassign_worker")
-	_refresh()
-
-func _on_fortify() -> void:
-	if _storehouse == null:
-		return
-	if not bool(_storehouse.call("fortify")):
-		_show_error("Not enough coins!")
-		return
 	_refresh()
 
 func _show_error(text: String) -> void:

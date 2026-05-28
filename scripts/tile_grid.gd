@@ -281,8 +281,6 @@ func get_save_data() -> Array:
 		entry["building"] = tile.building
 		if not tile.building.is_empty() and tile.area.has_meta("tile_building_node"):
 			var bnode: Node = tile.area.get_meta("tile_building_node") as Node
-			if bool(bnode.call("is_fortified")):
-				entry["shield_hp"] = int(bnode.call("get_shield_hp"))
 			var ulevel_raw: Variant = bnode.get("upgrade_level")
 			var ulevel: int = int(ulevel_raw) if ulevel_raw != null else 0
 			if ulevel > 0:
@@ -332,7 +330,7 @@ func unlock_tile_free(gp: Vector2i) -> void:
 		return
 	_set_unlocked(gp, true)
 
-func place_building_from_save(building_name: String, gp: Vector2i, shield_hp: int = 0, upgrade_level: int = 0) -> void:
+func place_building_from_save(building_name: String, gp: Vector2i, upgrade_level: int = 0) -> void:
 	if not _tiles.has(gp):
 		return
 	var tile: TileEntry = _tiles[gp]
@@ -376,8 +374,6 @@ func place_building_from_save(building_name: String, gp: Vector2i, shield_hp: in
 	instance.set("_tile_gp", gp)
 	instance.set("_building_name", building_name)
 	tile.area.set_meta("tile_building_node", instance)
-	if shield_hp > 0 and building_name != "GoldMine":
-		instance.call("restore_fortification", shield_hp)
 	if upgrade_level > 0:
 		instance.set("upgrade_level", upgrade_level)
 

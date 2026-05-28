@@ -3,7 +3,6 @@ extends CanvasLayer
 var _building: Node = null
 var _soldiers_label: Label
 var _buy_btn: Button
-var _fortify_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
@@ -66,14 +65,6 @@ func _build_ui() -> void:
 	_buy_btn.pressed.connect(_on_buy_soldier)
 	vbox.add_child(_buy_btn)
 
-	var sep3: HSeparator = HSeparator.new()
-	vbox.add_child(sep3)
-
-	_fortify_btn = Button.new()
-	_fortify_btn.custom_minimum_size = Vector2(0.0, 40.0)
-	_fortify_btn.pressed.connect(_on_fortify)
-	vbox.add_child(_fortify_btn)
-
 func open_for_barracks(building_node: Node) -> void:
 	_building = building_node
 	_refresh()
@@ -86,12 +77,6 @@ func _refresh() -> void:
 	_soldiers_label.text = "Soldiers: %d / %d  (+%d cap per Barracks)" % [GameState.soldiers, cap, CONSTANTS.BARRACKS_SOLDIER_BONUS]
 	_buy_btn.text = "Buy Soldier  (%d coins)" % CONSTANTS.SOLDIER_COST
 	_buy_btn.disabled = GameState.soldiers >= cap or GameState.coins < CONSTANTS.SOLDIER_COST
-	if bool(_building.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_building.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
-		_fortify_btn.disabled = true
-	else:
-		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
-		_fortify_btn.disabled = GameState.coins < CONSTANTS.FORTIFY_COST
 
 func _close() -> void:
 	visible = false
@@ -110,14 +95,6 @@ func _on_buy_soldier() -> void:
 		var grid: Node = get_tree().get_first_node_in_group("tile_grid")
 		if grid != null:
 			grid.call("spawn_soldier_at", grid.call("get_soldier_spawn_pos"))
-	_refresh()
-
-func _on_fortify() -> void:
-	if _building == null:
-		return
-	if not bool(_building.call("fortify")):
-		_show_error("Not enough coins!")
-		return
 	_refresh()
 
 func _on_soldiers_changed(_count: int, _cap: int) -> void:

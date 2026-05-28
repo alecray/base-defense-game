@@ -101,5 +101,3 @@ func get_reserves() -> int:
 func set_reserves(value: int) -> void:
 	_reserves = maxi(0, value)
 
-func is_fortified() -> bool: return false
-func get_shield_hp() -> int: return 0

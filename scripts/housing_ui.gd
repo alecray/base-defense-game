@@ -2,7 +2,6 @@ extends CanvasLayer
 
 var _building: Node = null
 var _status_label: Label
-var _fortify_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
@@ -56,14 +55,6 @@ func _build_ui() -> void:
 	_status_label.add_theme_color_override("font_color", Color(0.8, 0.9, 0.8))
 	vbox.add_child(_status_label)
 
-	var sep2: HSeparator = HSeparator.new()
-	vbox.add_child(sep2)
-
-	_fortify_btn = Button.new()
-	_fortify_btn.custom_minimum_size = Vector2(0.0, 40.0)
-	_fortify_btn.pressed.connect(_on_fortify)
-	vbox.add_child(_fortify_btn)
-
 func open_for_housing(building_node: Node) -> void:
 	_building = building_node
 	_refresh()
@@ -73,12 +64,6 @@ func _refresh() -> void:
 	if _building == null:
 		return
 	_status_label.text = "Worker Cap Bonus: +%d  (Total cap: %d)" % [CONSTANTS.HOUSING_WORKER_BONUS, GameState.get_worker_cap()]
-	if bool(_building.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_building.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
-		_fortify_btn.disabled = true
-	else:
-		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
-		_fortify_btn.disabled = GameState.coins < CONSTANTS.FORTIFY_COST
 
 func _close() -> void:
 	visible = false
@@ -87,14 +72,6 @@ func _close() -> void:
 func _on_overlay_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and (event as InputEventMouseButton).pressed:
 		_close()
-
-func _on_fortify() -> void:
-	if _building == null:
-		return
-	if not bool(_building.call("fortify")):
-		_show_error("Not enough coins!")
-		return
-	_refresh()
 
 func _show_error(text: String) -> void:
 	var label: Label = Label.new()

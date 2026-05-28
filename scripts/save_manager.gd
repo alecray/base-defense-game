@@ -135,9 +135,8 @@ func load_game() -> void:
 		var building: String = str(tile_dict["building"])
 		tile_grid.call("unlock_tile_free", gp)
 		if building != "":
-			var shield_hp: int = int(tile_dict.get("shield_hp", 0))
 			var upgrade_lvl: int = int(tile_dict.get("upgrade_level", 0))
-			tile_grid.call("place_building_from_save", building, gp, shield_hp, upgrade_lvl)
+			tile_grid.call("place_building_from_save", building, gp, upgrade_lvl)
 
 	var workers_data: Array = data["workers"] as Array
 	for worker_entry: Variant in workers_data:

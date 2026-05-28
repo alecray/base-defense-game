@@ -4,7 +4,6 @@ extends Node
 const STARTING_COINS: int = 200
 const STARTING_FOOD: int = 100
 const WORKER_COST: int = 20
-const FORTIFY_COST: int = 75
 const FOOD_DRAIN_INTERVAL: float = 5.0
 const BUILDING_COSTS: Dictionary = {
 	"Core": 100,
@@ -51,9 +50,6 @@ const TOWER_MAX_HP: int = 200
 const REGEN_COOLDOWN: float = 30.0
 const REGEN_INTERVAL: float = 3.0
 const REGEN_PERCENT: float = 0.02
-
-## Fortification
-const SHIELD_MAX_HP: int = 200
 
 ## Farm
 const FARM_FOOD_INTERVAL: float = 5.0
