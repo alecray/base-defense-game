@@ -17,8 +17,14 @@ class TileEntry:
 @export var grid_cols: int = 15
 @export var grid_rows: int = 15
 
-const COLOR_UNLOCKED: Color = Color("a9b2a2")
-const COLOR_PURCHASABLE: Color = Color("6e7469")
+# Some colors in our palette for easy reference:
+#8b9150
+#557d55
+#353540
+#bda351
+#7e674c
+const COLOR_UNLOCKED: Color = Color("bda351")
+const COLOR_PURCHASABLE: Color = Color("7e674c")
 
 const CORE_SCENE: PackedScene = preload("res://prefabs/core.tscn")
 const HOUSING_SCENE: PackedScene = preload("res://prefabs/housing.tscn")

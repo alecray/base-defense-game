@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://3wfysdk0e0m2" path="res://scripts/farm.gd" id="1_bldg"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_sd1hc"]
-_data = PackedByteArray("AAADAAUAAAABAAAAAAEAAIAAAABGAgAAUklGRj4CAABXRUJQVlA4TDECAAAv/8AfEF+gJADQBvexIJ8l+CouipJIVqiX4lkaoL7laUAHMiBxiiJJai46iIAIfvgvdKX5DwBYnYPpx+dynB05i66pAvzD6w1PQW6tvXmboUuNFbKCV9AKXkF1OqzwroAVtAKmiwmCkuAA+X6KiP5DcNvIkSRtvqS+qr37A/1r0Mw6xybbxo7DcaQ+MLOyOezwHC81eW+qJlbT96Z8VPP35ueTfs39vdXN/k5o0ezBI03fm6rxF81jr53jhVNf5O9N/WTvTfn8L9j9GSuhLSMLG0bWJu9Nvcgpk/emWuSk2XtTKXLe7L0pE7lm8t4UiVw1eW9KRK6bvTf1ITeZvjdfhXHTo3fYm8LQx7byufY99vajNB7XeY+9qYj9Vprq3s+ydddNpzBmtm/8D3hhxtZq9wi2bWiepzFbr92bbd55YmbPVrtjbXrj9t29ddz9aLabbmCbse67ja2nbuq/m26Dma2pbgqhnrtphgIdWAE2a6H7khwJ/zoWKU5CU93s1RldoVECGNxGN8KRxVk+GCIQhYj4133DgJroxkRULK4vKA2fcXCaTroJDo7gIA9BDFjB7E8i4s7aSfdcPL1PMeVBvCoCjI7gXK6gjW4gnBgG4TmWw9SZ0Uv1d5+Ym7jp6DwvzAMM4EHQjn66/XfyHeoDXMOUD38amdsb6V79y+LFH6spQUdncDroGFob3QRaGCGBcK8jnFsT3af1CF8Q0/i66ua7BLiB7gsK3eOfTfdfEQkA")
+_data = PackedByteArray("AAADAAUAAAABAAAAAAEAAIAAAABmAwAAUklGRl4DAABXRUJQVlA4TFIDAAAv/8AfEG+gOJKk5AR3eFO8SYD8c9JY1ESy1fyoIOKBKvrXggNqKkWRJDWX7xCCD14oxwwCMjzmPwDAOqVrWzBVTKmX0e32/2Ylf5ihQ5tIQ9V7A1m17YQVhAUs1EIsxMJYuCMhFrCABSw8C7WAmZIEWmaR+YzoPwS3jRxJMtB7+TjY9If0HzIK3U1qxh+0+1JwImYj0JcSpFtxmW/mymwFmlBjdBNxvbnW+qeyI6iVa6327qPg3FztuM7GN1UmpkpUI3PfTve8XFk/nG+u4bpZ5ywytyPTAt/OD0afoblvq3YFbp48KjebruoJLlLdzOzch5SCctNNxMN3eYJnbEfOXxrXEpE7mdcrGvMErO+r+cJxT16kiFzBi0XhZs1e3e/3q+/gzOd3MxG/6Df2IuZHHIN7bFm9JOfJAnAz50xEtfL6fr/5pbqLwJ2dyReDGYnIoAbgTpYMs4ZXK+7QIcO9GX6C6DF3AZwW8M3UUUorvbRSzNebce+En6KGhsFB6VAGVQMcg/IUe3YbWLUTzkdIFGlywp6OYsXmJFhBwcd6hsl5mjadiMK9cUG4AZRPtogLwM3fBbVTuf9uTnLPIvhgfcYGIFm7ZSP8EEmTZmmvamhP3ZV3UW2FnyA2b9so42yG7lzGBD1qbg3KvRV+iBSpD7Q9n7pDHYYhcVTmrus27IMfoWTbdOL47n/gfZtCcF8iryqvFoU7yxt4KS+TINyXvec+1gOIwj12ibtvrmCgJecQ3Gq8YwocgHuRlFJas6wBI3CTcX03niwCN+f8+SOX3EXgzs7ki8GMRGRQA3AnS4ZZ++4NDB1i3LIRfoLoMXcBnBbwzdRRSiu9tFLM15tx74SfooaGwUHpUAZVAxyD8hR7dhtYtRPOR0gUaXLCno5ixeYkWEHBx3qGyXmaNp2Iwr1xQbgBlE+2iAvAzd8FtZjcknsWwQfrMzYAydotG+GHSJo0S3tVQ3vqrryLaiv8BLF520YZZzN05zIm6FFza1DurfBDpEh9oO351B3qMAyJozJ3XbdhH/wIJdumE8d3/wPv2xSC+xJ5VXm1KNxZ3sBLeZkE4b7sPfexHkAU7rFL3H1zBQMtOYfgVuMdU+AA3IuklNInljR2fnfitG8cgjsB")
 size_override = Vector2(256, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vhqe3"]
@@ -21,11 +21,17 @@ animations = [{
 "texture": SubResource("AtlasTexture_vhqe3")
 }, {
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_vhqe3")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_3r8u4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vhqe3")
 }],
 "loop": true,
 "name": &"Idle",
-"speed": 1.0
+"speed": 2.0
 }]
 
 [node name="Farm" type="AnimatedSprite2D" unique_id=119343184]
@@ -49,7 +55,7 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/buildings/farm.aseprite",
 "source_uid": 1313738560755906094
 }
-metadata/_aseprite_wizard_source_file_hash_ = "735139d03129a50dcab597c932e59d58"
+metadata/_aseprite_wizard_source_file_hash_ = "ac67cfae1a5d9d95e6eb4ceb34d86eeb"
 
 [node name="WorkPoint" type="Marker2D" parent="." unique_id=1185958947]
 position = Vector2(0, 44)
