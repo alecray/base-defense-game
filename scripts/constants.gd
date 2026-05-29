@@ -100,7 +100,7 @@ const MINE_TICK_INTERVAL: float = 5.0
 
 ## Tile Grid
 const TILE_SIZE: int = 128
-const TILE_GAP: int = 2
+const TILE_GAP: int = 0
 const EXTRA_MINE_COUNT: int = 5
 const TILE_COST_BASE: float = 10.0
 const TILE_COST_SCALE: float = 1.5

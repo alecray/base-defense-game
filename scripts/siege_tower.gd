@@ -8,6 +8,7 @@ var _power_drain_timer: float = 0.0
 func _ready() -> void:
 	max_hp = CONSTANTS.SIEGE_TOWER_MAX_HP
 	super._ready()
+	play("Idle")
 
 func _process(delta: float) -> void:
 	super._process(delta)

@@ -3,6 +3,7 @@ extends "res://scripts/building_base.gd"
 func _ready() -> void:
 	max_hp = CONSTANTS.MARKET_MAX_HP
 	super._ready()
+	play("Idle")
 	GameState.food_changed.connect(_on_food_changed)
 	GameState.power_changed.connect(_on_power_changed)
 
