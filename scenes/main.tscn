@@ -9,10 +9,16 @@
 [ext_resource type="PackedScene" path="res://scenes/worker_ui.tscn" id="5_wrkui"]
 [ext_resource type="PackedScene" path="res://scenes/farm_ui.tscn" id="6_farmui"]
 [ext_resource type="PackedScene" path="res://scenes/tower_ui.tscn" id="10_towerui"]
-[ext_resource type="PackedScene" path="res://scenes/barracks_ui.tscn" id="11_barrui"]
+[ext_resource type="PackedScene" path="res://scenes/housing_ui.tscn" id="11_barrui"]
 [ext_resource type="PackedScene" path="res://scenes/gold_mine_ui.tscn" id="12_goldmineui"]
 [ext_resource type="PackedScene" path="res://scenes/dev_menu.tscn" id="7_devmenu"]
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="13_daycycle"]
+[ext_resource type="PackedScene" path="res://scenes/library_ui.tscn" id="14_labui"]
+[ext_resource type="PackedScene" path="res://scenes/barracks_ui.tscn" id="15_barrui"]
+[ext_resource type="PackedScene" path="res://scenes/storehouse_ui.tscn" id="16_shui"]
+[ext_resource type="PackedScene" path="res://scenes/siege_tower_ui.tscn" id="17_stui"]
+[ext_resource type="PackedScene" path="res://prefabs/rally_marker.tscn" id="18_rally"]
+[ext_resource type="PackedScene" path="res://prefabs/fireflies.tscn" id="19_ff"]
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -28,9 +34,21 @@ script = ExtResource("1_tilgrd")
 
 [node name="TowerUI" parent="." instance=ExtResource("10_towerui")]
 
-[node name="BarracksUI" parent="." instance=ExtResource("11_barrui")]
+[node name="HousingUI" parent="." instance=ExtResource("11_barrui")]
 
 [node name="GoldMineUI" parent="." instance=ExtResource("12_goldmineui")]
+
+[node name="LibraryUI" parent="." instance=ExtResource("14_labui")]
+
+[node name="BarracksUI" parent="." instance=ExtResource("15_barrui")]
+
+[node name="StorehouseUI" parent="." instance=ExtResource("16_shui")]
+
+[node name="SiegeTowerUI" parent="." instance=ExtResource("17_stui")]
+
+[node name="RallyMarker" parent="." instance=ExtResource("18_rally")]
+
+[node name="Fireflies" parent="." instance=ExtResource("19_ff")]
 
 [node name="DevMenu" parent="." instance=ExtResource("7_devmenu")]
 

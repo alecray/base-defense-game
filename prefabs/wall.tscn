@@ -1,0 +1,104 @@
+[gd_scene format=4 uid="uid://ykdni0fsggav"]
+
+[ext_resource type="Script" uid="uid://ccocjlsrilbrw" path="res://scripts/wall.gd" id="1_wall"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_3usl3"]
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAABQAAAAsAQAAUklGRiQBAABXRUJQVlA4TBgBAAAvf8AEEE+gqJEU5t6FYgYd+DeBAJSoiSRJuZBClnAxvH8l70VRJEnN5UiwxAv/OlDAc/4DAOadrM+qWpWlGLf7w/b18wBCbLt1I1EwhUBYU3gUROFC2EdBFIQ3cv8AIvo/AbE0R4ReGnplRGhe8X0rnZ5DHjPT6fQo206nnWk707bCzkzbXt/H0bY80zTnwcaAMfBvwnZm2vbvoC3Mvav0CJhzMwuoEubRb6pu6LIYu6rq1EP30CX6JPEruqqokoYSVPGMaqJU0MOs3yBKgltXiUdbAro0AAWtfqB/gCiBJA1VVYAEBmmg6kQhIWlo/YAldLQkAD0ekgQ6I8nWeX1frOv+t/eOfbzmvfeOiD1e4x6lvfd1X/F9")
+size_override = Vector2(128, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw5sf"]
+atlas = SubResource("PortableCompressedTexture2D_3usl3")
+region = Rect2(0, 0, 128, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b6sur"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw5sf")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_3uv27"]
+_data = PackedByteArray("AAADAAUAAAABAAAAFAAAAIAAAADOAAAAUklGRsYAAABXRUJQVlA4TLkAAAAvE8AfEDdAEEASQBwbDLG/xzxq2jaCOn54uhbIcT8uitq2gZNVn9dGZRA2/wGg/RkZkesfuwPXkCTL1igchVIYhVEohevvsPV7d/mP6H9UuaqWVcG1/AHu6b1jQ9/ibhS8pfZKAzBJQX+fff5o6FsUNM0+yd00DT23CEZ30zT0JAWNDZ0FX1UAlUZwPtnQWTA3dNwEtzQNPWnbtzT7JAX9JECkqoqkVXoP5NnnVQ2dBXOv1bHWWquuAQA=")
+size_override = Vector2(20, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3usl3"]
+atlas = SubResource("PortableCompressedTexture2D_3uv27")
+region = Rect2(0, 0, 20, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aw5sf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3usl3")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h"]
+size = Vector2(128, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v"]
+size = Vector2(20, 128)
+
+[node name="Wall" type="Node2D" unique_id=917909775]
+script = ExtResource("1_wall")
+
+[node name="SpriteH" type="AnimatedSprite2D" parent="." unique_id=1129796752]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_b6sur")
+animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/building-mods/wall_h.aseprite",
+"source_uid": 2547316863971844287
+}
+metadata/_aseprite_wizard_source_file_hash_ = "ef89f0d1786d70d3b3c5b923a88d3a3c"
+
+[node name="SpriteV" type="AnimatedSprite2D" parent="." unique_id=617409733]
+visible = false
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_aw5sf")
+animation = &"Idle"
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/building-mods/wall_v.aseprite",
+"source_uid": 3549572889790406251
+}
+metadata/_aseprite_wizard_source_file_hash_ = "f6f49ef4793e5b6e3d2e944e246e09d9"
+
+[node name="Body" type="StaticBody2D" parent="." unique_id=1970035602]
+
+[node name="ShapeH" type="CollisionShape2D" parent="Body" unique_id=1970273929]
+shape = SubResource("RectangleShape2D_h")
+
+[node name="ShapeV" type="CollisionShape2D" parent="Body" unique_id=2073706019]
+shape = SubResource("RectangleShape2D_v")
+disabled = true

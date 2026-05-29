@@ -1,0 +1,7 @@
+[gd_scene format=4 uid="uid://bsx4melrb7iyy"]
+
+[ext_resource type="Script" path="res://scripts/rally_marker.gd" id="1_rmk"]
+
+[node name="RallyMarker" type="Node2D"]
+z_index = 10
+script = ExtResource("1_rmk")

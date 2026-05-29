@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c1qx1l0wi10yy"]
+
+[ext_resource type="Script" path="res://scripts/siege_tower_ui.gd" id="1_stui"]
+
+[node name="SiegeTowerUI" type="CanvasLayer"]
+script = ExtResource("1_stui")

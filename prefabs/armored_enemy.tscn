@@ -1,0 +1,53 @@
+[gd_scene format=4 uid="uid://rmored00001"]
+
+[ext_resource type="Script" path="res://scripts/armored_enemy.gd" id="1_armored"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_armored"]
+_data = PackedByteArray("AAADAAUAAAABAAAAQAAAACAAAABwAAAAUklGRmgAAABXRUJQVlA4TFwAAAAvP8AHEB8gJCBTHtihEQiQKStitBAIEGZ0+E9wM/8BqK58YBRJUqT+jMTiUoOcCfyNAmDv/Uf0fwL04w52Sx/A5GC39AFcFHEXrCLugknesHukhbxhq/U56dy/Aw==")
+size_override = Vector2(64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored1"]
+atlas = SubResource("PortableCompressedTexture2D_armored")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_armored2"]
+atlas = SubResource("PortableCompressedTexture2D_armored")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_armored"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_armored2")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 6.0
+}]
+
+[node name="ArmoredEnemy" type="Node2D"]
+script = ExtResource("1_armored")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0.55, 0.55, 0.75, 1)
+scale = Vector2(1.4, 1.4)
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_armored")
+animation = &"Idle"
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/npcs/armored_enemy.aseprite",
+"source_uid": 0
+}
+metadata/_aseprite_wizard_source_file_hash_ = "00000000000000000000000000000000"

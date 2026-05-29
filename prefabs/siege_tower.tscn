@@ -1,0 +1,44 @@
+[gd_scene format=4 uid="uid://by55gnt3fnyro"]
+
+[ext_resource type="Script" uid="uid://cwdrwka2wyldv" path="res://scripts/siege_tower.gd" id="1_st"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_1qr1p"]
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAABKAQAAUklGRkIBAABXRUJQVlA4TDUBAAAvf8AfEE9gpgESXkYhyhOB1xnCAEZREwAJQyqK0NcqJHB+fooCgHCE8BNZOgF2Cm7OfwDgjicOPukIGY3Lpnp+VoOjAGzjRhRMQRREIRRCIRRCoRSKt4l7RTt+Ef2fAHzCkmSNAKCxo1IGw1K077uZUpAowGHf9/X1DK7ZVtd773cN19Wnp8oBwAh3rqP3MwBx3LYN9y4D6EcwPbj/fRhg2CvzMoGOea2kDCXrgUpQnqgEJEtUApCTOqMykBdOlYEsURlIjihGTAB5qJmIUETEDDISc0XeCGehDJ65DHISmuCpC5lG6IDnvq6eO+LJvyE6q38BOqu/vvrt1ev4LbUBfbXW/DV/7Soaac0efbV/X/twuL7mruXKpctDply8PmR48fqAyeUO4A/+0Bq/PPi7nIS5rxMA")
+size_override = Vector2(128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_12dnb"]
+atlas = SubResource("PortableCompressedTexture2D_1qr1p")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3t3ro"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_12dnb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="SiegeTower" type="AnimatedSprite2D" unique_id=453955682]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_3t3ro")
+script = ExtResource("1_st")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/siege-tower.aseprite",
+"source_uid": 3019290462791899416
+}
+metadata/_aseprite_wizard_source_file_hash_ = "bf2f3fa586751ef7e7196a069fb55bb6"

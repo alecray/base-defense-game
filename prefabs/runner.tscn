@@ -1,0 +1,52 @@
+[gd_scene format=4 uid="uid://runner000001"]
+
+[ext_resource type="Script" path="res://scripts/runner.gd" id="1_runner"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_runner"]
+_data = PackedByteArray("AAADAAUAAAABAAAAQAAAACAAAABwAAAAUklGRmgAAABXRUJQVlA4TFwAAAAvP8AHEB8gJCBTHtihEQiQKStitBAIEGZ0+E9wM/8BqK58YBRJUqT+jMTiUoOcCfyNAmDv/Uf0fwL04w52Sx/A5GC39AFcFHEXrCLugknesHukhbxhq/U56dy/Aw==")
+size_override = Vector2(64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_runner1"]
+atlas = SubResource("PortableCompressedTexture2D_runner")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_runner2"]
+atlas = SubResource("PortableCompressedTexture2D_runner")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_runner"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_runner1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_runner2")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 16.0
+}]
+
+[node name="Runner" type="Node2D"]
+script = ExtResource("1_runner")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 0.85, 0.1, 1)
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_runner")
+animation = &"Idle"
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/npcs/runner.aseprite",
+"source_uid": 0
+}
+metadata/_aseprite_wizard_source_file_hash_ = "00000000000000000000000000000000"

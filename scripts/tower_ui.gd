@@ -6,7 +6,7 @@ var _free_label: Label
 var _rate_label: Label
 var _assign_btn: Button
 var _unassign_btn: Button
-var _fortify_btn: Button
+var _upgrade_btn: Button
 var _ui_root: Control
 
 func _ready() -> void:
@@ -87,13 +87,10 @@ func _build_ui() -> void:
 	_assign_btn.pressed.connect(_on_assign)
 	btn_row.add_child(_assign_btn)
 
-	var sep3: HSeparator = HSeparator.new()
-	vbox.add_child(sep3)
-
-	_fortify_btn = Button.new()
-	_fortify_btn.custom_minimum_size = Vector2(0.0, 40.0)
-	_fortify_btn.pressed.connect(_on_fortify)
-	vbox.add_child(_fortify_btn)
+	_upgrade_btn = Button.new()
+	_upgrade_btn.custom_minimum_size = Vector2(0.0, 40.0)
+	_upgrade_btn.pressed.connect(_on_upgrade)
+	vbox.add_child(_upgrade_btn)
 
 func open_for_tower(tower_node: Node) -> void:
 	_tower = tower_node
@@ -107,19 +104,22 @@ func _refresh() -> void:
 	var free: int = GameState.get_free_workers()
 	_assigned_label.text = "Workers: %d / %d" % [assigned, CONSTANTS.TOWER_MAX_WORKERS]
 	_free_label.text = "Free Workers: %d" % free
-	match assigned:
-		0: _rate_label.text = "Status: Inactive (no workers)"
-		1: _rate_label.text = "Fire Rate: Slow (every 2.0s)"
-		2: _rate_label.text = "Fire Rate: Medium (every 1.25s)"
-		3: _rate_label.text = "Fire Rate: Fast (every 0.75s)"
+	if assigned == 0:
+		_rate_label.text = "Status: Inactive (no worker)"
+	elif GameState.power > 0:
+		_rate_label.text = "Active  (fires every %.1fs)" % CONSTANTS.TOWER_INTERVAL
+	else:
+		_rate_label.text = "No Power — offline"
 	_assign_btn.disabled = assigned >= CONSTANTS.TOWER_MAX_WORKERS or free <= 0
 	_unassign_btn.disabled = assigned <= 0
-	if bool(_tower.call("is_fortified")):
-		_fortify_btn.text = "Fortified  (Shield: %d / %d)" % [int(_tower.call("get_shield_hp")), CONSTANTS.SHIELD_MAX_HP]
-		_fortify_btn.disabled = true
+	var ulevel: int = int(_tower.get("upgrade_level"))
+	var eff_interval: float = maxf(CONSTANTS.TOWER_INTERVAL - float(ulevel) * CONSTANTS.TOWER_UPGRADE_INTERVAL_REDUCTION, 0.4)
+	if ulevel >= CONSTANTS.TOWER_UPGRADE_MAX:
+		_upgrade_btn.text = "Upgraded  (fires every %.1fs)" % eff_interval
+		_upgrade_btn.disabled = true
 	else:
-		_fortify_btn.text = "Fortify  (%d coins)" % CONSTANTS.FORTIFY_COST
-		_fortify_btn.disabled = GameState.coins < CONSTANTS.FORTIFY_COST
+		_upgrade_btn.text = "Upgrade Tower  (%d coins) → %.1fs fire rate" % [CONSTANTS.TOWER_UPGRADE_COST, eff_interval - CONSTANTS.TOWER_UPGRADE_INTERVAL_REDUCTION]
+		_upgrade_btn.disabled = GameState.coins < CONSTANTS.TOWER_UPGRADE_COST
 
 func _close() -> void:
 	visible = false
@@ -141,10 +141,10 @@ func _on_unassign() -> void:
 	_tower.call("unassign_worker")
 	_refresh()
 
-func _on_fortify() -> void:
+func _on_upgrade() -> void:
 	if _tower == null:
 		return
-	if not bool(_tower.call("fortify")):
+	if not bool(_tower.call("do_upgrade", CONSTANTS.TOWER_UPGRADE_COST, CONSTANTS.TOWER_UPGRADE_MAX)):
 		_show_error("Not enough coins!")
 		return
 	_refresh()

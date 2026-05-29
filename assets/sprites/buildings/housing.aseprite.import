@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://d0f0wvxddq75f"
+path="res://.godot/imported/housing.aseprite-261606a376e8ce48b15beffa974b2f1a.res"
+
+[deps]
+
+source_file="res://assets/sprites/buildings/housing.aseprite"
+dest_files=["res://.godot/imported/housing.aseprite-261606a376e8ce48b15beffa974b2f1a.res"]
+
+[params]
+

@@ -2,8 +2,11 @@ extends "res://scripts/building_base.gd"
 
 const BULLET_SCENE: PackedScene = preload("res://prefabs/bullet.tscn")
 
+@onready var _work_point: Marker2D = $WorkPoint
+
 var _assigned_workers: Array = []
 var _attack_timer: float = 0.0
+var _power_drain_timer: float = 0.0
 
 func _ready() -> void:
 	max_hp = CONSTANTS.TOWER_MAX_HP
@@ -11,21 +14,20 @@ func _ready() -> void:
 	play("Idle")
 
 func _process(delta: float) -> void:
-	_tick_regen(delta)
+	super._process(delta)
 	if _assigned_workers.is_empty():
 		return
-	var interval: float = _get_attack_interval()
+	_power_drain_timer += delta
+	if _power_drain_timer >= CONSTANTS.TOWER_POWER_DRAIN_INTERVAL:
+		_power_drain_timer -= CONSTANTS.TOWER_POWER_DRAIN_INTERVAL
+		GameState.drain_power(CONSTANTS.TOWER_POWER_DRAIN_AMOUNT)
+	if GameState.power <= 0:
+		return
 	_attack_timer += delta
-	if _attack_timer >= interval:
+	var effective_interval: float = maxf(CONSTANTS.TOWER_INTERVAL - float(upgrade_level) * CONSTANTS.TOWER_UPGRADE_INTERVAL_REDUCTION, 0.4)
+	if _attack_timer >= effective_interval:
 		_attack_timer = 0.0
 		_attack()
-
-func _get_attack_interval() -> float:
-	match _assigned_workers.size():
-		1: return CONSTANTS.TOWER_INTERVAL_1
-		2: return CONSTANTS.TOWER_INTERVAL_2
-		3: return CONSTANTS.TOWER_INTERVAL_3
-		_: return CONSTANTS.TOWER_INTERVAL_1
 
 func _attack() -> void:
 	var target: Node2D = _find_nearest_enemy()
@@ -34,7 +36,7 @@ func _attack() -> void:
 	var bullet: Node2D = BULLET_SCENE.instantiate() as Node2D
 	get_parent().add_child(bullet)
 	bullet.global_position = global_position
-	bullet.call("set_target", target, CONSTANTS.TOWER_DAMAGE)
+	bullet.call("set_target", target, GameState.get_turret_damage())
 
 func _find_nearest_enemy() -> Node2D:
 	var nearest: Node2D = null
@@ -60,8 +62,9 @@ func assign_worker() -> bool:
 	if free_worker == null:
 		return false
 	_assigned_workers.append(free_worker)
-	free_worker.call("assign_to", global_position + work_offset)
+	free_worker.call("assign_to", _work_point.global_position)
 	GameState.record_worker_assigned(1)
+	GameState.notify_tower_worker_assigned()
 	return true
 
 func unassign_worker() -> bool:

@@ -1,14 +1,12 @@
 extends AnimatedSprite2D
 
 const HEALTH_BAR_SCENE: PackedScene = preload("res://prefabs/health_bar.tscn")
-const FORTIFY_SCENE: PackedScene = preload("res://prefabs/fortification.tscn")
-
-@export var work_offset: Vector2 = Vector2.ZERO
 
 var max_hp: int = 100
+var foot_y_offset: float = 64.0
+var upgrade_level: int = 0
 var _hp: int = 0
 var _health_bar: Node2D = null
-var _fortification: Node = null
 var _tile_gp: Vector2i = Vector2i(-1, -1)
 var _building_name: String = ""
 var _dying: bool = false
@@ -18,8 +16,10 @@ var _regen_timer: float = 0.0
 func _ready() -> void:
 	_hp = max_hp
 	add_to_group("buildings")
+	position.y += foot_y_offset
+	offset = Vector2(0.0, -foot_y_offset)
 	_health_bar = HEALTH_BAR_SCENE.instantiate() as Node2D
-	_health_bar.position = Vector2(0.0, -38.0)
+	_health_bar.position = Vector2(0.0, -38.0 - foot_y_offset)
 	_health_bar.call("setup", max_hp, 60.0)
 	add_child(_health_bar)
 
@@ -43,45 +43,38 @@ func take_damage(amount: int) -> void:
 		return
 	_damage_cooldown = CONSTANTS.REGEN_COOLDOWN
 	_regen_timer = 0.0
-	var remaining: int = amount
-	if _fortification != null and is_instance_valid(_fortification):
-		remaining = int(_fortification.call("absorb_damage", amount))
-	if remaining <= 0:
-		return
-	_hp = maxi(0, _hp - remaining)
+	_hp = maxi(0, _hp - amount)
 	_health_bar.call("set_hp", _hp)
+	GameState.notify_building_attacked(global_position)
 	if _hp <= 0:
 		_dying = true
 		_on_destroyed()
 
-func fortify() -> bool:
-	if _fortification != null and is_instance_valid(_fortification):
+
+func do_upgrade(cost: int, max_level: int) -> bool:
+	if upgrade_level >= max_level:
 		return false
-	if not GameState.spend_coins(CONSTANTS.FORTIFY_COST):
+	if not GameState.spend_coins(cost):
 		return false
-	_fortification = FORTIFY_SCENE.instantiate() as Node
-	_fortification.tree_exiting.connect(_on_fortification_removed)
-	add_child(_fortification)
+	upgrade_level += 1
 	return true
 
-func restore_fortification(shield_hp: int) -> void:
-	if _fortification != null and is_instance_valid(_fortification):
-		return
-	_fortification = FORTIFY_SCENE.instantiate() as Node
-	_fortification.tree_exiting.connect(_on_fortification_removed)
-	add_child(_fortification)
-	_fortification.call("set_shield", shield_hp)
+func get_hp_info() -> Array:
+	return [_hp, max_hp]
 
-func is_fortified() -> bool:
-	return _fortification != null and is_instance_valid(_fortification)
-
-func get_shield_hp() -> int:
-	if _fortification == null or not is_instance_valid(_fortification):
-		return 0
-	return int(_fortification.call("get_shield"))
-
-func _on_fortification_removed() -> void:
-	_fortification = null
+func repair() -> String:
+	if _dying:
+		return ""
+	if _hp >= max_hp:
+		return "Already at full HP."
+	var missing: int = max_hp - _hp
+	var cost: int = ceili(float(missing) / float(CONSTANTS.BUILDING_REPAIR_HP_PER_COIN))
+	if not GameState.spend_coins(cost):
+		return "Not enough coins! (%d needed)" % cost
+	_hp = max_hp
+	_health_bar.call("set_hp", _hp)
+	GameState.notify_building_repaired()
+	return ""
 
 func _on_destroyed() -> void:
 	GameState.record_building_destroyed(_building_name)

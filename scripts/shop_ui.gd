@@ -75,8 +75,12 @@ func open_for_tile(gp: Vector2i) -> void:
 func _refresh_buttons() -> void:
 	for building_name: String in _buttons:
 		var btn: Button = _buttons[building_name] as Button
-		btn.disabled = GameState.is_at_building_limit(building_name) \
-			or not GameState.has_prerequisite(building_name)
+		var has_prereq: bool = GameState.has_prerequisite(building_name)
+		btn.disabled = GameState.is_at_building_limit(building_name) or not has_prereq
+		if not has_prereq:
+			btn.text = "%s\n[Locked]" % building_name
+		else:
+			btn.text = "%s\n%d coins" % [building_name, CONSTANTS.BUILDING_COSTS.get(building_name, 0)]
 
 func _close() -> void:
 	visible = false

@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://ctfjflhr2yjha"
+path="res://.godot/imported/market.aseprite-42f4ca6dc5062e8f824482530e74ba67.res"
+
+[deps]
+
+source_file="res://assets/sprites/buildings/market.aseprite"
+dest_files=["res://.godot/imported/market.aseprite-42f4ca6dc5062e8f824482530e74ba67.res"]
+
+[params]
+

@@ -1,5 +1,7 @@
 extends "res://scripts/building_base.gd"
 
+@onready var _work_point: Marker2D = $WorkPoint
+
 var _assigned_workers: Array = []
 var _food_timer: float = 0.0
 
@@ -9,21 +11,24 @@ func _ready() -> void:
 	play("Idle")
 
 func _process(delta: float) -> void:
-	_tick_regen(delta)
+	super._process(delta)
 	if _assigned_workers.is_empty():
 		return
 	_food_timer += delta
 	if _food_timer >= CONSTANTS.FARM_FOOD_INTERVAL:
 		_food_timer -= CONSTANTS.FARM_FOOD_INTERVAL
-		var amount: int = _assigned_workers.size() * CONSTANTS.FARM_FOOD_PER_WORKER
+		var amount: int = _assigned_workers.size() * (CONSTANTS.FARM_FOOD_PER_WORKER + upgrade_level * CONSTANTS.FARM_UPGRADE_FOOD_BONUS + GameState.get_farm_yield_bonus())
 		GameState.add_food(amount)
 		_show_food_popup(amount)
 
 func _on_destroyed() -> void:
+	var count: int = _assigned_workers.size()
 	for worker: Node in _assigned_workers:
 		worker.call("unassign")
 		GameState.record_worker_assigned(-1)
 	_assigned_workers.clear()
+	if count > 0:
+		GameState.record_farm_worker_delta(-count)
 	super._on_destroyed()
 
 func assign_worker() -> bool:
@@ -37,8 +42,10 @@ func assign_worker() -> bool:
 	if free_worker == null:
 		return false
 	_assigned_workers.append(free_worker)
-	free_worker.call("assign_to", global_position + work_offset)
+	free_worker.call("assign_to", _work_point.global_position)
 	GameState.record_worker_assigned(1)
+	GameState.notify_farm_worker_assigned()
+	GameState.record_farm_worker_delta(1)
 	return true
 
 func unassign_worker() -> bool:
@@ -47,6 +54,7 @@ func unassign_worker() -> bool:
 	var worker: Node = _assigned_workers.pop_back()
 	worker.call("unassign")
 	GameState.record_worker_assigned(-1)
+	GameState.record_farm_worker_delta(-1)
 	return true
 
 func get_assigned_workers() -> int:

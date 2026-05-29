@@ -35,10 +35,24 @@ func save_game() -> void:
 	data["worker_count"] = GameState.worker_count
 	data["building_counts"] = GameState.building_counts.duplicate()
 	data["tiles"] = tile_grid.call("get_save_data")
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	data["day"] = cycle.call("get_day") if cycle != null else 1
+	data["power"] = GameState.power
+	data["power_cap"] = GameState.power_cap
+	data["food_cap"] = GameState.food_cap
+	data["soldiers"] = GameState.soldiers
+	data["library_research_id"] = GameState.library_research_id
+	data["library_research_progress"] = GameState.library_research_progress
+	data["library_upgrade_levels"] = GameState.library_upgrade_levels.duplicate()
 	data["workers"] = _get_worker_save_data()
 	data["farms"] = tile_grid.call("get_farm_save_data")
 	data["towers"] = tile_grid.call("get_tower_save_data")
 	data["gold_mines"] = tile_grid.call("get_gold_mine_save_data")
+	data["walls"] = tile_grid.call("get_wall_save_data")
+	data["storehouses"] = tile_grid.call("get_storehouse_save_data")
+	data["rally_point"] = {"x": GameState.rally_point.x, "y": GameState.rally_point.y, "custom": GameState.has_custom_rally_point}
+	var hud: Node = get_tree().get_first_node_in_group("hud")
+	data["tutorial_step"] = int(hud.call("get_tutorial_step")) if hud != null else 0
 
 	var json_string: String = JSON.stringify(data, "\t")
 	var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -75,6 +89,18 @@ func load_game() -> void:
 
 	var data: Dictionary = json.data as Dictionary
 
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	if cycle != null:
+		cycle.call("set_day", int(data.get("day", 1)))
+
+	GameState.power = int(data.get("power", 0))
+	GameState.power_cap = maxi(int(data.get("power_cap", CONSTANTS.POWER_CAP_BASE)), CONSTANTS.POWER_CAP_BASE)
+	GameState.food_cap = maxi(int(data.get("food_cap", CONSTANTS.FOOD_CAP_BASE)), CONSTANTS.FOOD_CAP_BASE)
+	GameState.soldiers = int(data.get("soldiers", 0))
+	GameState.library_research_id = str(data.get("library_research_id", ""))
+	GameState.library_research_progress = float(data.get("library_research_progress", 0.0))
+	GameState.library_upgrade_levels = (data.get("library_upgrade_levels", {}) as Dictionary).duplicate()
+
 	GameState.coins = int(data["coins"])
 	GameState.food = int(data["food"])
 	GameState.worker_count = int(data["worker_count"])
@@ -82,13 +108,24 @@ func load_game() -> void:
 	GameState.building_counts = (data["building_counts"] as Dictionary).duplicate()
 	GameState.coins_changed.emit(GameState.coins)
 	GameState.food_changed.emit(GameState.food)
+	GameState.power_changed.emit(GameState.power)
+	GameState.soldiers_changed.emit(GameState.soldiers, GameState.get_soldier_cap())
 	GameState.workers_changed.emit(GameState.worker_count, GameState.get_worker_cap(), GameState.get_free_workers())
+
+	var hud: Node = get_tree().get_first_node_in_group("hud")
+	if hud != null:
+		var saved_step: int = int(data.get("tutorial_step", 0))
+		var step: int = maxi(saved_step, _infer_tutorial_step(data))
+		hud.call("restore_tutorial_step", step)
+
 	if GameState.get_building_count("Core") > 0:
 		GameState.building_placed.emit("Core")
 
 	var tile_grid: Node = get_tree().get_first_node_in_group("tile_grid")
 	if tile_grid == null:
 		return
+
+	tile_grid.call("clear_for_load")
 
 	var tiles_data: Array = data["tiles"] as Array
 	for tile_entry: Variant in tiles_data:
@@ -98,8 +135,8 @@ func load_game() -> void:
 		var building: String = str(tile_dict["building"])
 		tile_grid.call("unlock_tile_free", gp)
 		if building != "":
-			var shield_hp: int = int(tile_dict.get("shield_hp", 0))
-			tile_grid.call("place_building_from_save", building, gp, shield_hp)
+			var upgrade_lvl: int = int(tile_dict.get("upgrade_level", 0))
+			tile_grid.call("place_building_from_save", building, gp, upgrade_lvl)
 
 	var workers_data: Array = data["workers"] as Array
 	for worker_entry: Variant in workers_data:
@@ -141,12 +178,77 @@ func load_game() -> void:
 			for _i: int in range(assigned_count):
 				mine_node.call("assign_worker")
 
+	var storehouses_data: Array = data.get("storehouses", []) as Array
+	for sh_entry: Variant in storehouses_data:
+		var sh_dict: Dictionary = sh_entry as Dictionary
+		var sh_gp_arr: Array = sh_dict["gp"] as Array
+		var sh_gp: Vector2i = Vector2i(int(sh_gp_arr[0]), int(sh_gp_arr[1]))
+		var assigned_count: int = int(sh_dict["assigned_count"])
+		var sh_node: Node = tile_grid.call("get_storehouse_at", sh_gp) as Node
+		if sh_node != null:
+			for _i: int in range(assigned_count):
+				sh_node.call("assign_worker")
+
+	var walls_data: Array = data.get("walls", []) as Array
+	for wall_entry: Variant in walls_data:
+		var wall_dict: Dictionary = wall_entry as Dictionary
+		tile_grid.call("place_wall_from_save", str(wall_dict["key"]), int(wall_dict["hp"]))
+
+	var rally_data: Dictionary = data.get("rally_point", {}) as Dictionary
+	if rally_data.get("custom", false):
+		GameState.set_rally_point(Vector2(float(rally_data.get("x", 0.0)), float(rally_data.get("y", 0.0))))
+
+	var soldiers_count: int = int(data.get("soldiers", 0))
+	GameState.soldiers = soldiers_count
+	GameState.soldiers_changed.emit(GameState.soldiers, GameState.get_soldier_cap())
+	for _i: int in range(soldiers_count):
+		tile_grid.call("spawn_soldier_at", tile_grid.call("get_soldier_spawn_pos"))
+
+func _infer_tutorial_step(data: Dictionary) -> int:
+	var bc: Dictionary = data.get("building_counts", {}) as Dictionary
+	var step: int = 0
+	if int(bc.get("Core", 0)) > 0:
+		step = 1
+	if int(bc.get("SolarFarm", 0)) > 0:
+		step = maxi(step, 2)
+	if int(bc.get("Housing", 0)) > 0:
+		step = maxi(step, 3)
+	for mine: Variant in (data.get("gold_mines", []) as Array):
+		if int((mine as Dictionary).get("assigned_count", 0)) > 0:
+			step = maxi(step, 4)
+			break
+	if int(bc.get("Farm", 0)) > 0:
+		step = maxi(step, 5)
+	for farm: Variant in (data.get("farms", []) as Array):
+		if int((farm as Dictionary).get("assigned_count", 0)) > 0:
+			step = maxi(step, 6)
+			break
+	if int(bc.get("Tower", 0)) > 0:
+		step = maxi(step, 7)
+	for tower: Variant in (data.get("towers", []) as Array):
+		if int((tower as Dictionary).get("assigned_count", 0)) > 0:
+			step = maxi(step, 8)
+			break
+	if int(bc.get("Barracks", 0)) > 0:
+		step = maxi(step, 9)
+	if int(data.get("soldiers", 0)) > 0:
+		step = maxi(step, 10)
+	if not (data.get("walls", []) as Array).is_empty():
+		step = maxi(step, 11)
+	if int(bc.get("Library", 0)) > 0:
+		step = maxi(step, 12)
+	if int(bc.get("Tower", 0)) >= 3:
+		step = maxi(step, 13)
+	return step
+
 func reset_game() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
 
 	for enemy: Node in get_tree().get_nodes_in_group("enemies"):
 		enemy.queue_free()
+	for soldier: Node in get_tree().get_nodes_in_group("soldiers"):
+		soldier.queue_free()
 
 	var tile_grid: Node = get_tree().get_first_node_in_group("tile_grid")
 	if tile_grid != null:
@@ -166,6 +268,14 @@ func reset_game() -> void:
 		player.position = Vector2.ZERO
 
 	GameState.reset()
+
+	LegacyState.apply_bonuses()
+
+	var worker_bonus: int = LegacyState.get_worker_bonus()
+	if worker_bonus > 0 and tile_grid != null:
+		for _i: int in range(worker_bonus):
+			tile_grid.call("spawn_worker_at", Vector2(randf_range(-80.0, 80.0), randf_range(-80.0, 80.0)))
+			GameState.record_worker_hired()
 
 func _show_saved_popup() -> void:
 	var canvas: CanvasLayer = CanvasLayer.new()

@@ -19,7 +19,7 @@ func _build_ui() -> void:
 
 	var panel: PanelContainer = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(260.0, 240.0)
+	panel.custom_minimum_size = Vector2(260.0, 320.0)
 	root.add_child(panel)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
@@ -53,8 +53,21 @@ func _build_ui() -> void:
 	add_1000.pressed.connect(func() -> void: GameState.add_coins(1000))
 	vbox.add_child(add_1000)
 
+	var add_power: Button = Button.new()
+	add_power.text = "Add 50 Power"
+	add_power.pressed.connect(func() -> void: GameState.add_power(50))
+	vbox.add_child(add_power)
+
 	var sep2: HSeparator = HSeparator.new()
 	vbox.add_child(sep2)
+
+	var skip_dusk_btn: Button = Button.new()
+	skip_dusk_btn.text = "Skip to Dusk"
+	skip_dusk_btn.pressed.connect(_on_skip_dusk_pressed)
+	vbox.add_child(skip_dusk_btn)
+
+	var sep3: HSeparator = HSeparator.new()
+	vbox.add_child(sep3)
 
 	var reset_btn: Button = Button.new()
 	reset_btn.text = "Reset Game"
@@ -62,10 +75,26 @@ func _build_ui() -> void:
 	reset_btn.pressed.connect(_on_reset_pressed)
 	vbox.add_child(reset_btn)
 
+	var reset_legacy_btn: Button = Button.new()
+	reset_legacy_btn.text = "Reset Legacy Data"
+	reset_legacy_btn.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4))
+	reset_legacy_btn.pressed.connect(_on_reset_legacy_pressed)
+	vbox.add_child(reset_legacy_btn)
+
+func _on_skip_dusk_pressed() -> void:
+	var cycle: Node = get_tree().get_first_node_in_group("day_night_cycle")
+	if cycle != null:
+		cycle.call("skip_to_dusk")
+	_close()
+
 func _on_reset_pressed() -> void:
 	var sm: Node = get_tree().get_first_node_in_group("save_manager")
 	if sm != null:
 		sm.call("reset_game")
+	_close()
+
+func _on_reset_legacy_pressed() -> void:
+	LegacyState.reset_all()
 	_close()
 
 func _unhandled_input(event: InputEvent) -> void:

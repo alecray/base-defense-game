@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://c2hyvo02bb7k7" path="res://scripts/tower.gd" id="1_tower"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_w33c7"]
-_data = PackedByteArray("AAADAAUAAAABAAAAAAEAAIAAAAAuAQAAUklGRiYBAABXRUJQVlA4TBoBAAAv/8AfEB8gECD854ixYkVIQGj+zzDNCyEB4f8M3zQj5j8A5k0PcGzbjdugQaPVZfoNVpd5QMOtYQfIRFL/GDqUu4j+T4Cci0q7qe6Gh/KErtUZ7bG64LXr10Z7O7nSlRTNlgc8vXI1WhYX2aCcTEN1RvP1AU9PLoeyDGvjtFZc0uIYwNPijOYLpDQsjvOsPvC0rODlMRiU5MDCNJ4fgQMsg1aVPd0rsv3B8hhAMqCooEUeiNK0LP8XwG7+L4CakpaHojStKAZspxiwIwANtTnNi8rMNqI7ZGYb0XpiyADMxZABqE9pWk4OOQBM5ZADQDUxYYDOxIQBWo1IZHp/kz0j0/ub7Hl5ItHbZOfobVKUyOMfYT7+EeblnfQ=")
-size_override = Vector2(256, 128)
+_data = PackedByteArray("AAADAAUAAAABAAAAAAEAAAABAACAAgAAUklGRngCAABXRUJQVlA4TGwCAAAv/8A/EEegppEU6Oo7vgonWMC/GVp0qGkkBbr2an7QgRZkY0lxJBnQHghARF7yz4bn/AcAs5P5TFJJ+ms9Z1nuF+DW1pu3cZXUHMHfClgBK7hPxTqdVuDcJAghYshPP01E/yFIkuSoqcbbBKRPvG6MbcTdWysPL6+8bB83vNf8DR4ouLeh7OFhDQ2ll+GVf9LN5/5wd+PquwGIXHp3aeHJd4O9GzacezemdpcT4O52/7tx07sF9N0u/KK7HXhK5N2pjrVbToIbb2ByN2Z178AJu8vZcIO0G0LeDeBEuMHWLeJnCMzdFcDdLbCj6i7qJWDsVtvuuLo1wgZ4ulVLqISsdTTd2v/bSs9OqSK0m+ExcotZZZvErpaRWo3i2vm4RfycodGbuuXD1++Os00qO4PD1v2xcPdoZxJe4BIHtwbmOUVdbODIwB2lh36jGJmAO66v6APGyK1mxz139e7hdg7uP9jDTF+8evdR9qhzwe7Hbr/f8zf7B/j5Wn/b8A+wrb7M3/0i7wZ7N+i7yxPg/nB34+q7AYhcendp4cl3g70bNpx7N6Z2lxPg7nb/u3HTuwX03S78orsdeErk3amOtVtOghtvYHI3ZnXvwAm7y9lwg7QbQt4N4ES4wdYt4mcIzN0VwN0tsKPqLuolYOxW2+64ujXCBni6VUuohKx1NN3a/9tKz06pIrSb4TFyi1llm8SulpFajeLa+bhF/Jyh0Zu65cPX746zTSo7g8PW/bFw92hnEl7gEge3BuY5RV1s4MjAHaWHfqMYmYA7rq/oA8bIrWbHPXf17uF2Du4/2MNMX7x691H2qHPB7qdjLw==")
+size_override = Vector2(256, 256)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o2sv6"]
 atlas = SubResource("PortableCompressedTexture2D_w33c7")
@@ -14,7 +14,15 @@ region = Rect2(0, 0, 128, 128)
 atlas = SubResource("PortableCompressedTexture2D_w33c7")
 region = Rect2(128, 0, 128, 128)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_adpuy"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_adpuy"]
+atlas = SubResource("PortableCompressedTexture2D_w33c7")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eeeyy"]
+atlas = SubResource("PortableCompressedTexture2D_w33c7")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w010u"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -22,15 +30,21 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_lul14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_adpuy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eeeyy")
 }],
 "loop": true,
 "name": &"Idle",
-"speed": 1.0
+"speed": 5.0
 }]
 
 [node name="Tower" type="AnimatedSprite2D" unique_id=925985240]
 texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_adpuy")
+sprite_frames = SubResource("SpriteFrames_w010u")
 animation = &"Idle"
 script = ExtResource("1_tower")
 metadata/_aseprite_wizard_interface_config_ = {
@@ -49,4 +63,7 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/buildings/tower.aseprite",
 "source_uid": 4285284147046897979
 }
-metadata/_aseprite_wizard_source_file_hash_ = "1e3a419b058bdc6d97c36ed31f5c9514"
+metadata/_aseprite_wizard_source_file_hash_ = "a6e3c06eca87a4a6966e10eda5aeb0c4"
+
+[node name="WorkPoint" type="Marker2D" parent="." unique_id=592249914]
+position = Vector2(-9, 49)

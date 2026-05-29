@@ -1,19 +1,24 @@
 extends Node2D
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
-
-@export var work_offset: Vector2 = Vector2.ZERO
+@onready var _work_point: Marker2D = $WorkPoint
 
 var _tile_gp: Vector2i = Vector2i(-1, -1)
 var _assigned_workers: Array = []
 var _reserves: int = CONSTANTS.MINE_MAX_RESERVES
 var _tick_timer: float = 0.0
+var _player_ref: Node2D = null
 
 func _ready() -> void:
+	z_as_relative = false
 	if _sprite != null and _sprite.sprite_frames != null and _sprite.sprite_frames.has_animation("Idle"):
 		_sprite.play("Idle")
 
 func _process(delta: float) -> void:
+	if _player_ref == null or not is_instance_valid(_player_ref):
+		_player_ref = get_tree().get_first_node_in_group("player") as Node2D
+	if _player_ref != null:
+		z_index = 0 if _player_ref.global_position.y >= global_position.y + 32.0 else 1
 	if _sprite != null:
 		_sprite.modulate = Color.WHITE if has_unlocked_neighbor() else Color(0.4, 0.4, 0.4)
 	if _assigned_workers.is_empty():
@@ -74,8 +79,9 @@ func assign_worker() -> bool:
 	if free_worker == null:
 		return false
 	_assigned_workers.append(free_worker)
-	free_worker.call("assign_to", global_position + work_offset)
+	free_worker.call("assign_to", _work_point.global_position)
 	GameState.record_worker_assigned(1)
+	GameState.notify_mine_worker_assigned()
 	return true
 
 func unassign_worker() -> bool:
@@ -94,3 +100,4 @@ func get_reserves() -> int:
 
 func set_reserves(value: int) -> void:
 	_reserves = maxi(0, value)
+

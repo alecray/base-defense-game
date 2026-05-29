@@ -1,0 +1,66 @@
+[gd_scene format=4 uid="uid://cmarket00001"]
+
+[ext_resource type="Script" uid="uid://b64r26052bpkg" path="res://scripts/market.gd" id="1_mkt"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_3gnqb"]
+_data = PackedByteArray("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")
+size_override = Vector2(256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjor6"]
+atlas = SubResource("PortableCompressedTexture2D_3gnqb")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghwg2"]
+atlas = SubResource("PortableCompressedTexture2D_3gnqb")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x6xkl"]
+atlas = SubResource("PortableCompressedTexture2D_3gnqb")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_px2me"]
+atlas = SubResource("PortableCompressedTexture2D_3gnqb")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_juqvx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjor6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghwg2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x6xkl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_px2me")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 3.0
+}]
+
+[node name="Market" type="AnimatedSprite2D" unique_id=1389066009]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_juqvx")
+animation = &"Idle"
+script = ExtResource("1_mkt")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/market.aseprite",
+"source_uid": 6117307256563458658
+}
+metadata/_aseprite_wizard_source_file_hash_ = "7f17ef57066a7d7cb4d748669a299796"

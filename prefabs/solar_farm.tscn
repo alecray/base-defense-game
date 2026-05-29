@@ -1,0 +1,45 @@
+[gd_scene format=4 uid="uid://dsolar000001"]
+
+[ext_resource type="Script" uid="uid://bid6gea4r3ulc" path="res://scripts/solar_farm.gd" id="1_solar"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_t6vkn"]
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAABaAQAAUklGRlIBAABXRUJQVlA4TEUBAAAvf8AfEE9gpgESbkYAUD8z2L+XSZRGksK8xGeFo4HUfyuUYiYAi224F0EVCfTPIIFz/gOAu8l44jJpIqtfW+n72BsgRZIkyUldAJqCKCyFQCBTURAFUWgKRXfvnczenWdE/x24jaRITi8e4yO00yILlm0WcVLbFuB2tX1J6v/vdts8kz1puOb1646B77BDMI1X7AhMGJakEEAd+zb0U18J3P8bu9FwzRPQrbW1YkzjFTtCTRYHMCyVjnWAqoI667BldSrAxRWvt9llgQ7bd5oYrm/t+bIy6XWw/m2srVuLU45pnOWdD7hNGJaqKgTX+63DRlVVDuG6dpCykV4G289mfaclQvnQCjExToRidRIwLAEXd5UADlsHSHKz/2/sA+oMwzitpV0sYlndygDTNqSY+EAEAcMSxBDG5PfUYnXA2gAIsIcSAA==")
+size_override = Vector2(128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_87345"]
+atlas = SubResource("PortableCompressedTexture2D_t6vkn")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_csap5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_87345")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}]
+
+[node name="SolarFarm" type="AnimatedSprite2D" unique_id=1927594154]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_csap5")
+animation = &"Idle"
+script = ExtResource("1_solar")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://assets/sprites/buildings/solar.aseprite",
+"source_uid": 9018490231506962819
+}
+metadata/_aseprite_wizard_source_file_hash_ = "89117bcab6548fd1144c28dcd6eaeb88"

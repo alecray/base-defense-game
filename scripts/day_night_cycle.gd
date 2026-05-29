@@ -1,7 +1,10 @@
 extends Node
 
+signal day_changed(day: int)
+
 var _cycle_timer: float = 0.0
 var _overlay: ColorRect = null
+var _day_count: int = 1
 
 func _ready() -> void:
 	add_to_group("day_night_cycle")
@@ -23,6 +26,8 @@ func _process(delta: float) -> void:
 	var cycle_duration: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
 	if _cycle_timer >= cycle_duration:
 		_cycle_timer -= cycle_duration
+		_day_count += 1
+		day_changed.emit(_day_count)
 	_update_overlay(cycle_duration)
 
 func _update_overlay(cycle_duration: float) -> void:
@@ -43,7 +48,46 @@ func _update_overlay(cycle_duration: float) -> void:
 func is_night() -> bool:
 	return _cycle_timer >= CONSTANTS.DAY_DURATION
 
+func get_night_intensity() -> float:
+	var cycle_duration: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
+	var t: float = _cycle_timer / cycle_duration
+	var day_frac: float = CONSTANTS.DAY_DURATION / cycle_duration
+	var trans: float = CONSTANTS.DAY_NIGHT_TRANSITION / cycle_duration
+	if t < day_frac - trans:
+		return 0.0
+	elif t < day_frac:
+		return smoothstep(0.0, 1.0, (t - (day_frac - trans)) / trans)
+	elif t < 1.0 - trans:
+		return 1.0
+	else:
+		return smoothstep(0.0, 1.0, 1.0 - (t - (1.0 - trans)) / trans)
+
+func get_time_string() -> String:
+	var cycle_duration: float = CONSTANTS.DAY_DURATION + CONSTANTS.NIGHT_DURATION
+	var raw_hours: float = 6.0 + (_cycle_timer / cycle_duration) * 24.0
+	var hour_of_day: int = int(raw_hours) % 24
+	var minutes: int = int(fmod(raw_hours, 1.0) * 60.0)
+	var am_pm: String = "AM" if hour_of_day < 12 else "PM"
+	var display_hour: int = hour_of_day % 12
+	if display_hour == 0:
+		display_hour = 12
+	return "%d:%02d %s" % [display_hour, minutes, am_pm]
+
+func skip_to_dusk() -> void:
+	var dusk_start: float = CONSTANTS.DAY_DURATION - CONSTANTS.DAY_NIGHT_TRANSITION
+	if _cycle_timer < dusk_start:
+		_cycle_timer = dusk_start
+
+func get_day() -> int:
+	return _day_count
+
+func set_day(d: int) -> void:
+	_day_count = d
+	day_changed.emit(_day_count)
+
 func reset() -> void:
 	_cycle_timer = 0.0
+	_day_count = 1
+	day_changed.emit(_day_count)
 	if _overlay != null:
 		_overlay.color.a = 0.0

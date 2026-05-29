@@ -8,5 +8,5 @@ func _ready() -> void:
 
 func _on_destroyed() -> void:
 	remove_from_group("core_building")
-	GameState.game_over.emit()
+	GameState.trigger_game_over()
 	super._on_destroyed()

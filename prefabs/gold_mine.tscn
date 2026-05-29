@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://1xrdu2r3p0nq" path="res://scripts/gold_mine.gd" id="1_goldmine"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_qedrx"]
-_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAAAgAQAAUklGRhgBAABXRUJQVlA4TAwBAAAvf8AfEC9AmG2c228eIzidIwswTc5idwJJZBBZgMkQJtGdQdARzn8AaquW+MYfIMS2WrvCAhawgAUsHP9icpKQG2j7vhPR/wmQf1MCkGgsMEa0FeARPUVEzKIZp0MACNqD7w6r9Xnqknt5kuLuxGl1/sTanAI44pU5BW3JKaYHvCw/BjSRjpF5UX4YvC90B+7TmsyO7BdlvRkAM3uKFWQYjT7ACjJwwtOMV2MpfMvmxdjEnouCzGD52ANQi+pwEMCWAShG9QTGDBSiNA98TVUrUtUjtqgU0Dp0M2FdV+uiWbpd2ZxofgeHpQq9VrqT1mS9G0nsRVL7kPT7JEPGHTl5nyzJnfcJkZvv+84L")
+_data = PackedByteArray("AAADAAUAAAABAAAAgAAAAIAAAAC2AQAAUklGRq4BAABXRUJQVlA4TKIBAAAvf8AfEFegqJEkZV8MB0rYv5kTcHIURZLUXFSQ/wQHFP5F4AMJagIATdAGVKCF9s/D5Jz/AAD3TO3PTVVT+F0fa9zr72ureS9AUiRJkiQFhaTgFJyCUwgKTqEoDIWk4DQrs+boyt/KSkT/J6D+V5xckKwqSYfhQwAkIOk4WJMgAJI8CSncSUodkSKlkwDQvluSSB6EgLrblrrb7XS3JB0k3e17e9ndnYNI6fa3D0Iy/RPunMW9m7s+SLf77vbTzjGkm233Zi76JN5u1i1JJ5DywI0n7hzD66+5v86Sbk/7+nq8sHOEeHvt7WsxX29WquLszDU2fjtNzcSruQOwmDe/mJLIjq2eXn5nLb5Vpsp3SvEjAONJ3kupWyLlW2OMR+JLVZUdZZJJngBjzLlLJLEy/UKpJBGZkG1L9kVgjDmnLrttkZFU5biq/C61CECSWl/YzEt3koxEVlVZXr5EEiQBSjesV2MMXABIUoCqqnAvGHgJVKG2UmyXq0Ry3EnKrio7sWsL1Pbzvu9a2iIpya617fqTn/fQy/rgz6uy68M/71/4")
 size_override = Vector2(128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ybta1"]
@@ -43,4 +43,7 @@ metadata/_aseprite_wizard_config_ = {
 "source": "res://assets/sprites/buildings/gold-mine.aseprite",
 "source_uid": 6624646643271275548
 }
-metadata/_aseprite_wizard_source_file_hash_ = "f764337ad796b2af41ed453d7d0b6444"
+metadata/_aseprite_wizard_source_file_hash_ = "b62af153641f2f20b14d42950f323ece"
+
+[node name="WorkPoint" type="Marker2D" parent="." unique_id=2133850233]
+position = Vector2(0, 27)
